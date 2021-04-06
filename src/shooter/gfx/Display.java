@@ -12,6 +12,8 @@ public class Display {
     private String title = "Shooter"; // TODO: Change name later
     private int width = 1920, height = 1080;
 
+
+
     public Display() {
         createDisplay();
     }
@@ -31,5 +33,8 @@ public class Display {
 
         frame.add(canvas);
         frame.pack();
+    }
+    public Canvas getCanvas() {
+        return canvas;
     }
 }

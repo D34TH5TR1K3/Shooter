@@ -1,7 +1,10 @@
 package shooter;
 
 import shooter.gfx.Display;
+
 import java.lang.Runnable;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
 public class Game implements Runnable {
     private Display display;
@@ -9,6 +12,9 @@ public class Game implements Runnable {
     private String title;
 
     private Thread thread;
+
+    private BufferStrategy bs;
+    private Graphics g;
 
     private boolean running;
 
@@ -60,7 +66,16 @@ public class Game implements Runnable {
     }
 
     public void render() {
+        bs = display.getCanvas().getBufferStrategy();
+        if (bs == null) {
+            display.getCanvas().createBufferStrategy(3);
+            return;
+        }
+        g= bs.getDrawGraphics();
+        g.clearRect(0,0, width, height); // Clear Screen
 
+        bs.show();
+        g.dispose();
     }
 
     public synchronized void start() {
@@ -82,5 +97,9 @@ public class Game implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public BufferStrategy getBs() {
+        return bs;
     }
 }
