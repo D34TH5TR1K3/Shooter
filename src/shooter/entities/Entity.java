@@ -18,13 +18,15 @@ public abstract class Entity {
     private boolean solid = false;
     protected boolean active = true;
 
-    public Entity(float posX, float posY) {
+    public Entity(float posX, float posY, int posZ) {
         this.posX = posX;
         this.posY = posY;
+        this.posZ = posZ;
     }
-    public Entity(float posX, float posY, float dir) {
+    public Entity(float posX, float posY,int posZ, float dir) {
         this.posX = posX;
         this.posY = posY;
+        this.posZ = posZ;
         this.dir = dir;
     }
 
@@ -40,9 +42,9 @@ public abstract class Entity {
     }
 
     public void setInActive() { active = false; }
-    public void setZ(int posZ) { this.posZ = posZ; }
     public boolean isSolid() { return solid; }
     public float getX() { return posX; }
     public float getY() { return posY; }
+    public int getZ() { return posZ; }
     public float facing() { return dir; }
 }

@@ -16,8 +16,7 @@ public class Item extends Entity{
     private ArrayList<Bullet> bullets;
 
     public Item(float posX, float posY, int type) {
-        super(posX, posY);
-        setZ(2);
+        super(posX,posY,2);
         switch(type) {
             case 1:
                 ammo = 1;

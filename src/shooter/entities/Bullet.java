@@ -5,7 +5,7 @@ import java.awt.Graphics;
 public class Bullet extends Entity {
 
     public Bullet(float posX, float posY, float dir) { 
-        super(posX, posY, dir);
+        super(posX, posY,3, dir);
     }
     
     @Override

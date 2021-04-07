@@ -1,5 +1,6 @@
 package shooter;
 
+import shooter.gfx.Assets;
 import shooter.gfx.Display;
 import shooter.input.*;
 import shooter.states.*;
@@ -38,6 +39,8 @@ public class Game implements Runnable {
         display.getCanvas().addMouseListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
 
+        Assets.init();
+
         gameState = new GameState(this);
         menuState = new MenuState(this);
         State.setState(gameState);
@@ -46,7 +49,6 @@ public class Game implements Runnable {
     public void tick() {
         keyManager.tick();
         State.getState().tick();
-        System.out.println(mouseManager.isLeftPressed()+"\t"+mouseManager.isRightPressed());
     }
 
     public void render() {
@@ -58,7 +60,7 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0,0, width, height); // Clear Screen
 
-        State.getState().render(g);
+        g.drawImage(Assets.levelMap,0,0,1920,1080,null);
 
         bs.show();
         g.dispose();
@@ -74,6 +76,7 @@ public class Game implements Runnable {
         long lastTime = System.nanoTime();
         long timer = 0;
         int ticks = 0;
+        long frametime = 0;
 
         while(running) {    //gameloop
             now = System.nanoTime();
@@ -89,8 +92,7 @@ public class Game implements Runnable {
             }
 
             if(timer >= 1000000000) {
-                System.out.println("Ticks and FPS:" + ticks +"\t"+"\t" + System.nanoTime()/1000000000);
-                //NOTE: Maximum Frametime : '16666666'
+                System.out.print("TPS & FPS:" + ticks+"\t");
                 ticks = 0;
                 timer = 0;
             }
