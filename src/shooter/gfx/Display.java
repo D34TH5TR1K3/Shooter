@@ -6,19 +6,16 @@ import javax.swing.JFrame;
 
 public class Display {
 
-    private JFrame frame;
     private Canvas canvas;
-
-    private String title = "Shooter"; // TODO: Change name later
-    private int width = 1920, height = 1080;
-
-
 
     public Display() {
         createDisplay();
     }
+
     public void createDisplay() {
-        frame = new JFrame(title);  //create new JFrame with title: title
+        JFrame frame = new JFrame("Shooter");  //create new JFrame with title: title
+        //TODO: Change name later
+        int width = 1920, height = 1080;
         frame.setSize(width, height);   //set size to width and height
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   // on program exit
         frame.setResizable(false);  //not resizable
@@ -34,6 +31,7 @@ public class Display {
         frame.add(canvas);
         frame.pack();
     }
+
     public Canvas getCanvas() {
         return canvas;
     }

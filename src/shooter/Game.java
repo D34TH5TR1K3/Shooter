@@ -2,30 +2,43 @@ package shooter;
 
 import shooter.gfx.Display;
 
+import java.awt.*;
 import java.lang.Runnable;
-import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 public class Game implements Runnable {
     private Display display;
-    private int width, height;
-    private String title;
-
-    private Thread thread;
+    private final int width = 1920, height = 1080;
 
     private BufferStrategy bs;
     private Graphics g;
 
+    private Thread thread;
     private boolean running;
 
-    public Game(String title, int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.title = title;
-    }
+    public Game() { start(); }
 
     private void init(){    //init display & assets
         display = new Display();
+    }
+
+    public void tick() {
+
+    }
+
+    public void render() {
+        bs = display.getCanvas().getBufferStrategy();
+        if (bs == null) {
+            display.getCanvas().createBufferStrategy(3);
+            return;
+        }
+        g = bs.getDrawGraphics();
+        g.clearRect(0,0, width, height); // Clear Screen
+
+        //TODO render Stuff
+
+        bs.show();
+        g.dispose();
     }
 
     public void run() { // run game
@@ -39,7 +52,7 @@ public class Game implements Runnable {
         long timer = 0;
         int ticks = 0;
 
-        while(running) {                            //gameloop
+        while(running) {    //gameloop
             now = System.nanoTime();
             delta += (now - lastTime)  / timePerTick;
             timer += now - lastTime;
@@ -54,52 +67,26 @@ public class Game implements Runnable {
 
             if(timer >= 1000000000) {
                 System.out.println("Ticks and FPS:" + ticks +"\t"+"\t" + System.nanoTime()/1000000000);
+                //NOTE: Maximum Frametime : '16666666'
                 ticks = 0;
                 timer = 0;
             }
         }
+
         stop();
     }
 
-    public void tick() {
-
-    }
-
-    public void render() {
-        bs = display.getCanvas().getBufferStrategy();
-        if (bs == null) {
-            display.getCanvas().createBufferStrategy(3);
-            return;
-        }
-        g= bs.getDrawGraphics();
-        g.clearRect(0,0, width, height); // Clear Screen
-
-        bs.show();
-        g.dispose();
-    }
-
     public synchronized void start() {
-        if (running) {
-            return;
-        }
+        if (running) { return; }
         running = true;
         thread = new Thread(this);
         thread.start();
     }
 
     public synchronized void stop() {
-        if (!running) {
-            return;
-        }
+        if (!running) { return; }
         running = false;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public BufferStrategy getBs() {
-        return bs;
+        try { thread.join(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
     }
 }
