@@ -6,14 +6,13 @@ import javax.swing.JFrame;
 
 public class Display {
 
+    private JFrame frame;
     private Canvas canvas;
 
-    public Display() {
-        createDisplay();
-    }
+    public Display() { createDisplay(); }
 
     public void createDisplay() {
-        JFrame frame = new JFrame("Shooter");  //create new JFrame with title: title
+        frame = new JFrame("Shooter");  //create new JFrame with title: title
         //TODO: Change name later
         int width = 1920, height = 1080;
         frame.setSize(width, height);   //set size to width and height
@@ -32,7 +31,6 @@ public class Display {
         frame.pack();
     }
 
-    public Canvas getCanvas() {
-        return canvas;
-    }
+    public JFrame getFrame() { return frame; }
+    public Canvas getCanvas() { return canvas; }
 }

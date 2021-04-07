@@ -1,6 +1,7 @@
 package shooter;
 
 import shooter.gfx.Display;
+import shooter.input.KeyManager;
 import shooter.states.*;
 
 import java.awt.*;
@@ -20,18 +21,25 @@ public class Game implements Runnable {
     private State gameState;
     private State menuState;
 
-    public Game() { start(); }
+    private KeyManager keyManager;
+
+    public Game() {
+        keyManager = new KeyManager();
+        start();
+    }
 
     private void init(){    //init display & assets
         display = new Display();
+        display.getFrame().addKeyListener(keyManager);
+
         gameState = new GameState(this);
         menuState = new MenuState(this);
         State.setState(gameState);
     }
 
     public void tick() {
-        if(State.getState() != null)
-            State.getState().tick();
+        keyManager.tick();
+        State.getState().tick();
     }
 
     public void render() {
@@ -43,8 +51,7 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0,0, width, height); // Clear Screen
 
-        if(State.getState() != null)
-            State.getState().render(g);
+        State.getState().render(g);
 
         bs.show();
         g.dispose();
