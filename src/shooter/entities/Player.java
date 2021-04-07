@@ -15,6 +15,7 @@ public class Player extends Entity{
         //move((keyManager.right)?SPEED:0-(keyManager.left)?SPEED:0,
         //        (keyManager.down)?SPEED:0-(keyManager.up)?SPEED:0);
         //TODO implement Handler
+        //TODO player collision
     }
     @Override
     public void render(Graphics g) {
