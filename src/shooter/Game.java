@@ -1,6 +1,7 @@
 package shooter;
 
 import shooter.gfx.Display;
+import shooter.states.*;
 
 import java.awt.*;
 import java.lang.Runnable;
@@ -16,14 +17,21 @@ public class Game implements Runnable {
     private Thread thread;
     private boolean running;
 
+    private State gameState;
+    private State menuState;
+
     public Game() { start(); }
 
     private void init(){    //init display & assets
         display = new Display();
+        gameState = new GameState(this);
+        menuState = new MenuState(this);
+        State.setState(gameState);
     }
 
     public void tick() {
-
+        if(State.getState() != null)
+            State.getState().tick();
     }
 
     public void render() {
@@ -35,7 +43,8 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0,0, width, height); // Clear Screen
 
-        //TODO render Stuff
+        if(State.getState() != null)
+            State.getState().render(g);
 
         bs.show();
         g.dispose();
