@@ -1,7 +1,7 @@
 package shooter;
 
 import shooter.gfx.Display;
-import shooter.input.KeyManager;
+import shooter.input.*;
 import shooter.states.*;
 
 import java.awt.*;
@@ -22,15 +22,21 @@ public class Game implements Runnable {
     private State menuState;
 
     private KeyManager keyManager;
+    private MouseManager mouseManager;
 
     public Game() {
         keyManager = new KeyManager();
+        mouseManager = new MouseManager();
         start();
     }
 
     private void init(){    //init display & assets
         display = new Display();
         display.getFrame().addKeyListener(keyManager);
+        display.getFrame().addMouseListener(mouseManager);
+        display.getFrame().addMouseMotionListener(mouseManager);
+        display.getCanvas().addMouseListener(mouseManager);
+        display.getCanvas().addMouseMotionListener(mouseManager);
 
         gameState = new GameState(this);
         menuState = new MenuState(this);
@@ -40,6 +46,7 @@ public class Game implements Runnable {
     public void tick() {
         keyManager.tick();
         State.getState().tick();
+        System.out.println(mouseManager.isLeftPressed()+"\t"+mouseManager.isRightPressed());
     }
 
     public void render() {
