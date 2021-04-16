@@ -68,7 +68,7 @@ public class Map {
                 tiles[x][y] = new Tile(x, y, solid);
             }
         }
-        System.out.println("hello there");
+        //System.out.println("hello there");
         entityManager.addEntity(new Player(100, 100));
         //TODO find spot to make new player
     }
