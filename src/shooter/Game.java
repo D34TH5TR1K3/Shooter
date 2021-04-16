@@ -2,6 +2,7 @@ package shooter;
 
 import shooter.gfx.Assets;
 import shooter.gfx.Display;
+import shooter.gfx.Map;
 import shooter.input.*;
 import shooter.states.*;
 
@@ -18,6 +19,8 @@ public class Game implements Runnable {
 
     private Thread thread;
     private boolean running;
+
+    private Map map1 = new Map();
 
     private State gameState;
     private State menuState;
@@ -40,6 +43,7 @@ public class Game implements Runnable {
         display.getCanvas().addMouseMotionListener(mouseManager);
 
         Assets.init();
+        map1.fillTiles();
 
         gameState = new GameState(this);
         menuState = new MenuState(this);
@@ -60,7 +64,8 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0,0, width, height); // Clear Screen
 
-        g.drawImage(Assets.levelMap,0,0,1920,1080,null);
+        //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
+        map1.renderTiles(g);
 
         bs.show();
         g.dispose();
