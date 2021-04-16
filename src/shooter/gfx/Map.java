@@ -7,6 +7,7 @@ public class Map {
 
     private Tile[][] tiles;
     private int mapsize = 2; //TODO set size of map
+    private int tilesize = 30;
 
     private Color tileColor;
 
@@ -18,7 +19,7 @@ public class Map {
         for(int x = 0; x < 64 * mapsize; x++){
             for(int y = 0; y < 36 * mapsize; y++){
                 g.setColor(tiles[x][y].getTileColor());
-                g.fillRect(15*x, 15*y, 15*x+15, 15*y+15);
+                g.fillRect(tilesize*x, tilesize*y, tilesize*x+tilesize, tilesize*y+tilesize);
             }
         }
     }
