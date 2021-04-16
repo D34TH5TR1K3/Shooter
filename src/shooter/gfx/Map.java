@@ -21,6 +21,13 @@ public class Map {
         entityManager = new EntityManager();
     }
 
+    public void tick(){
+        entityManager.tick();
+    }
+    public void render(Graphics g){
+        entityManager.render(g);
+    }
+
     public void renderTiles(Graphics g){
         for(int x = 0; x < 64 * mapsize; x++){
             for(int y = 0; y < 36 * mapsize; y++){

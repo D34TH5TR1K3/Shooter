@@ -21,16 +21,13 @@ public class Game implements Runnable {
     private Thread thread;
     private boolean running;
 
-    private Map map1 = new Map();
-
     private State gameState;
     private State menuState;
 
     private KeyManager keyManager;
     private MouseManager mouseManager;
 //TEMP VARIABLES
-    //TODO each map has own entity manager
-    private EntityManager entityManager = new EntityManager();
+    private Map map = new Map();
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
@@ -46,7 +43,7 @@ public class Game implements Runnable {
         display.getCanvas().addMouseMotionListener(mouseManager);
 
         Assets.init();
-        map1.fillTiles();
+        map.fillTiles();
 
         gameState = new GameState(this);
         menuState = new MenuState(this);
@@ -56,7 +53,7 @@ public class Game implements Runnable {
     public void tick() {
         keyManager.tick();
         State.getState().tick();
-        entityManager.tick();
+        map.tick();
     }
 
     public void render() {
@@ -69,10 +66,11 @@ public class Game implements Runnable {
         g.clearRect(0,0, width, height); // Clear Screen
 
         //render entity manager
-        entityManager.render(g);
-        //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
-        map1.renderTiles(g);
 
+        //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
+        map.renderTiles(g);
+        map.render(g);
+        
         bs.show();
         g.dispose();
     }
