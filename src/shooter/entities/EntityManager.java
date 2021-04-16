@@ -2,7 +2,7 @@ package shooter.entities;
 
 import java.awt.*;
 import java.util.ArrayList;
-
+//test
 public class EntityManager {
 
     private ArrayList<Entity> entities;
