@@ -18,7 +18,7 @@ public class Display {
         frame.setSize(width, height);   //set size to width and height
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   // on program exit
         frame.setResizable(false);  //not resizable
-        frame.setUndecorated(true); //borderless
+        //frame.setUndecorated(true); //borderless
         frame.setLocationRelativeTo(null); //center window
         frame.setVisible(true); //set display visible
 

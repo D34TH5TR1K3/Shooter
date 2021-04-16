@@ -1,5 +1,6 @@
 package shooter;
 
+import shooter.entities.EntityManager;
 import shooter.gfx.Assets;
 import shooter.gfx.Display;
 import shooter.gfx.Map;
@@ -27,7 +28,9 @@ public class Game implements Runnable {
 
     private KeyManager keyManager;
     private MouseManager mouseManager;
-
+//TEMP VARIABLES
+    //TODO each map has own entity manager
+    private EntityManager entityManager = new EntityManager();
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
@@ -53,6 +56,7 @@ public class Game implements Runnable {
     public void tick() {
         keyManager.tick();
         State.getState().tick();
+        entityManager.tick();
     }
 
     public void render() {
@@ -64,6 +68,8 @@ public class Game implements Runnable {
         g = bs.getDrawGraphics();
         g.clearRect(0,0, width, height); // Clear Screen
 
+        //render entity manager
+        entityManager.render(g);
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
         map1.renderTiles(g);
 

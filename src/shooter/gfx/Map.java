@@ -1,6 +1,9 @@
 package shooter.gfx;
 
 import java.awt.*;
+
+import shooter.entities.EntityManager;
+import shooter.entities.Player;
 import shooter.gfx.Tile;
 
 public class Map {
@@ -8,11 +11,14 @@ public class Map {
     private Tile[][] tiles;
     private int mapsize = 2; //TODO set size of map
     private int tilesize = 30;
+    private Player player;
 
     private Color tileColor;
 
+    private EntityManager entityManager;
     public Map() {
         tiles = new Tile[64 * mapsize][36 * mapsize];
+        entityManager = new EntityManager();
     }
 
     public void renderTiles(Graphics g){
@@ -56,5 +62,8 @@ public class Map {
                 tiles[x][y] = new Tile(x, y, solid);
             }
         }
+        System.out.println("hello there");
+        entityManager.addEntity(new Player(100, 100));
+        //TODO find spot to make new player
     }
 }

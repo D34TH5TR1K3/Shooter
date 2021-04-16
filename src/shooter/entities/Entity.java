@@ -3,7 +3,7 @@ package shooter.entities;
 import java.awt.Graphics;
 
 public abstract class Entity {
-    private float posX, posY;
+    protected float posX, posY;
     private int posZ = 0;
     /*
     posZ in Form von Integern
