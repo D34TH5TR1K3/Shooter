@@ -19,7 +19,7 @@ public class EntityManager {
         for(Entity e : entities) {
             e.tick();
         }
-        System.out.println(entities.size());
+        //System.out.println(entities.size());
     }
     public void render(Graphics g){
         for(Entity e : entities) {
