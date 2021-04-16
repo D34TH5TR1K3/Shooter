@@ -1,5 +1,7 @@
 package shooter.gfx;
 
+import java.awt.*;
+
 public class Tile {
 
     private boolean isSolid = false;
@@ -23,5 +25,4 @@ public class Tile {
     public int getHeight() {
         return height;
     }
-
 }
