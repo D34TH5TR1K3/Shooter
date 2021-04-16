@@ -1,10 +1,9 @@
 package shooter.gfx;
 
-import java.awt.*;
-
 import shooter.entities.EntityManager;
 import shooter.entities.Player;
-import shooter.gfx.Tile;
+
+import java.awt.*;
 
 public class Map {
 
