@@ -18,7 +18,12 @@ public class Map {
     public void renderTiles(Graphics g){
         for(int x = 0; x < 64 * mapsize; x++){
             for(int y = 0; y < 36 * mapsize; y++){
-                g.setColor(tiles[x][y].getTileColor());
+                if(tiles[x][y].isSolid()){
+                    g.setColor(Color.red);
+                }else{
+                    g.setColor(Color.cyan);
+                }
+                //g.setColor(tiles[x][y].getTileColor());
                 g.fillRect(tilesize*x, tilesize*y, tilesize*x+tilesize, tilesize*y+tilesize);
             }
         }
@@ -42,13 +47,13 @@ public class Map {
                 int red = mycolor.getRed();
                 int green = mycolor.getGreen();
                 int blue = mycolor.getBlue();
-                if(red > 200 && green > 200 && blue > 200){
+                if(red < 200 && green < 200 && blue < 200){
                     solid = true;
                     tileColor = Color.cyan;
                 }else{
                     tileColor = Color.green;
                 }
-                tiles[x][y] = new Tile(x, y, solid, tileColor);
+                tiles[x][y] = new Tile(x, y, solid);
             }
         }
     }
