@@ -47,7 +47,7 @@ public class Game implements Runnable {
 
         gameState = new GameState(this);
         menuState = new MenuState(this);
-        State.setState(gameState);
+        State.setState(menuState);
     }
 
     public void tick() {
@@ -65,7 +65,8 @@ public class Game implements Runnable {
         g.clearRect(0,0, width, height); // Clear Screen
 
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
-        map1.renderTiles(g);
+        //map1.renderTiles(g);
+        State.getState().render(g);
 
         bs.show();
         g.dispose();
