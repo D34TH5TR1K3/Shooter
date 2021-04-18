@@ -1,0 +1,3 @@
+Scale,1
+IQ,5
+BrainSize,200

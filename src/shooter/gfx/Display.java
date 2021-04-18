@@ -1,5 +1,7 @@
 package shooter.gfx;
 
+import shooter.utils.Writer;
+
 import java.awt.*;
 import java.awt.Dimension;
 import javax.swing.JFrame;
@@ -14,14 +16,19 @@ public class Display {
     public void createDisplay() {
         //set window scaling independently from windows scaling
         //100% for 1080p; 150% for 1440p;
-        //System.setProperty("sun.java2d.uiScale", "1.0");
 
-        if(Toolkit.getDefaultToolkit().getScreenResolution() == 192){
-            System.setProperty("sun.java2d.uiScale", "1.5");
+        Writer writer = new Writer();
+
+        //writer.writeToFile("Scale", "2");
+        //writer.writeToFile("IQ", "5");
+        //writer.writeToFile("BrainSize", "200");
+
+        float scale = writer.GetSettingValue("Scale");
+        //System.out.println("scale:    " + scale);
+        if(writer.getScale() != 1){
+            System.setProperty("sun.java2d.uiScale", String.valueOf(writer.getScale()));
         }
-
         //System.setProperty("sun.java2d.uiScale", "1.5");
-
         frame = new JFrame("Shooter");  //create new JFrame with title: title
         //TODO: Change name later
         int width = 1920, height = 1080;
@@ -42,6 +49,7 @@ public class Display {
 
         frame.add(canvas);
         frame.pack();
+        System.setProperty("sun.java2d.uiScale", "1.5");
     }
 
     public JFrame getFrame() { return frame; }
