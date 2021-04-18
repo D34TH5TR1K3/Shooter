@@ -4,6 +4,7 @@ import shooter.gfx.Assets;
 import shooter.gfx.Display;
 import shooter.gfx.Map;
 import shooter.input.*;
+import shooter.sound.Sound;
 import shooter.states.*;
 
 import java.awt.*;
@@ -28,6 +29,8 @@ public class Game implements Runnable {
     private KeyManager keyManager;
     private MouseManager mouseManager;
 
+    private Sound sound;
+
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
@@ -48,6 +51,13 @@ public class Game implements Runnable {
         gameState = new GameState(this);
         menuState = new MenuState(this);
         State.setState(menuState);
+
+        sound = new Sound();
+        sound.play("SXTN");
+        sound.play("uzi");
+
+
+
     }
 
     public void tick() {
