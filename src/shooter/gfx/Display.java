@@ -15,15 +15,12 @@ public class Display {
         //set window scaling independently from windows scaling
         //100% for 1080p; 150% for 1440p;
         //System.setProperty("sun.java2d.uiScale", "1.0");
-        /*GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        System.out.println("Screen Width: " + gd.getDisplayMode().getWidth());
-        System.out.println("Screen Height: " + gd.getDisplayMode().getHeight());
-        if(gd.getDisplayMode().getWidth() == 2560 && gd.getDisplayMode().getHeight() == 1440){
-            System.out.print("hello");
-        }
-        */
-        System.setProperty("sun.java2d.uiScale", "1.5");
 
+        if(Toolkit.getDefaultToolkit().getScreenResolution() == 192){
+            System.setProperty("sun.java2d.uiScale", "1.5");
+        }
+
+        //System.setProperty("sun.java2d.uiScale", "1.5");
 
         frame = new JFrame("Shooter");  //create new JFrame with title: title
         //TODO: Change name later
