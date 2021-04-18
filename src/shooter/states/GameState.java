@@ -1,13 +1,18 @@
 package shooter.states;
 
 import shooter.Game;
+import shooter.Handler;
+import shooter.gfx.World;
 
 import java.awt.*;
 
 public class GameState extends State {
 
-    public GameState(Game game) {
-        super(game);
+    private World world;
+
+    public GameState(Game game, Handler handler) {
+        super(game,handler);
+        world = new World(handler);
     }
 
     @Override

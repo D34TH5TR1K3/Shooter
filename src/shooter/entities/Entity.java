@@ -1,9 +1,11 @@
 package shooter.entities;
 
+import shooter.Handler;
+
 import java.awt.Graphics;
 
 public abstract class Entity {
-    private float posX, posY;
+    protected float posX, posY;
     private int posZ = 0;
     /*
     posZ in Form von Integern
@@ -17,6 +19,8 @@ public abstract class Entity {
     private float dir = 0;
     private boolean solid = false;
     protected boolean active = true;
+
+    protected Handler handler;
 
     public Entity(float posX, float posY, int posZ) {
         this.posX = posX;

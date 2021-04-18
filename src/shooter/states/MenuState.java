@@ -1,6 +1,7 @@
 package shooter.states;
 
 import shooter.Game;
+import shooter.Handler;
 import shooter.gfx.Menu;
 
 import java.awt.Graphics;
@@ -9,9 +10,8 @@ public class MenuState extends State {
 
     private Menu menu1;
 
-    public MenuState(Game game){
-        super(game);
-        this.menu1 = new Menu();
+    public MenuState(Game game, Handler handler){
+        super(game,handler);
     }
 
     @Override

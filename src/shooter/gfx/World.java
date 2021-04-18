@@ -1,18 +1,34 @@
 package shooter.gfx;
 
-import java.awt.*;
-import shooter.gfx.Tile;
+import shooter.entities.EntityManager;
+import shooter.entities.Player;
+import shooter.Handler;
 
-public class Map {
+import java.awt.*;
+
+public class World {
 
     private Tile[][] tiles;
     private int mapsize = 2; //TODO set size of map
     private int tilesize = 30;
+    private Player player;
 
     private Color tileColor;
 
-    public Map() {
+    private Handler handler;
+    private EntityManager entityManager;
+
+    public World(Handler handler) {
         tiles = new Tile[64 * mapsize][36 * mapsize];
+        entityManager = new EntityManager();
+        fillTiles();
+    }
+
+    public void tick(){
+        entityManager.tick();
+    }
+    public void render(Graphics g){
+        entityManager.render(g);
     }
 
     public void renderTiles(Graphics g){
@@ -56,5 +72,8 @@ public class Map {
                 tiles[x][y] = new Tile(x, y, solid);
             }
         }
+        //System.out.println("hello there");
+        entityManager.addEntity(new Player(100, 100));
+        //TODO find spot to make new player
     }
 }

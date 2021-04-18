@@ -1,15 +1,18 @@
 package shooter.states;
 
 import shooter.Game;
+import shooter.Handler;
 
 import java.awt.Graphics;
 
 public abstract class State {
     private static State currentState = null;
     protected Game game;
+    protected Handler handler;
 
-    public State(Game game) {
+    public State(Game game,Handler handler) {
         this.game = game;
+        this.handler = handler;
     }
 
     public abstract void tick();

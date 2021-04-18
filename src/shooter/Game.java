@@ -1,8 +1,9 @@
 package shooter;
 
+import shooter.entities.EntityManager;
 import shooter.gfx.Assets;
 import shooter.gfx.Display;
-import shooter.gfx.Map;
+import shooter.gfx.World;
 import shooter.input.*;
 import shooter.states.*;
 
@@ -20,14 +21,15 @@ public class Game implements Runnable {
     private Thread thread;
     private boolean running;
 
-    private Map map1 = new Map();
-
     private State gameState;
     private State menuState;
 
+    private Handler handler;
+
     private KeyManager keyManager;
     private MouseManager mouseManager;
-
+//TEMP VARIABLES
+    private World world;
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
@@ -43,16 +45,19 @@ public class Game implements Runnable {
         display.getCanvas().addMouseMotionListener(mouseManager);
 
         Assets.init();
-        map1.fillTiles();
+        handler = new Handler(this);
 
-        gameState = new GameState(this);
-        menuState = new MenuState(this);
-        State.setState(menuState);
+        world = new World(handler);
+
+        gameState = new GameState(this,handler);
+        menuState = new MenuState(this,handler);
+        State.setState(gameState);
     }
 
     public void tick() {
         keyManager.tick();
         State.getState().tick();
+        world.tick();
     }
 
     public void render() {
@@ -68,6 +73,10 @@ public class Game implements Runnable {
         //map1.renderTiles(g);
         State.getState().render(g);
 
+        //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
+        world.renderTiles(g);
+        world.render(g);
+        
         bs.show();
         g.dispose();
     }
@@ -105,6 +114,16 @@ public class Game implements Runnable {
         }
 
         stop();
+    }
+
+    public Handler getHandler() {
+        return handler;
+    }
+    public KeyManager getKeyManager() {
+        return keyManager;
+    }
+    public MouseManager getMouseManager() {
+        return mouseManager;
     }
 
     public synchronized void start() {
