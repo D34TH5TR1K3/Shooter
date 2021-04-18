@@ -48,7 +48,7 @@ public class Menu {
 
     }
     public void render(Graphics g){
-        g.drawImage(Assets.menu1, 0, 0, null);
+        g.drawImage(Assets.menu1, 0, 0, 1920, 1080, null);
         //for(Button button : buttons){
         //    g.fillRect((int)(10* button.getRect().getX()), (int)(10* button.getRect().getY()), (int)(10* button.getRect().getWidth()), (int)(10* button.getRect().getHeight()));
         //}
