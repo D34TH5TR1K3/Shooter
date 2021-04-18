@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class Menu {
 
-    private ArrayList<Point> points;
-    private ArrayList<Button> buttons;
+    private ArrayList<Point> points; //Point for rectangle that makes a Button
+    private ArrayList<Button> buttons; //store rectangles
 
     public Menu(){
         points = new ArrayList<Point>();
@@ -14,20 +14,20 @@ public class Menu {
         readMenu();
     }
 
-    public void readMenu(){
-        for(int x = 0; x < 192; x++){
+    public void readMenu(){ // reads the menu and places rectangles on the buttons
+        for(int x = 0; x < 192; x++){ // iterates through every pixel
             for(int y = 0; y < 108; y++){
-                Color color = new Color(Assets.menu_layout1.getRGB(x, y));
+                Color color = new Color(Assets.menu_layout1.getRGB(x, y)); // gets color of every pixel
                 int red = color.getRed();
                 int green = color.getGreen();
                 int blue = color.getBlue();
-                if(red > 5 && green > 5 && blue > 5){
+                if(red > 5 && green > 5 && blue > 5){ // if color != black -> create new point with color and coordinates
                     Point point = new Point(red, green, blue, x, y);
                     points.add(point);
                 }
             }
         }
-        while(points.size() > 0){
+        while(points.size() > 0){   //Creates rectangles from points of same color
             Point point1 = points.get(0);
             points.remove(point1);
             for(Point point2 : points){
@@ -54,7 +54,7 @@ public class Menu {
         //}
     }
 
-    public class Button{
+    public class Button{ // Stores rectangle of every button
 
         int x, y, width, height;
         int xo, yo, xu, yu; //x unten y unten x oben y oben
@@ -86,7 +86,7 @@ public class Menu {
         }
     }
 
-    public class Point{
+    public class Point{ // stores color and coordinates of points
 
         int red, green, blue;
         int X, Y;
