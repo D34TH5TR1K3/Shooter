@@ -24,9 +24,9 @@ public class Sound {
             case "uzi":
                 soundResult = new File("res/sound/sndUzi.wav");
                 break;
-            //default:
-            //    soundResult = new File("path"); //TODO add default file path
-
+            default:
+                soundResult = new File("res/sound/sxtn.wav"); //TODO add default file path
+                break;
         }
 
         try {
