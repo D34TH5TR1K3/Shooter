@@ -27,8 +27,18 @@ public class Writer {
         }
     }
 
-    public void readFromFile(){
+    public void changeSetting(String name, float value){
+        readFromFile(false);
+        for(Setting setting : settings){
+            if(name.equals(setting.getName())){
+                setting.setValue(value);
+            }
+        }
+    }
+
+    public void readFromFile(boolean print){
         try {
+            settings.clear();
             scanner = new Scanner(settingFile);
             String fileRead = scanner.nextLine();   //read 1st line
             while(fileRead != null){    //loop until no next line found
@@ -48,11 +58,11 @@ public class Writer {
                 }
             }
             scanner.close();
-
-            for(Setting setting : settings){ //print out each setting
-                System.out.println(setting.getName() + "   " + setting.getValue());
+            if(print) {
+                for(Setting setting : settings){ //print out each setting
+                    System.out.println(setting.getName() + "   " + setting.getValue());
+                }
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -72,10 +82,6 @@ public class Writer {
                     scanner.close();
                     return tempValue;
                 }
-
-                Setting tempSetting = new Setting(tempName, tempValue);
-
-                settings.add(tempSetting);  //add new Setting with values from array
                 if(scanner.hasNextLine()) { //check if there is a next line
                     fileRead = scanner.nextLine();
                 }else{
@@ -88,11 +94,13 @@ public class Writer {
         return -1;
     }
 
-    public void writeToFile(String name, String value){
+    public void writeToFile(){
         try {
-            writer = new FileWriter(settingFile, true);
-            writer.write(name + ",");
-            writer.write(value + "\n");
+            writer = new FileWriter(settingFile, false);
+            for(Setting setting : settings){
+                writer.write(setting.getName() + ",");
+                writer.write(setting.getValue() + "\n");
+            }
 
             writer.flush();
             writer.close();
@@ -122,7 +130,7 @@ public class Writer {
             return value;
         }
 
-        public void setValue(int value) {
+        public void setValue(float value) {
             this.value = value;
         }
     }

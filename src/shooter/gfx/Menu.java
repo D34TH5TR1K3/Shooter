@@ -21,8 +21,9 @@ public class Menu {
                 int red = color.getRed();
                 int green = color.getGreen();
                 int blue = color.getBlue();
+                int colorint = color.getRGB();
                 if(red > 5 && green > 5 && blue > 5){ // if color != black -> create new point with color and coordinates
-                    Point point = new Point(red, green, blue, x, y);
+                    Point point = new Point(red, green, blue, x, y, colorint);
                     points.add(point);
                 }
             }
@@ -34,7 +35,7 @@ public class Menu {
                 if(point1.getRed() == point2.getRed() &&
                    point1.getGreen() == point2.getGreen() &&
                    point1.getBlue() == point2.getBlue()){
-                    Button button1 = new Button(point1.getX(), point1.getY(), point2.getX(), point2.getY());
+                    Button button1 = new Button(point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
                     buttons.add(button1);
                     points.remove(point2);
                     System.out.println(points.size());
@@ -56,10 +57,12 @@ public class Menu {
 
     public class Button{ // Stores rectangle of every button
 
+        int color;
         int x, y, width, height;
         int xo, yo, xu, yu; //x unten y unten x oben y oben
         Rectangle rect;
-        public Button(int x1, int y1, int x2, int y2){
+        public Button(int x1, int y1, int x2, int y2, int color){
+            this.color = color;
             createButton(x1, y1, x2, y2);
         }
 
@@ -90,8 +93,10 @@ public class Menu {
 
         int red, green, blue;
         int X, Y;
+        int color;
 
-        public Point(int red, int green, int blue, int X, int Y){
+        public Point(int red, int green, int blue, int X, int Y, int color){
+            this.color = color;
             this.red = red;
             this.green = green;
             this.blue = blue;
@@ -117,6 +122,10 @@ public class Menu {
 
         public int getY() {
             return Y;
+        }
+
+        public int getColor() {
+            return color;
         }
     }
 }

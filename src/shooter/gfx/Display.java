@@ -28,6 +28,9 @@ public class Display {
         if(writer.getScale() != 1){
             System.setProperty("sun.java2d.uiScale", String.valueOf(writer.getScale()));
         }
+        writer.changeSetting("Scale", 2.1f);
+        writer.writeToFile();
+        writer.readFromFile(true);
         //System.setProperty("sun.java2d.uiScale", "1.5");
         frame = new JFrame("Shooter");  //create new JFrame with title: title
         //TODO: Change name later
