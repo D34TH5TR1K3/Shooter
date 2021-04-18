@@ -2,10 +2,11 @@ package shooter.gfx;
 
 import shooter.entities.EntityManager;
 import shooter.entities.Player;
+import shooter.Handler;
 
 import java.awt.*;
 
-public class Map {
+public class World {
 
     private Tile[][] tiles;
     private int mapsize = 2; //TODO set size of map
@@ -14,10 +15,13 @@ public class Map {
 
     private Color tileColor;
 
+    private Handler handler;
     private EntityManager entityManager;
-    public Map() {
+
+    public World(Handler handler) {
         tiles = new Tile[64 * mapsize][36 * mapsize];
         entityManager = new EntityManager();
+        fillTiles();
     }
 
     public void tick(){

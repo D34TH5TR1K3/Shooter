@@ -3,7 +3,7 @@ package shooter;
 import shooter.entities.EntityManager;
 import shooter.gfx.Assets;
 import shooter.gfx.Display;
-import shooter.gfx.Map;
+import shooter.gfx.World;
 import shooter.input.*;
 import shooter.states.*;
 
@@ -29,7 +29,7 @@ public class Game implements Runnable {
     private KeyManager keyManager;
     private MouseManager mouseManager;
 //TEMP VARIABLES
-    private Map map = new Map();
+    private World world;
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
@@ -45,19 +45,19 @@ public class Game implements Runnable {
         display.getCanvas().addMouseMotionListener(mouseManager);
 
         Assets.init();
-        map.fillTiles();
-
         handler = new Handler(this);
 
-        gameState = new GameState(this);
-        menuState = new MenuState(this);
+        world = new World(handler);
+
+        gameState = new GameState(this,handler);
+        menuState = new MenuState(this,handler);
         State.setState(gameState);
     }
 
     public void tick() {
         keyManager.tick();
         State.getState().tick();
-        map.tick();
+        world.tick();
     }
 
     public void render() {
@@ -72,8 +72,8 @@ public class Game implements Runnable {
         //render entity manager
 
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
-        map.renderTiles(g);
-        map.render(g);
+        world.renderTiles(g);
+        world.render(g);
         
         bs.show();
         g.dispose();
@@ -114,8 +114,14 @@ public class Game implements Runnable {
         stop();
     }
 
+    public Handler getHandler() {
+        return handler;
+    }
     public KeyManager getKeyManager() {
         return keyManager;
+    }
+    public MouseManager getMouseManager() {
+        return mouseManager;
     }
 
     public synchronized void start() {

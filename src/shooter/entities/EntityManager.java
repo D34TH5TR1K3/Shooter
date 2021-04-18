@@ -26,5 +26,4 @@ public class EntityManager {
             e.render(g);
         }
     }
-
 }

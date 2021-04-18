@@ -1,6 +1,6 @@
 package shooter;
 
-import shooter.input.KeyManager;
+import shooter.input.*;
 
 public class Handler {
     private Game game;
@@ -15,5 +15,8 @@ public class Handler {
 
     public KeyManager getKeyManager() {
         return game.getKeyManager();
+    }
+    public MouseManager getMouseManager() {
+        return game.getMouseManager();
     }
 }
