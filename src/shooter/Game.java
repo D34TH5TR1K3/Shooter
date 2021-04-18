@@ -51,13 +51,13 @@ public class Game implements Runnable {
 
         gameState = new GameState(this,handler);
         menuState = new MenuState(this,handler);
-        State.setState(gameState);
+        State.setState(menuState);
     }
 
     public void tick() {
         keyManager.tick();
         State.getState().tick();
-        world.tick();
+
     }
 
     public void render() {
@@ -74,8 +74,8 @@ public class Game implements Runnable {
         State.getState().render(g);
 
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
-        world.renderTiles(g);
-        world.render(g);
+        //world.renderTiles(g);
+
         
         bs.show();
         g.dispose();
