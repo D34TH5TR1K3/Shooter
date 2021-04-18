@@ -38,12 +38,12 @@ public class Menu {
                     Button button1 = new Button(point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
                     buttons.add(button1);
                     points.remove(point2);
-                    System.out.println(points.size());
+                    //System.out.println(points.size());
                     break;
                 }
             }
         }
-        System.out.println(buttons.size());
+        //System.out.println(buttons.size());
     }
     public void tick(){
 

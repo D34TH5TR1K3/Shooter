@@ -19,19 +19,14 @@ public class Display {
 
         Writer writer = new Writer();
 
-        //writer.writeToFile("Scale", "2");
-        //writer.writeToFile("IQ", "5");
-        //writer.writeToFile("BrainSize", "200");
-
         float scale = writer.GetSettingValue("Scale");
         //System.out.println("scale:    " + scale);
         if(writer.getScale() != 1){
             System.setProperty("sun.java2d.uiScale", String.valueOf(writer.getScale()));
         }
-        writer.changeSetting("Scale", 2.1f);
+        writer.changeSetting("Scale", 1.2f);
         writer.writeToFile();
         writer.readFromFile(true);
-        //System.setProperty("sun.java2d.uiScale", "1.5");
         frame = new JFrame("Shooter");  //create new JFrame with title: title
         //TODO: Change name later
         int width = 1920, height = 1080;

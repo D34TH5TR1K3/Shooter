@@ -1,3 +1,2 @@
-Scale,2.1
-IQ,5.0
-BrainSize,200.0
+Scale,1.2
+Difficulty,2.0
