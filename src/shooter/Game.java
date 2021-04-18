@@ -24,6 +24,8 @@ public class Game implements Runnable {
     private State gameState;
     private State menuState;
 
+    private Handler handler;
+
     private KeyManager keyManager;
     private MouseManager mouseManager;
 //TEMP VARIABLES
@@ -44,6 +46,8 @@ public class Game implements Runnable {
 
         Assets.init();
         map.fillTiles();
+
+        handler = new Handler(this);
 
         gameState = new GameState(this);
         menuState = new MenuState(this);
@@ -108,6 +112,10 @@ public class Game implements Runnable {
         }
 
         stop();
+    }
+
+    public KeyManager getKeyManager() {
+        return keyManager;
     }
 
     public synchronized void start() {
