@@ -108,6 +108,7 @@ public class Writer {
             e.printStackTrace();
         }
     }
+
     public class Setting{
 
         String name;

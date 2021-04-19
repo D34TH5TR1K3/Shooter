@@ -6,6 +6,7 @@ import shooter.gfx.Display;
 import shooter.gfx.World;
 import shooter.input.*;
 import shooter.states.*;
+import shooter.utils.Writer;
 
 import java.awt.*;
 import java.lang.Runnable;
@@ -21,23 +22,25 @@ public class Game implements Runnable {
     private Thread thread;
     private boolean running;
 
-    private State gameState;
-    private State menuState;
+    public State gameState;
+    public State menuState;
 
     private Handler handler;
 
     private KeyManager keyManager;
     private MouseManager mouseManager;
+    private Writer writer;
 //TEMP VARIABLES
     private World world;
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
+        writer = new Writer();
         start();
     }
 
     private void init(){    //init display & assets
-        display = new Display();
+        display = new Display(writer);
         display.getFrame().addKeyListener(keyManager);
         display.getFrame().addMouseListener(mouseManager);
         display.getFrame().addMouseMotionListener(mouseManager);

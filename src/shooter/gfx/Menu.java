@@ -42,9 +42,10 @@ public class Menu {
                 int green = color.getGreen();
                 int blue = color.getBlue();
                 int colorint = color.getRGB();
-                if(red > 5 && green > 5 && blue > 5){ // if color != black -> create new point with color and coordinates
+                if(red > 1 || green > 1 || blue > 1){ // if color != black -> create new point with color and coordinates
                     Point point = new Point(red, green, blue, x, y, colorint);
                     points.add(point);
+                    //System.out.println(red+"\t"+green+"\t"+blue+"\t"+x+"\t"+y+"\t"+colorint);
                 }
             }
         }
@@ -101,9 +102,11 @@ public class Menu {
                 renderRects.add(new Rectangle((int)(uprect.getX()), (int)(uprect.getY()), (int)(uprect.getWidth()), (int)(uprect.getHeight())));
             }
             if(uprect.intersects(rect) && handler.getMouseManager().isLeftPressed()){
+                button.setHighlighted(true);
                 renderRects.add(new Rectangle((int)(uprect.getX()), (int)(uprect.getY()), (int)(uprect.getWidth()), (int)(uprect.getHeight())));
-            }if(uprect.intersects(rect) && handler.getMouseManager().isLeftPressed()){
-                //button.setActive(true);
+            }if(uprect.intersects(rect) && !handler.getMouseManager().isLeftPressed() && button.isHighlighted()){
+                button.setHighlighted(false);
+                button.setActive(true);
                 //System.out.println("set active menu2");
             }
         }
@@ -150,16 +153,17 @@ public class Menu {
             //System.out.println(xc);
             //System.out.println(yc);
 
-            g.setColor(color);
-            Rectangle rect = slider.getRect();
-            g.fillRect((int)(rect.getX()), (int)(rect.getY()), (int)(rect.getWidth()), (int)(rect.getHeight()));
+            //  draw rectangle over slider
+            //g.setColor(color);
+            //Rectangle rect = slider.getRect();
+            //g.fillRect((int)(rect.getX()), (int)(rect.getY()), (int)(rect.getWidth()), (int)(rect.getHeight()));
 
             g.setColor(Color.white);
             g.fillOval((int)(xc) - 22, (int)(yc) - 22, 44, 44);
             g.setColor(Color.cyan);
             g.fillOval((int)(xc) - 20, (int)(yc) - 20, 40, 40);
             g.setFont(new Font("Monospaced", Font.PLAIN, 36));
-            g.drawString(String.valueOf(slider.getValue()), 1350, 849);
+            g.drawString(String.valueOf(slider.getValue()), slider.getXu()*10, slider.getYu()*10 - 15);
         }
         //for(Button button : buttons){
         //    g.fillRect((int)(10* button.getRect().getX()), (int)(10* button.getRect().getY()), (int)(10* button.getRect().getWidth()), (int)(10* button.getRect().getHeight()));
@@ -223,72 +227,12 @@ public class Menu {
             return value;
         }
 
-        public void setValue(int value) {
-            this.value = value;
-        }
-
-        public int getMin() {
-            return min;
-        }
-
-        public void setMin(int min) {
-            this.min = min;
-        }
-
-        public int getMax() {
-            return max;
-        }
-
-        public void setMax(int max) {
-            this.max = max;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public void setX(int x) {
-            this.x = x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public void setY(int y) {
-            this.y = y;
-        }
-
         public int getXo() {
             return xo;
         }
 
-        public void setXo(int xo) {
-            this.xo = xo;
-        }
-
         public int getYo() {
             return yo;
-        }
-
-        public void setYo(int yo) {
-            this.yo = yo;
-        }
-
-        public int getXu() {
-            return xu;
-        }
-
-        public void setXu(int xu) {
-            this.xu = xu;
-        }
-
-        public int getYu() {
-            return yu;
-        }
-
-        public void setYu(int yu) {
-            this.yu = yu;
         }
 
         public float getXc() {
@@ -318,9 +262,18 @@ public class Menu {
         public void setFunc(String func) {
             this.func = func;
         }
+
+        public int getXu() {
+            return xu;
+        }
+
+        public int getYu() {
+            return yu;
+        }
     }
 
     public class Button{ // Stores rectangle of every button
+        boolean highlighted = false;
         boolean active = false;
         String func;
         int color;
@@ -349,7 +302,7 @@ public class Menu {
                 yo = y2;
                 yu = y1;
             }
-            rect = new Rectangle(xo, yo, xu - xo, yu - yo);
+            rect = new Rectangle(xo + 1, yo + 1, xu - xo - 1, yu - yo - 1);
         }
 
         public Rectangle getRect() {
@@ -398,6 +351,14 @@ public class Menu {
 
         public void setFunc(String func) {
             this.func = func;
+        }
+
+        public boolean isHighlighted() {
+            return highlighted;
+        }
+
+        public void setHighlighted(boolean highlighted) {
+            this.highlighted = highlighted;
         }
     }
 

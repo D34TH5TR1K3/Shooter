@@ -14,8 +14,8 @@ public class MenuState extends State {
 
     public MenuState(Game game, Handler handler){
         super(game,handler);
-        menu1 = new Menu(new String[]{"ToMenu2", "", "", ""}, new String[]{"volume", "", "", ""}, handler, Assets.menu1, Assets.menu_layout1);
-        menu2 = new Menu(new String[]{"ToMainMenu", "", "", ""}, new String[]{"scale", "", "", ""}, handler, Assets.menu2, Assets.menu_layout2);
+        menu1 = new Menu(new String[]{"StartGame", "exit", "ToMenu2", ""}, new String[]{"volume", "", "", ""}, handler, Assets.menu1, Assets.menu_layout1);
+        menu2 = new Menu(new String[]{"ToMainMenu", "ChangeSetting", "", ""}, new String[]{"scale", "", "", ""}, handler, Assets.menu2, Assets.menu_layout2);
 
         activeMenu = menu1;
     }
@@ -27,6 +27,12 @@ public class MenuState extends State {
             activeMenu = menu1;
         }else if(activeMenu.funcActive("ToMenu2")){
             activeMenu = menu2;
+        }else if(activeMenu.funcActive("StartGame")){
+            State.setState(handler.getGame().gameState);
+        }else if(activeMenu.funcActive("ChangeSetting")){
+
+        }else if(activeMenu.funcActive("exit")){
+            System.exit(0);
         }
     }
     @Override

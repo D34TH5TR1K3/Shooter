@@ -10,23 +10,25 @@ public class Display {
 
     private JFrame frame;
     private Canvas canvas;
+    private Writer writer;
 
-    public Display() { createDisplay(); }
+    public Display(Writer writer) {
+        this.writer = writer;
+        createDisplay();
+    }
 
     public void createDisplay() {
         //set window scaling independently from windows scaling
         //100% for 1080p; 150% for 1440p;
-
-        Writer writer = new Writer();
-
         float scale = writer.GetSettingValue("Scale");
         //System.out.println("scale:    " + scale);
         if(writer.getScale() != 1){
             System.setProperty("sun.java2d.uiScale", String.valueOf(writer.getScale()));
         }
-        writer.changeSetting("Scale", 1.2f);
-        writer.writeToFile();
-        writer.readFromFile(true);
+        //writer.changeSetting("Scale", 1.2f);
+        //writer.writeToFile();
+        //writer.readFromFile(true);
+
         frame = new JFrame("Shooter");  //create new JFrame with title: title
         //TODO: Change name later
         int width = 1920, height = 1080;
@@ -44,6 +46,7 @@ public class Display {
         canvas.setPreferredSize(new Dimension(width, height));
         canvas.setMaximumSize(new Dimension(width, height));
         canvas.setMinimumSize(new Dimension(width, height));
+        canvas.setFocusable(false);
 
         frame.add(canvas);
         frame.pack();

@@ -18,14 +18,14 @@ public class GameState extends State {
     @Override
     public void tick() {
         //TODO add player and world
+        if(handler.getKeyManager().esc){
+            State.setState(handler.getGame().menuState);
+        }
         world.tick();
     }
     @Override
     public void render(Graphics g) {
         //TODO add player and world
         world.render(g);
-
-        //g.setColor(Color.DARK_GRAY);
-        //g.fillOval(100,100,100,100);
     }
 }
