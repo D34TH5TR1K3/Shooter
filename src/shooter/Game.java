@@ -5,6 +5,7 @@ import shooter.gfx.Assets;
 import shooter.gfx.Display;
 import shooter.gfx.World;
 import shooter.input.*;
+import shooter.sound.Sound;
 import shooter.states.*;
 import shooter.utils.Writer;
 
@@ -32,6 +33,8 @@ public class Game implements Runnable {
     private Writer writer;
     private World world;
 
+    private Sound sound;
+
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
@@ -55,12 +58,20 @@ public class Game implements Runnable {
         gameState = new GameState(this,handler);
         menuState = new MenuState(this,handler);
         State.setState(menuState);
+
+        sound = new Sound();
+        sound.playBackgroundMusic();
+        sound.setBackgroundVolume(-20f);
+
+
+
+
     }
 
     public void tick() {
         keyManager.tick();
         State.getState().tick();
-
+        sound.tick();
     }
 
     public void render() {
