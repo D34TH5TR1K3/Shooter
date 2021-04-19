@@ -54,7 +54,7 @@ public class Game implements Runnable {
 
         sound = new Sound();
         sound.playBackgroundMusic();
-        //sound.setBackgroundVolume(-20f);
+        sound.setBackgroundVolume(-20f);
 
 
 

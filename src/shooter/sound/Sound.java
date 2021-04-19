@@ -53,7 +53,6 @@ public class Sound {
 
     public void playBackgroundMusic(){              //Method to play backgroundmusic
         int number = (int)(Math.random()*4.0f);
-        System.out.println(number);
         switch (number){
             case 0:
                 soundResult = new File("res/sound/sxtn.wav");
@@ -71,7 +70,6 @@ public class Sound {
                 soundResult = new File("res/sound/sxtn.wav");
                 break;
         }
-        System.out.println("Result"+soundResult);
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundResult);
 
