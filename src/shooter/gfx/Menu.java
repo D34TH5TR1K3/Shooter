@@ -14,17 +14,15 @@ public class Menu {
     private ArrayList<Slider> sliders;
     private ArrayList<Rectangle> renderRects;
     Handler handler;
-    MenuState menuState;
     BufferedImage menu, menu_layout;
     String[] actionButtons, actionSliders;
 
-    public Menu(String[] actionButtons, String[] actionSliders, MenuState menuState, Handler handler, BufferedImage menu, BufferedImage menu_layout){
+    public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
         this.actionButtons = actionButtons;
         this.actionSliders = actionSliders;
         this.menu_layout = menu_layout;
         this.menu = menu;
         this.handler = handler;
-        this.menuState = menuState;
         points = new ArrayList<Point>();
         buttons = new ArrayList<Button>();
         sliders = new ArrayList<Slider>();
@@ -59,12 +57,12 @@ public class Menu {
                    point1.getBlue() == point2.getBlue()){
                     if(Math.abs(point1.getY() - point2.getY()) > 5){
                         Button button1 = new Button(indexButton, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
-                        button1.setAction(actionButtons[indexButton]);
+                        button1.setFunc(actionButtons[indexButton]);
                         indexButton++;
                         buttons.add(button1);
                     }else{
                         Slider slider1 = new Slider(indexSlider, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
-                        slider1.setAction(actionSliders[indexSlider]);
+                        slider1.setFunc(actionSliders[indexSlider]);
                         indexSlider++;
                         slider1.minMaxDef(0, 1000, 50);
                         sliders.add(slider1);
@@ -76,21 +74,17 @@ public class Menu {
                 }
             }
         }
-        for(Button button : buttons) {
-            switch (button.getIndex()) {
-                case 0:
-                    button.setAction("back");
-                    break;
-                case 1:
-                    button.setAction("");
-                    break;
-                case 2:
-                    button.setAction("");
-                    break;
-            }
-        }
 
         //System.out.println(buttons.size());
+    }
+
+    public boolean funcActive(String func){
+        for(Button button : buttons){
+            if(button.getFunc() == func && button.isActive()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void tick(){
@@ -100,18 +94,17 @@ public class Menu {
 
         renderRects.clear();
         for(Button button : buttons){
+            button.setActive(false);
             Rectangle uprect = new Rectangle((int)(button.getRect().getX() * 10), (int)(button.getRect().getY() * 10),          //scale rects from menu to 10x
                                             (int)(button.getRect().getWidth() * 10), (int)(button.getRect().getHeight() * 10));
             if(uprect.intersects(rect)){
                 renderRects.add(new Rectangle((int)(uprect.getX()), (int)(uprect.getY()), (int)(uprect.getWidth()), (int)(uprect.getHeight())));
             }
-            if(uprect.intersects(rect) && handler.getMouseManager().isLeftPressed() && button.getAction().equals("options")){
-                System.out.println("set active menu2");
-                menuState.setActiveMenu(menuState.menu2);
-            }
-            if(uprect.intersects(rect) && handler.getMouseManager().isLeftPressed() && button.getAction().equals("back")){
-                System.out.println("set active menu1");
-                menuState.setActiveMenu(menuState.menu1);
+            if(uprect.intersects(rect) && handler.getMouseManager().isLeftPressed()){
+                renderRects.add(new Rectangle((int)(uprect.getX()), (int)(uprect.getY()), (int)(uprect.getWidth()), (int)(uprect.getHeight())));
+            }if(uprect.intersects(rect) && handler.getMouseManager().isLeftPressed()){
+                //button.setActive(true);
+                //System.out.println("set active menu2");
             }
         }
         for(Slider slider : sliders){
@@ -174,9 +167,9 @@ public class Menu {
     }
 
     public class Slider{  //stores sliders of menu
-        String action;
+        boolean active = false;
+        String func;
         int index;
-        boolean active;
         float xc, yc;
         int  value, min, max, def;
         int color;
@@ -318,17 +311,18 @@ public class Menu {
             return index;
         }
 
-        public String getAction() {
-            return action;
+        public String getFunc() {
+            return func;
         }
 
-        public void setAction(String action) {
-            this.action = action;
+        public void setFunc(String func) {
+            this.func = func;
         }
     }
 
     public class Button{ // Stores rectangle of every button
-        String action;
+        boolean active = false;
+        String func;
         int color;
         int index;
         int x, y, width, height;
@@ -390,12 +384,20 @@ public class Menu {
             return yu;
         }
 
-        public String getAction() {
-            return action;
+        public boolean isActive() {
+            return active;
         }
 
-        public void setAction(String action) {
-            this.action = action;
+        public void setActive(boolean active) {
+            this.active = active;
+        }
+
+        public String getFunc() {
+            return func;
+        }
+
+        public void setFunc(String func) {
+            this.func = func;
         }
     }
 

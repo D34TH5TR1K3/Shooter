@@ -14,8 +14,8 @@ public class MenuState extends State {
 
     public MenuState(Game game, Handler handler){
         super(game,handler);
-        menu1 = new Menu(new String[]{"options", "", "", ""}, new String[]{"volume", "", "", ""}, this, handler, Assets.menu1, Assets.menu_layout1);
-        menu2 = new Menu(new String[]{"back", "", "", ""}, new String[]{"scale", "", "", ""}, this, handler, Assets.menu2, Assets.menu_layout2);
+        menu1 = new Menu(new String[]{"ToMenu2", "", "", ""}, new String[]{"volume", "", "", ""}, handler, Assets.menu1, Assets.menu_layout1);
+        menu2 = new Menu(new String[]{"ToMainMenu", "", "", ""}, new String[]{"scale", "", "", ""}, handler, Assets.menu2, Assets.menu_layout2);
 
         activeMenu = menu1;
     }
@@ -23,6 +23,11 @@ public class MenuState extends State {
     @Override
     public void tick() {
         activeMenu.tick();
+        if(activeMenu.funcActive("ToMainMenu")){
+            activeMenu = menu1;
+        }else if(activeMenu.funcActive("ToMenu2")){
+            activeMenu = menu2;
+        }
     }
     @Override
     public void render(Graphics g){
