@@ -59,13 +59,17 @@ public class Menu {
                     if(Math.abs(point1.getY() - point2.getY()) > 5){
                         Button button1 = new Button(indexButton, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
                         button1.setFunc(actionButtons[indexButton]);
+                        button1.setValue(handler.getGame().getWriter().GetSettingValue(actionButtons[indexButton]));
                         indexButton++;
                         buttons.add(button1);
                     }else{
                         Slider slider1 = new Slider(indexSlider, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
                         slider1.setFunc(actionSliders[indexSlider]);
+                        //  get current slider value from settings.txt
+                        float deftemp = handler.getGame().getWriter().GetSettingValue(actionSliders[indexSlider]);
+
                         indexSlider++;
-                        slider1.minMaxDef(0, 1000, 50);
+                        slider1.minMaxDef(0f, 100f, deftemp);
                         sliders.add(slider1);
                     }
 
@@ -158,10 +162,12 @@ public class Menu {
             //Rectangle rect = slider.getRect();
             //g.fillRect((int)(rect.getX()), (int)(rect.getY()), (int)(rect.getWidth()), (int)(rect.getHeight()));
 
-            g.setColor(Color.white);
-            g.fillOval((int)(xc) - 22, (int)(yc) - 22, 44, 44);
+            g.drawImage(Assets.sliderKnob, (int)(xc-30), (int)(yc-30), null);
+            //g.setColor(Color.white);
+            //g.fillOval((int)(xc) - 22, (int)(yc) - 22, 44, 44);
+            //g.setColor(Color.cyan);
+            //g.fillOval((int)(xc) - 20, (int)(yc) - 20, 40, 40);
             g.setColor(Color.cyan);
-            g.fillOval((int)(xc) - 20, (int)(yc) - 20, 40, 40);
             g.setFont(new Font("Monospaced", Font.PLAIN, 36));
             g.drawString(String.valueOf(slider.getValue()), slider.getXu()*10, slider.getYu()*10 - 15);
         }
@@ -170,12 +176,33 @@ public class Menu {
         //}
     }
 
+    public void saveSettings(){
+        handler.getGame().getWriter().readFromFile(false);
+        for(Slider slider : sliders){
+            handler.getGame().getWriter().changeSetting(slider.getFunc(), slider.getValue());
+        }
+        for(Button button : buttons){
+            if(button.getValue() != -1.0f){
+                handler.getGame().getWriter().changeSetting(button.getFunc(), button.getValue());
+            }
+        }
+        handler.getGame().getWriter().writeToFile();
+    }
+
+    public void toggleButton(String func){
+        for(Button button : buttons){
+            if(button.getFunc() == func){
+                button.toggle();
+            }
+        }
+    }
+
     public class Slider{  //stores sliders of menu
         boolean active = false;
         String func;
         int index;
         float xc, yc;
-        int  value, min, max, def;
+        float  value, min, max, def;
         int color;
         int x, y, width, height;
         int xo, yo, xu, yu; //x unten y unten x oben y oben
@@ -193,7 +220,7 @@ public class Menu {
             }
         }
 
-        public void minMaxDef(int min, int max, int def){
+        public void minMaxDef(float min, float max, float def){
             this.min = min;
             this.max = max;
             this.def = def;
@@ -223,7 +250,7 @@ public class Menu {
             return rect;
         }
 
-        public int getValue() {
+        public float getValue() {
             return value;
         }
 
@@ -273,6 +300,8 @@ public class Menu {
     }
 
     public class Button{ // Stores rectangle of every button
+        float value = -1.0f;//  default value -1.0f if button isn't used to toggle stuff (i.e. change menu)
+                            //  Button value will only be written to settings.txt if value != -1.0f
         boolean highlighted = false;
         boolean active = false;
         String func;
@@ -285,6 +314,13 @@ public class Menu {
             this.index = index;
             this.color = color;
             createButton(x1, y1, x2, y2);
+        }
+
+        public void toggle(){
+            if(value == 1f)
+                value = 0f;
+            else if(value == 0f)
+                value = 1f;
         }
 
         public void createButton(int x1, int y1, int x2, int y2){
@@ -359,6 +395,14 @@ public class Menu {
 
         public void setHighlighted(boolean highlighted) {
             this.highlighted = highlighted;
+        }
+
+        public float getValue() {
+            return value;
+        }
+
+        public void setValue(float value) {
+            this.value = value;
         }
     }
 

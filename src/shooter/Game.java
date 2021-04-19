@@ -30,8 +30,8 @@ public class Game implements Runnable {
     private KeyManager keyManager;
     private MouseManager mouseManager;
     private Writer writer;
-//TEMP VARIABLES
     private World world;
+
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
@@ -127,6 +127,10 @@ public class Game implements Runnable {
     }
     public MouseManager getMouseManager() {
         return mouseManager;
+    }
+
+    public Writer getWriter() {
+        return writer;
     }
 
     public synchronized void start() {
