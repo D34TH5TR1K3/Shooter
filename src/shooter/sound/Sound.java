@@ -57,19 +57,19 @@ public class Sound {
         int number = (int)(Math.random()*4.0f);
         switch (number){
             case 0:
-                soundResult = new File("res/sound/sxtn.wav");
+                soundResult = new File("res/sound/Abyss.wav");
                 break;
             case 1:
-                soundResult = new File("res/sound/Vermissen.wav");
+                soundResult = new File("res/sound/Abyss.wav");
                 break;
             case 2:
-                soundResult = new File("res/sound/110.wav");
+                soundResult = new File("res/sound/Abyss.wav");
                 break;
             case 3:
-                soundResult = new File("res/sound/Reihe.wav");
+                soundResult = new File("res/sound/HotlineTheme.wav");
                 break;
             default:
-                soundResult = new File("res/sound/sxtn.wav");
+                soundResult = new File("res/sound/HotlineTheme.wav");
                 break;
         }
         try {
