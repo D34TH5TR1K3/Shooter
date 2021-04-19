@@ -16,6 +16,7 @@ public class Menu {
     Handler handler;
     BufferedImage menu, menu_layout;
     String[] actionButtons, actionSliders;
+    private boolean debug = false;
 
     public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
         this.actionButtons = actionButtons;
@@ -141,15 +142,26 @@ public class Menu {
             g.fillRect((int)(rect.getX()), (int)(rect.getY()), (int)(rect.getWidth()), (int)(rect.getHeight()));
         }
         for(Button button : buttons){
-            g.setColor(Color.green);
-            g.setFont(new Font("Monospaced", Font.PLAIN, 36));
-            g.drawString(String.valueOf(button.getIndex()), button.getXo()*10, button.getYo()*10);
+            if(button.getValue() != -1){
+                if(button.getValue() == 1)
+                    g.setColor(Color.green);
+                else if(button.getValue() == 0)
+                    g.setColor(Color.red);
+                g.fillOval(button.getXu()*10-40-30, (button.getYo()*10 + (button.getYu()*10 - button.getYo()*10)/2)-26, 60, 60);
+            }
+            if(debug) {
+                g.setColor(Color.green);
+                g.setFont(new Font("Monospaced", Font.PLAIN, 36));
+                g.drawString(String.valueOf(button.getIndex()), button.getXo() * 10, button.getYo() * 10);
+            }
         }
         g.setColor(Color.cyan);
         for(Slider slider : sliders){
-            g.setColor(Color.green);
-            g.setFont(new Font("Monospaced", Font.PLAIN, 36));
-            g.drawString(String.valueOf(slider.getIndex()), slider.getXo()*10, slider.getYo()*10);
+            if(debug) {
+                g.setColor(Color.green);
+                g.setFont(new Font("Monospaced", Font.PLAIN, 36));
+                g.drawString(String.valueOf(slider.getIndex()), slider.getXo() * 10, slider.getYo() * 10);
+            }
             //System.out.println(slider.getXo()+"   "+slider.getXu()+"   "+slider.getYo()+"   "+slider.getYu()+"   "+slider.getValue()+"   "+slider.getMax()+"   "+slider.getMin());
             float xc = slider.getXc();
             float yc = slider.getYc();

@@ -45,7 +45,7 @@ public class Writer {
                 String[] tokenize = fileRead.split(","); // spilt line at each comma and store individual strings in array
 
                 String tempName = tokenize[0];
-                float tempValue = Float.parseFloat(tokenize[1]);//  new lines without settings break code!!!
+                float tempValue = Float.parseFloat(tokenize[1]);//  new lines without settings in settings.txt break code!!!
                 //System.out.println(tempName+tempValue+name);
 
                 Setting tempSetting = new Setting(tempName, tempValue);
