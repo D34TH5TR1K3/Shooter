@@ -139,7 +139,9 @@ public class Game implements Runnable {
     public MouseManager getMouseManager() {
         return mouseManager;
     }
-
+    public Sound getSound() {
+        return sound;
+    }
     public Writer getWriter() {
         return writer;
     }

@@ -31,6 +31,15 @@ public class Menu {
         readMenu();
     }
 
+    public float getSliderValue(String func){
+        for(Slider slider : sliders){
+            if(slider.getFunc() == func){
+                return slider.getValue();
+            }
+        }
+        return -1;
+    }
+
     public void readMenu(){ // reads the menu and places rectangles on the buttons
         int indexButton = 0;
         int indexSlider = 0;
@@ -90,6 +99,11 @@ public class Menu {
                 return true;
             }
         }
+        for(Slider slider : sliders){
+            if(slider.getFunc() == func && slider.isActive()){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -122,7 +136,7 @@ public class Menu {
             if(slider.isActive() || (Math.sqrt(Math.pow(slider.getXc() - handler.getMouseManager().getMouseX(), 2) +
                     Math.pow(slider.getYc() - handler.getMouseManager().getMouseY(), 2)) < 20 || slider.getRect().intersects(rect)) && handler.getMouseManager().isLeftPressed()){
                 slider.setActive(true);
-                System.out.println(slider.getValue());
+                //System.out.println(slider.getValue());
                 slider.setValuePixel(handler.getMouseManager().getMouseX());
                 //slider.setValuePixel(800);
                 //System.out.print(handler.getMouseManager().getMouseX()+"    ");

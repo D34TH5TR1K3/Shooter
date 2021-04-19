@@ -11,7 +11,7 @@ public class Sound {
     static File soundResult;
     private Clip Bclip; //Backgroundclip
     private int LengthBClip;
-
+    private float BackgroundMaxVolume = -15f, BackgroundMinVolume = -30f;
     static File url;
 
     public Sound() {
@@ -97,8 +97,12 @@ public class Sound {
 
 
     public void setBackgroundVolume(Float value) {        //Set Background Volume
-        FloatControl volume =  (FloatControl) Bclip.getControl(FloatControl.Type.MASTER_GAIN);
-       volume.setValue(value);
+        if(value >= BackgroundMinVolume && value <= BackgroundMaxVolume){
+            FloatControl volume = (FloatControl) Bclip.getControl(FloatControl.Type.MASTER_GAIN);
+            volume.setValue(value);
+        }else{
+            System.out.println("VOLUME EXCEEDS MAX_VOLUME");
+        }
     }
 
     public void checkPlaying(){                                             //Check if Backgroundmusic is playing TODO:Smoother?!
@@ -109,4 +113,19 @@ public class Sound {
 
     }
 
+    public float getBackgroundMaxVolume() {
+        return BackgroundMaxVolume;
+    }
+
+    public void setBackgroundMaxVolume(float backgroundMaxVolume) {
+        BackgroundMaxVolume = backgroundMaxVolume;
+    }
+
+    public float getBackgroundMinVolume() {
+        return BackgroundMinVolume;
+    }
+
+    public void setBackgroundMinVolume(float backgroundMinVolume) {
+        BackgroundMinVolume = backgroundMinVolume;
+    }
 }
