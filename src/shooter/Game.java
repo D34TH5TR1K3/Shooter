@@ -53,8 +53,9 @@ public class Game implements Runnable {
         State.setState(menuState);
 
         sound = new Sound();
-        sound.play("SXTN");
-        sound.play("uzi");
+        sound.playBackgroundMusic();
+        //sound.setBackgroundVolume(-20f);
+
 
 
 
@@ -63,6 +64,7 @@ public class Game implements Runnable {
     public void tick() {
         keyManager.tick();
         State.getState().tick();
+        sound.tick();
     }
 
     public void render() {
