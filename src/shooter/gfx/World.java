@@ -28,6 +28,7 @@ public class World {
         entityManager.tick();
     }
     public void render(Graphics g){
+        //renderTiles(g);
         entityManager.render(g);
     }
 
