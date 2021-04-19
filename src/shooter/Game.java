@@ -60,12 +60,11 @@ public class Game implements Runnable {
         State.setState(menuState);
 
         sound = new Sound();
-        sound.playBackgroundMusic();
-        sound.setBackgroundVolume(-20f);
-
-
-
-
+        if(writer.GetSettingValue("VolumeToggle") == 1){
+            sound.playBackgroundMusic();
+        }
+        float volume = writer.GetSettingValue("Volume");
+        sound.setBackgroundVolume(sound.getBackgroundMinVolume() + (sound.getBackgroundMaxVolume() - sound.getBackgroundMinVolume()) * volume / 100f);
     }
 
     public void tick() {

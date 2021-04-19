@@ -11,7 +11,8 @@ public class Sound {
     static File soundResult;
     private Clip Bclip; //Backgroundclip
     private int LengthBClip;
-    private float BackgroundMaxVolume = -15f, BackgroundMinVolume = -30f;
+    private float BackgroundMaxVolume = -15f, BackgroundMinVolume = -35f, currentBackgroundVolume = -40f;
+    private boolean BackgroundActive = false;
     static File url;
 
     public Sound() {
@@ -52,6 +53,7 @@ public class Sound {
     }
 
     public void playBackgroundMusic(){              //Method to play backgroundmusic
+        BackgroundActive = true;
         int number = (int)(Math.random()*4.0f);
         switch (number){
             case 0:
@@ -77,7 +79,7 @@ public class Sound {
             Bclip.open(audioInputStream);
 
             FloatControl volume = (FloatControl) Bclip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(-30f);
+            volume.setValue(currentBackgroundVolume);
 
             Bclip.start();
             LengthBClip = Bclip.getFrameLength();
@@ -95,22 +97,39 @@ public class Sound {
         checkPlaying();
     }
 
+    public void toggleSound(float value){
+        if(value == 1 && BackgroundActive == false && Bclip == null){
+            playBackgroundMusic();
+        }else if(value == 1 && BackgroundActive == false)
+            Bclip.start();
+            BackgroundActive = true;
+        if(value == 0 && BackgroundActive == true && Bclip != null)
+            Bclip.stop();
+            BackgroundActive = false;
+    }
 
     public void setBackgroundVolume(Float value) {        //Set Background Volume
-        if(value >= BackgroundMinVolume && value <= BackgroundMaxVolume){
-            FloatControl volume = (FloatControl) Bclip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(value);
+        if(Bclip != null) {
+            if (value <= BackgroundMaxVolume) {
+                FloatControl volume = (FloatControl) Bclip.getControl(FloatControl.Type.MASTER_GAIN);
+                volume.setValue(value);
+                currentBackgroundVolume = value;
+            } else {
+                System.out.println("VOLUME EXCEEDS MAX_VOLUME");
+            }
         }else{
-            System.out.println("VOLUME EXCEEDS MAX_VOLUME");
+            currentBackgroundVolume = value;
         }
     }
 
     public void checkPlaying(){                                             //Check if Backgroundmusic is playing TODO:Smoother?!
-        if((float)(Bclip.getFramePosition())/(float)(LengthBClip)>0.98f){
-            Bclip.stop();
-            playBackgroundMusic();
+        if(Bclip != null) {
+            if ((float) (Bclip.getFramePosition()) / (float) (LengthBClip) > 0.98f) {
+                Bclip.stop();
+                BackgroundActive = false;
+                playBackgroundMusic();
+            }
         }
-
     }
 
     public float getBackgroundMaxVolume() {

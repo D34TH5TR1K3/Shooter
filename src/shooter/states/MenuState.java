@@ -30,15 +30,19 @@ public class MenuState extends State {
             activeMenu = menu2;
         }else if(activeMenu.funcActive("StartGame")){
             State.setState(handler.getGame().gameState);
+
         }else if(activeMenu.funcActive("VolumeToggle")){
            menu2.toggleButton("VolumeToggle");
+           game.getSound().toggleSound(menu2.getButtonValue("VolumeToggle"));
         }else if(activeMenu.funcActive("GodmodeToggle")){
             menu2.toggleButton("GodmodeToggle");
+
         }else if(activeMenu.funcActive("FriendlyFireToggle")){
             menu2.toggleButton("FriendlyFireToggle");
+
         }else if(activeMenu.funcActive("Volume")){
             float volume = menu2.getSliderValue("Volume");
-            System.out.println(game.getSound().getBackgroundMinVolume() + (game.getSound().getBackgroundMaxVolume() - game.getSound().getBackgroundMinVolume()) * volume / 100f);
+            //System.out.println(game.getSound().getBackgroundMinVolume() + (game.getSound().getBackgroundMaxVolume() - game.getSound().getBackgroundMinVolume()) * volume / 100f);
             game.getSound().setBackgroundVolume(game.getSound().getBackgroundMinVolume() + (game.getSound().getBackgroundMaxVolume() - game.getSound().getBackgroundMinVolume()) * volume / 100f);
         }else if(activeMenu.funcActive("exit")){
             System.exit(0);

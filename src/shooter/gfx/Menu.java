@@ -40,6 +40,15 @@ public class Menu {
         return -1;
     }
 
+    public float getButtonValue(String func){
+        for(Button button : buttons){
+            if(button.getFunc() == func){
+                return button.getValue();
+            }
+        }
+        return -1;
+    }
+
     public void readMenu(){ // reads the menu and places rectangles on the buttons
         int indexButton = 0;
         int indexSlider = 0;
