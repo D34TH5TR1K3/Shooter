@@ -20,11 +20,12 @@ public class Display {
     public void createDisplay() {
         //set window scaling independently from windows scaling
         //100% for 1080p; 150% for 1440p;
-        float scale = writer.GetSettingValue("Scale");
-        //System.out.println("scale:    " + scale);
+        //float scale = writer.GetSettingValue("Scale");
+        //System.out.println(writer.getScale());
         if(writer.getScale() != 1){
             System.setProperty("sun.java2d.uiScale", String.valueOf(writer.getScale()));
         }
+        //System.setProperty("sun.java2d.uiScale", "1.333333333333333");
         //writer.changeSetting("Scale", 1.2f);
         //writer.writeToFile();
         //writer.readFromFile(true);

@@ -21,7 +21,7 @@ public class Writer {
     public float getScale(){
         File scaleFile = new File("C://Users//morit//OneDrive//Documents//GitHub//scale.txt");
         if(scaleFile.exists()){
-            return 1.5f;
+            return 1.33333333333333f;
         }else{
             return 1f;
         }
