@@ -20,6 +20,7 @@ public class World {
 
     public World(Handler handler) {
         tiles = new Tile[64 * mapsize][36 * mapsize];
+        this.handler = handler;
         entityManager = new EntityManager();
         fillTiles();
     }
@@ -73,8 +74,8 @@ public class World {
                 tiles[x][y] = new Tile(x, y, solid);
             }
         }
-        //System.out.println("hello there");
-        entityManager.addEntity(new Player(100, 100));
+
+        entityManager.addEntity(new Player(100, 100, width, height, handler));
         //TODO find spot to make new player
     }
 }

@@ -71,6 +71,7 @@ public class Game implements Runnable {
         keyManager.tick();
         State.getState().tick();
         sound.tick();
+        System.out.println(State.getState().getClass());
     }
 
     public void render() {

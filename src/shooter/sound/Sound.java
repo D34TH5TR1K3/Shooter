@@ -124,7 +124,7 @@ public class Sound {
 
     public void checkPlaying(){                                             //Check if Backgroundmusic is playing TODO:Smoother?!
         if(Bclip != null) {
-            if ((float) (Bclip.getFramePosition()) / (float) (LengthBClip) > 0.98f) {
+            if ((float) (Bclip.getFramePosition()) / (float) (LengthBClip) > 0.99f) {
                 Bclip.stop();
                 BackgroundActive = false;
                 playBackgroundMusic();

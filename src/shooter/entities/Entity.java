@@ -6,7 +6,7 @@ import java.awt.Graphics;
 
 public abstract class Entity {
     protected float posX, posY;
-    private int posZ = 0;
+    private int posZ = 0,width, height;
     /*
     posZ in Form von Integern
     posZ 0: Level
@@ -22,16 +22,22 @@ public abstract class Entity {
 
     protected Handler handler;
 
-    public Entity(float posX, float posY, int posZ) {
+    public Entity(float posX, float posY, int posZ, int width, int height, Handler handler) {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
+        this.width = width;
+        this.height = height;
+        this.handler = handler;
     }
-    public Entity(float posX, float posY,int posZ, float dir) {
+    public Entity(float posX, float posY,int posZ, float dir,int width, int height, Handler handler) {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
         this.dir = dir;
+        this.width = width;
+        this.height = height;
+        this.handler = handler;
     }
 
     public abstract void tick();

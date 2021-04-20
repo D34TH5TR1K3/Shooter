@@ -3,6 +3,7 @@ package shooter.entities;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import shooter.Handler;
 public class Item extends Entity{
     private boolean visible = true;
     private int type;
@@ -15,8 +16,8 @@ public class Item extends Entity{
     private int ammo = 0;
     private ArrayList<Bullet> bullets;
 
-    public Item(float posX, float posY, int type) {
-        super(posX,posY,2);
+    public Item(float posX, float posY, int type, int width, int height, Handler handler) {
+        super(posX,posY,2, width, height, handler);
         switch(type) {
             case 1:
                 ammo = 1;
@@ -34,7 +35,7 @@ public class Item extends Entity{
         if(ammo!=0)
             ammo--;
         if(type!=0)
-            bullets.add(new Bullet(0,0,0));
+            bullets.add(new Bullet(0,0,0, handler));
     }
 
     @Override
