@@ -8,7 +8,7 @@ public class Player extends Entity{
     private Item gun = null;
 
     public Player(int posX, int posY, int width, int height, Handler handler) {
-        super(posX, posY, 4, width, height, handler);
+        super(posX, posY, 4, handler);
     }
 
     @Override
@@ -17,15 +17,15 @@ public class Player extends Entity{
                 ((handler.getKeyManager().down)?SPEED:0)-((handler.getKeyManager().up)?SPEED:0));
         //TODO implement Handler
         //TODO player collision
+        handler.getGameCamera().centerOnEntity(this);
     }
     @Override
     public void render(Graphics g) {
+        System.out.println("Position"+posX+"\t"+posY);
+        System.out.println("Offset"+handler.getxOffset()+"\t"+ handler.getyOffset());
         g.setColor(Color.DARK_GRAY);
-        g.fillRect((int)(posX), (int)(posY), 30,  30);
-        //System.out.println(posX);
-        //System.out.println(posY);
+        g.fillRect(10,10,20,20);
+        g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);
         //TODO render Player
     }
-
-
 }

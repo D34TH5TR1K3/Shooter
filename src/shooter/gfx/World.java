@@ -1,5 +1,6 @@
 package shooter.gfx;
 
+import shooter.entities.Entity;
 import shooter.entities.EntityManager;
 import shooter.entities.Player;
 import shooter.Handler;
@@ -75,7 +76,7 @@ public class World {
             }
         }
 
-        entityManager.addEntity(new Player(100, 100, width, height, handler));
+        entityManager.addEntity(new Player(100, 100, Entity.CREATURESIZE, Entity.CREATURESIZE, handler));
         //TODO find spot to make new player
     }
 }

@@ -6,7 +6,9 @@ import java.awt.Graphics;
 
 public abstract class Entity {
     protected float posX, posY;
-    private int posZ = 0,width, height;
+    private int posZ = 0;
+    private int width, height;
+    public static final int CREATURESIZE = 120;
     /*
     posZ in Form von Integern
     posZ 0: Level
@@ -22,7 +24,7 @@ public abstract class Entity {
 
     protected Handler handler;
 
-    public Entity(float posX, float posY, int posZ, int width, int height, Handler handler) {
+    public Entity(float posX, float posY, int posZ, Handler handler) {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
@@ -30,7 +32,7 @@ public abstract class Entity {
         this.height = height;
         this.handler = handler;
     }
-    public Entity(float posX, float posY,int posZ, float dir,int width, int height, Handler handler) {
+    public Entity(float posX, float posY, int posZ, float dir, Handler handler) {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;

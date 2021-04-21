@@ -8,7 +8,7 @@ public class Enemy extends Entity{
     private Item gun;
 
     public Enemy(int posX, int posY, int gunType, int width, int height, Handler handler) {
-        super(posX, posY, 4, width, height, handler);
+        super(posX, posY, 4, handler);
         gun = new Item(posX, posY, gunType, width, height, handler);
     }
 

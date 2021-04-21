@@ -1,9 +1,7 @@
 package shooter;
 
 import shooter.entities.EntityManager;
-import shooter.gfx.Assets;
-import shooter.gfx.Display;
-import shooter.gfx.World;
+import shooter.gfx.*;
 import shooter.input.*;
 import shooter.sound.Sound;
 import shooter.states.*;
@@ -30,6 +28,7 @@ public class Game implements Runnable {
 
     private KeyManager keyManager;
     private MouseManager mouseManager;
+    private GameCamera gameCamera;
     private Writer writer;
     private World world;
 
@@ -53,6 +52,7 @@ public class Game implements Runnable {
         Assets.init();
         handler = new Handler(this);
 
+        gameCamera = new GameCamera(handler,0,0);
         world = new World(handler);
 
         gameState = new GameState(this,handler);
@@ -71,7 +71,6 @@ public class Game implements Runnable {
         keyManager.tick();
         State.getState().tick();
         sound.tick();
-        System.out.println(State.getState().getClass());
     }
 
     public void render() {
@@ -132,6 +131,9 @@ public class Game implements Runnable {
 
     public Handler getHandler() {
         return handler;
+    }
+    public GameCamera getGameCamera() {
+        return gameCamera;
     }
     public KeyManager getKeyManager() {
         return keyManager;
