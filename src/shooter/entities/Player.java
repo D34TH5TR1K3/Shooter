@@ -2,6 +2,7 @@ package shooter.entities;
 
 import java.awt.*;
 import shooter.Handler;
+import shooter.gfx.Assets;
 
 public class Player extends Entity{
     private final int SPEED = 8;
@@ -25,7 +26,8 @@ public class Player extends Entity{
         System.out.println("Offset"+handler.getxOffset()+"\t"+ handler.getyOffset());
         g.setColor(Color.DARK_GRAY);
         g.fillRect(10,10,20,20);
-        g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);
+        g.drawImage(Assets.player, (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
+        //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);
         //TODO render Player
     }
 }
