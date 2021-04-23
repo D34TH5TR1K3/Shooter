@@ -30,6 +30,7 @@ public class World {
         entityManager.tick();
     }
     public void render(Graphics g){
+        g.drawImage(Assets.map_1, (int)(0 + handler.getGameCamera().getxOffset()), (int)(0 + handler.getGameCamera().getyOffset()), null);
         //renderTiles(g);
         entityManager.render(g);
     }

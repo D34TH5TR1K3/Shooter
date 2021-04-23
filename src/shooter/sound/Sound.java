@@ -53,6 +53,7 @@ public class Sound {
     }
 
     public void playBackgroundMusic(){              //Method to play backgroundmusic
+        //System.out.println("playing background muisc");
         BackgroundActive = true;
         int number = (int)(Math.random()*4.0f);
         switch (number){
