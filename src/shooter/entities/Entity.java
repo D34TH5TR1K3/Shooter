@@ -48,8 +48,8 @@ public abstract class Entity {
 
     public boolean collisionCheck(Rectangle rect){
         System.out.println(rect.getBounds());
-        for(int y = (int) (-5 + rect.getY()/30); y < 5 + rect.getY()/30; y++){
-            for(int x = (int) (-5 + rect.getX()/30); x < 5 + rect.getX()/30; x++){
+        for(int y = (int) (0 + rect.getY()/30); y < 4 + rect.getY()/30; y++){
+            for(int x = (int) (0 + rect.getX()/30); x < 4 + rect.getX()/30; x++){
                 if(x >= 0 && x < world.getTiles().length && y >= 0 && y < world.getTiles()[0].length){
                     Tile temptile = world.getTiles(x, y);
                     if(temptile.isSolid() && temptile.getHitbox().intersects(rect)){
