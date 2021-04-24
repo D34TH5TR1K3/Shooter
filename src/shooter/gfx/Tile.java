@@ -7,11 +7,13 @@ public class Tile {
     private boolean isSolid = false;
     private int width = 30, height = 30;
     private int TposX, TposY; // T... means tile coordinate; T... * tilesize (30) = normal coordinate
+    Rectangle hitbox;
 
     public Tile(int x, int y, boolean isSolid){
         this.TposX = x;
         this.TposY = y;
         this.isSolid = isSolid;
+        hitbox = new Rectangle(TposX * 30, TposY * 30, width, height);
     }
 
     public boolean isSolid() {
@@ -24,5 +26,17 @@ public class Tile {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getTposX() {
+        return TposX;
+    }
+
+    public int getTposY() {
+        return TposY;
+    }
+
+    public Rectangle getHitbox() {
+        return hitbox;
     }
 }

@@ -26,6 +26,7 @@ public class GameState extends State {
     @Override
     public void render(Graphics g) {
         //TODO add player and world
+        //world.renderTiles(g);
         world.render(g);
     }
 }

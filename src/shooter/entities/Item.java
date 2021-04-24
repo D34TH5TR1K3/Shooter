@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import shooter.Handler;
+import shooter.gfx.World;
+
 public class Item extends Entity{
     private boolean visible = true;
     private int type;
@@ -15,9 +17,10 @@ public class Item extends Entity{
     //TODO add gun types
     private int ammo = 0;
     private ArrayList<Bullet> bullets;
+    private World world;
 
-    public Item(float posX, float posY, int type, int width, int height, Handler handler) {
-        super(posX,posY,2, handler);
+    public Item(float posX, float posY, int type, int width, int height, Handler handler, World world) {
+        super(posX,posY,2, handler, world);
         switch(type) {
             case 1:
                 ammo = 1;
@@ -35,7 +38,7 @@ public class Item extends Entity{
         if(ammo!=0)
             ammo--;
         if(type!=0)
-            bullets.add(new Bullet(0,0,0, handler));
+            bullets.add(new Bullet(0,0,0, handler, world));
     }
 
     @Override

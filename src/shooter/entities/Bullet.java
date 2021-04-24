@@ -3,11 +3,12 @@ package shooter.entities;
 import java.awt.Graphics;
 
 import shooter.Handler;
+import shooter.gfx.World;
 
 public class Bullet extends Entity {
 
-    public Bullet(float posX, float posY, float dir, Handler handler) {
-        super(posX, posY,3, dir, handler);
+    public Bullet(float posX, float posY, float dir, Handler handler, World world) {
+        super(posX, posY,3, dir, handler, world);
     }
     
     @Override

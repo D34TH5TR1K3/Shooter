@@ -29,8 +29,9 @@ public class World {
     public void tick(){
         entityManager.tick();
     }
+
     public void render(Graphics g){
-        g.drawImage(Assets.map_1, (int)(0 + handler.getGameCamera().getxOffset()), (int)(0 + handler.getGameCamera().getyOffset()), null);
+        g.drawImage(Assets.map_1, (int)(0 - handler.getGameCamera().getxOffset()), (int)(0 - handler.getGameCamera().getyOffset()), null);
         //renderTiles(g);
         entityManager.render(g);
     }
@@ -61,7 +62,7 @@ public class World {
         for(int x = 0; x < 64 * mapsize; x++){
             for(int y = 0; y < 36 * mapsize; y++){
 
-                Color mycolor = new Color(Assets.map_temp.getRGB(x, y));
+                Color mycolor = new Color(Assets.map_1layout.getRGB(x, y));
                 boolean solid = false;
                 //System.out.println(mycolor);
                 int red = mycolor.getRed();
@@ -77,7 +78,15 @@ public class World {
             }
         }
 
-        entityManager.addEntity(new Player(100, 100, Entity.CREATURESIZE, Entity.CREATURESIZE, handler));
+        entityManager.addEntity(new Player(100, 100, Entity.CREATURESIZE, Entity.CREATURESIZE, handler, this));
         //TODO find spot to make new player
+    }
+
+    public Tile getTiles(int x, int y) {
+        return tiles[x][y];
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
     }
 }

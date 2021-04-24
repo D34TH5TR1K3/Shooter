@@ -1,8 +1,10 @@
 package shooter.entities;
 
 import shooter.Handler;
+import shooter.gfx.Tile;
+import shooter.gfx.World;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 public abstract class Entity {
     protected float posX, posY;
@@ -21,10 +23,12 @@ public abstract class Entity {
     private float dir = 0;
     private boolean solid = false;
     protected boolean active = true;
+    World world;
 
     protected Handler handler;
 
-    public Entity(float posX, float posY, int posZ, Handler handler) {
+    public Entity(float posX, float posY, int posZ, Handler handler, World world) {
+        this.world = world;
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
@@ -32,7 +36,7 @@ public abstract class Entity {
         this.height = height;
         this.handler = handler;
     }
-    public Entity(float posX, float posY, int posZ, float dir, Handler handler) {
+    public Entity(float posX, float posY, int posZ, float dir, Handler handler, World world) {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
@@ -42,10 +46,29 @@ public abstract class Entity {
         this.handler = handler;
     }
 
+    public boolean collisionCheck(Rectangle rect){
+        System.out.println(rect.getBounds());
+        for(int y = (int) (-5 + rect.getY()/30); y < 5 + rect.getY()/30; y++){
+            for(int x = (int) (-5 + rect.getX()/30); x < 5 + rect.getX()/30; x++){
+                if(x >= 0 && x < world.getTiles().length && y >= 0 && y < world.getTiles()[0].length){
+                    Tile temptile = world.getTiles(x, y);
+                    if(temptile.isSolid() && temptile.getHitbox().intersects(rect)){
+                        System.out.println(temptile.getTposX() +"  "+ temptile.getTposY());
+                        return true;
+                    }
+                    //System.out.println(temptile.getTposX()*30 + "   " + temptile.getTposY()*30+"   ");
+                }
+            }
+            //System.out.println();
+        }
+        return false;
+    }
+
     public abstract void tick();
     public abstract void render(Graphics g);
 
     public void move(float amtX, float amtY) {
+        System.out.println(amtX +"   "+amtY);
         posX += amtX;
         posY += amtY;
     }
