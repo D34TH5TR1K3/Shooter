@@ -148,6 +148,10 @@ public class Game implements Runnable {
         return writer;
     }
 
+    public World getWorld() {
+        return world;
+    }
+
     public synchronized void start() {
         if (running) { return; }
         running = true;

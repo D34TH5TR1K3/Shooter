@@ -2,6 +2,6 @@ Scale,1.2
 VolumeToggle,1.0
 GodmodeToggle,1.0
 FriendlyFireToggle,1.0
-Volume,45.0
+Volume,27.0
 Difficulty,17.0
 BulletSpeed,12.0
