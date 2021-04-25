@@ -32,6 +32,7 @@ public class World {
 
     public void render(Graphics g){
         g.drawImage(Assets.map_1, (int)(0 - handler.getGameCamera().getxOffset()), (int)(0 - handler.getGameCamera().getyOffset()), null);
+        //System.out.println((int)(0 - handler.getGameCamera().getxOffset())+"   "+(int)(0 - handler.getGameCamera().getyOffset()));
         //renderTiles(g);
         entityManager.render(g);
     }

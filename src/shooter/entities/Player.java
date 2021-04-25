@@ -13,7 +13,7 @@ public class Player extends Entity{
 
     public Player(int posX, int posY, int width, int height, Handler handler, World world) {
         super(posX, posY, 4, handler, world);
-        hitbox = new Rectangle(posX, posY, width, height);
+        hitbox = new Rectangle(posX + CREATURESIZE/2 - 15, posY + CREATURESIZE/2 - 25, 30, 50);
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
     }
 
@@ -21,7 +21,7 @@ public class Player extends Entity{
     public void tick() {
         //System.out.println(posX + "   "+posY+"   "+velX);
         //System.out.println(hitbox.getBounds());
-        hitbox.setLocation(((int) posX), ((int) posY));
+        //hitbox.setLocation(((int) posX + CREATURESIZE/2 - 15), ((int) posY + CREATURESIZE/2 - 25));
         if(handler.getKeyManager().left && velX > -velXmax){
             velX -= 1;
         }else if(handler.getKeyManager().left && velX == velXmax){
@@ -44,25 +44,23 @@ public class Player extends Entity{
         }else if(!handler.getKeyManager().down && !handler.getKeyManager().up){
             velY = 0;
         }
-        hitbox.setLocation(((int) (posX + velX)), ((int) (posY + velY)));
+
+        hitbox.setLocation(((int) (posX + CREATURESIZE/2 - 15 + velX)), ((int) (posY + CREATURESIZE/2 - 25 + velY)));
         if(!collisionCheck(hitbox)){
             move(velX, velY);
-        }else{
-            hitbox.setLocation(((int) (posX - velX)), ((int) (posY - velY)));
+        }else {
+            hitbox.setLocation(((int) (posX + CREATURESIZE/2 - 15 + velX)), ((int) (posY + CREATURESIZE/2 - 25)));
+            if (!collisionCheck(hitbox)) {
+                move(velX, 0);
+            }else {
+                hitbox.setLocation(((int) (posX + CREATURESIZE/2 - 15)), ((int) (posY + velY + CREATURESIZE/2 - 25)));
+                if (!collisionCheck(hitbox)) {
+                    move(0, velY);
+                }else {
+                    hitbox.setLocation(((int) (posX)), ((int) (posY - velY)));
+                }
+            }
         }
-        hitbox.setLocation(((int) (posX + velX)), ((int) (posY)));
-        if(!collisionCheck(hitbox)){
-            move(velX, 0);
-        }else{
-            hitbox.setLocation(((int) (posX - velX)), ((int) (posY)));
-        }
-        hitbox.setLocation(((int) (posX)), ((int) (posY + velY)));
-        if(!collisionCheck(hitbox)){
-            move(0, velY);
-        }else{
-            hitbox.setLocation(((int) (posX)), ((int) (posY - velY)));
-        }
-
         /*move(((handler.getKeyManager().right)?SPEED:0)-((handler.getKeyManager().left)?SPEED:0),
                 ((handler.getKeyManager().down)?SPEED:0)-((handler.getKeyManager().up)?SPEED:0));*/
         //TODO implement Handler
