@@ -1,6 +1,7 @@
 package shooter.entities;
 
 import java.awt.*;
+
 import shooter.Handler;
 import shooter.gfx.Assets;
 import shooter.gfx.World;
@@ -10,10 +11,11 @@ public class Player extends Entity{
     private int velX = 0, velY = 0;   //velocity in x and y direction
     private int velXmax = 10, velYmax = 10;   //maximum velocity
     private Item gun = null;
+    private int imageWidth = 30, imageHeight = 50;
 
     public Player(int posX, int posY, int width, int height, Handler handler, World world) {
         super(posX, posY, 4, handler, world);
-        hitbox = new Rectangle(posX + CREATURESIZE/2 - 15, posY + CREATURESIZE/2 - 25, 30, 50);
+        hitbox = new Rectangle(posX + CREATURESIZE/2 - 15, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
     }
 
@@ -44,20 +46,19 @@ public class Player extends Entity{
         }else if(!handler.getKeyManager().down && !handler.getKeyManager().up){
             velY = 0;
         }
-
-        hitbox.setLocation(((int) (posX + CREATURESIZE/2 - 15 + velX)), ((int) (posY + CREATURESIZE/2 - 25 + velY)));
+        hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 15 + velX)), ((int) (posY + CREATURESIZE / 2 - 25 + velY)));
         if(!collisionCheck(hitbox)){
             move(velX, velY);
         }else {
-            hitbox.setLocation(((int) (posX + CREATURESIZE/2 - 15 + velX)), ((int) (posY + CREATURESIZE/2 - 25)));
+            hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 15 + velX)), ((int) (posY + CREATURESIZE / 2 - 25)));
             if (!collisionCheck(hitbox)) {
                 move(velX, 0);
             }else {
-                hitbox.setLocation(((int) (posX + CREATURESIZE/2 - 15)), ((int) (posY + velY + CREATURESIZE/2 - 25)));
+                hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 15)), ((int) (posY + velY + CREATURESIZE / 2 - 25)));
                 if (!collisionCheck(hitbox)) {
                     move(0, velY);
                 }else {
-                    hitbox.setLocation(((int) (posX)), ((int) (posY - velY)));
+                    hitbox.setLocation(((int) posX), ((int) (posY - velY)));
                 }
             }
         }
