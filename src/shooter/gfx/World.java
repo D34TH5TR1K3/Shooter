@@ -90,4 +90,8 @@ public class World {
     public Tile[][] getTiles() {
         return tiles;
     }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
 }

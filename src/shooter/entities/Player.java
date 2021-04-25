@@ -14,22 +14,38 @@ public class Player extends Entity{
     private Item gun = null;
     private int imageWidth = 50, imageHeight = 50;
     private float dir;
+    private float PosX, PosY;
+    private Handler handler;
+    private World world;
 
     public Player(int posX, int posY, int width, int height, Handler handler, World world) {
         super(posX, posY, 4, handler, world);
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
+        this.PosX = posX;
+        this.PosY = posY;
+        this.handler = handler;
+        this.world = world;
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
     }
 
     public Player(int posX, int posY, float dir, int width, int height, Handler handler, World world) {
         super(posX, posY, 4, handler, world);
         this.dir = dir;
+        this.PosX = posX;
+        this.PosY = posY;
+        this.handler = handler;
+        this.world = world;
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
     }
 
     @Override
     public void tick() {
+        //TODO dont add bullet here; instead make gun shoot and the gun makes bullet with attributes for specific gun
+        if(handler.getMouseManager().isLeftPressed()){
+            world.getEntityManager().addEntitytemp(new Bullet(posX + CREATURESIZE/2, posY + CREATURESIZE/2, dir + 180, handler, world));
+        }
+        System.out.println(posX+"   "+posY);
         //System.out.println(posX + "   "+posY+"   "+velX);
         //System.out.println(hitbox.getBounds());
         //hitbox.setLocation(((int) posX + CREATURESIZE/2 - 15), ((int) posY + CREATURESIZE/2 - 25));

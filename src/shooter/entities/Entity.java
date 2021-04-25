@@ -37,6 +37,7 @@ public abstract class Entity {
         this.handler = handler;
     }
     public Entity(float posX, float posY, int posZ, float dir, Handler handler, World world) {
+        this.world = world;
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
@@ -71,6 +72,11 @@ public abstract class Entity {
         //System.out.println(amtX +"   "+amtY);
         posX += amtX;
         posY += amtY;
+    }
+    public void moveAbs(float amtX, float amtY) {
+        //System.out.println(amtX +"   "+amtY);
+        posX = amtX;
+        posY = amtY;
     }
     public void face(float amt) {
         dir = amt;
