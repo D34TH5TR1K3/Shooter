@@ -79,7 +79,7 @@ public class World {
             }
         }
 
-        entityManager.addEntity(new Player(100, 100, Entity.CREATURESIZE, Entity.CREATURESIZE, handler, this));
+        entityManager.addEntity(new Player(100, 100, 45, Entity.CREATURESIZE, Entity.CREATURESIZE, handler, this));
         //TODO find spot to make new player
     }
 
