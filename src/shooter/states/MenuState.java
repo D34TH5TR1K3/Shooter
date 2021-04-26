@@ -22,7 +22,7 @@ public class MenuState extends State {
 
     @Override
     public void tick() {
-        activeMenu.tick();
+        activeMenu.tick();  // tick active menu and check buttons
         if(activeMenu.funcActive("ToMainMenu")){
             menu2.saveSettings();
             activeMenu = menu1;

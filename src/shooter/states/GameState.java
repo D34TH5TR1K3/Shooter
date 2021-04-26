@@ -21,12 +21,12 @@ public class GameState extends State {
         if(handler.getKeyManager().esc){
             State.setState(handler.getGame().menuState);
         }
-        world.tick();
+        world.tick(); // tick world
     }
     @Override
     public void render(Graphics g) {
         //TODO add player and world
         //world.renderTiles(g);
-        world.render(g);
+        world.render(g);    //render world
     }
 }

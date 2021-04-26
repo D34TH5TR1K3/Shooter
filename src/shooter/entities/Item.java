@@ -33,12 +33,22 @@ public class Item extends Entity{
         }
     }
 
-    public void fire() {
+    public void activate(Entity activator) {
+        System.out.println("activated");
+        switch(type) {
+            case 1:
+
+                break;
+            case 2:
+                if(ammo!=0) {
+                    ammo--;
+                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX(), activator.getY(), activator.getDir() + 180, handler, world));
+                }
+                break;
+            default:
+                break;
+        }
         //TODO implement different ammotypes
-        if(ammo!=0)
-            ammo--;
-        if(type!=0)
-            bullets.add(new Bullet(0,0,0, handler, world));
     }
 
     @Override

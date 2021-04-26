@@ -88,4 +88,8 @@ public abstract class Entity {
     public float getY() { return posY; }
     public int getZ() { return posZ; }
     public float facing() { return dir; }
+
+    public float getDir() {
+        return dir;
+    }
 }
