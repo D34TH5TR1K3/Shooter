@@ -92,4 +92,8 @@ public abstract class Entity {
     public float getDir() {
         return dir;
     }
+
+    public void setDir(float dir) {
+        this.dir = dir;
+    }
 }

@@ -21,12 +21,14 @@ public class Item extends Entity{
 
     public Item(float posX, float posY, int type, int width, int height, Handler handler, World world) {
         super(posX,posY,2, handler, world);
+        this.type = type;
+        this.world = world;
         switch(type) {
             case 1:
                 ammo = 1;
                 break;
             case 2:
-                ammo = 8;
+                ammo = 800;
                 break;
             default:
                 break;
@@ -34,15 +36,15 @@ public class Item extends Entity{
     }
 
     public void activate(Entity activator) {
-        System.out.println("activated");
+        //System.out.println("activated");
+        //System.out.println(type);
         switch(type) {
-            case 1:
-
-                break;
             case 2:
+                System.out.println(ammo);
                 if(ammo!=0) {
                     ammo--;
-                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX(), activator.getY(), activator.getDir() + 180, handler, world));
+                    //System.out.println("shooting");
+                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, handler, world));
                 }
                 break;
             default:
