@@ -16,6 +16,8 @@ public class Enemy extends Entity{
     @Override
     public void tick() {
         //TODO implement pathfinding and movement
+
+
     }
     @Override
     public void render(Graphics g) {

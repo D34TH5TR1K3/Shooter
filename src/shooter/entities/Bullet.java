@@ -9,9 +9,10 @@ public class Bullet extends Entity {
     private float speed = 25;
     private float dir;
 
-    public Bullet(float posX, float posY, float dir, Handler handler, World world) {
+    public Bullet(float posX, float posY, float dir, int speed, Handler handler, World world) {
         super(posX, posY,3, dir, handler, world);
         this.dir = dir;
+        this.speed = speed;
     }
     
     @Override

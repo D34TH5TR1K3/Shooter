@@ -18,6 +18,11 @@ public class Item extends Entity{
     private int ammo = 0;
     private ArrayList<Bullet> bullets;
     private World world;
+    private int bulletSpeed;
+    private int rpm;
+    private float bulletDelay;
+    private float now = 0;
+    private float lastTime = 0;
 
     public Item(float posX, float posY, int type, int width, int height, Handler handler, World world) {
         super(posX,posY,2, handler, world);
@@ -29,22 +34,52 @@ public class Item extends Entity{
                 break;
             case 2:
                 ammo = 800;
+                bulletSpeed = 10;
+                rpm = 300;
+                break;
+            case 3:
+                ammo = 800;
+                bulletSpeed = 20;
+                break;
+            case 4:
+                ammo = 800;
+                bulletSpeed = 20;
                 break;
             default:
                 break;
         }
+
+        bulletDelay = 60 / rpm;
     }
 
     public void activate(Entity activator) {
         //System.out.println("activated");
         //System.out.println(type);
+        now = System.currentTimeMillis();
         switch(type) {
             case 2:
-                System.out.println(ammo);
-                if(ammo!=0) {
+                //System.out.println(ammo);
+                if(ammo!=0 && now - lastTime > bulletDelay * 1000) {
+                    lastTime = now;
                     ammo--;
                     //System.out.println("shooting");
-                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, handler, world));
+                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, handler, world));
+                }
+                break;
+            case 3:
+                //System.out.println(ammo);
+                if(ammo!=0) {
+                    ammo--;
+                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, handler, world));
+                }
+                break;
+            case 4:
+                if(ammo!=0) {
+                    ammo--;
+                    for(int i = 0; i < 6; i++) {
+                        float dirOffset = (float)(Math.random() * 20);
+                        world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE / 2, activator.getY() + CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset, bulletSpeed, handler, world));
+                    }
                 }
                 break;
             default:
