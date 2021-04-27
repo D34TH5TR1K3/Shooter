@@ -20,12 +20,14 @@ public class Sound {
     }
     public static void play(String Name){       //Method to play using a name, selection via switch case
         switch (Name){
-            case "SXTN":
-                soundResult = new File("res/sound/sxtn.wav");  //TODO add path
+            case "Shotgun":
+                soundResult = new File("res/sound/Shotgun.wav");  //TODO add path
                 break;
-
-            case "uzi":
+            case "Uzi":
                 soundResult = new File("res/sound/sndUzi.wav");
+                break;
+            case "Ak":
+                soundResult = new File("res/sound/AK.wav");
                 break;
             default:
                 soundResult = new File("res/sound/sxtn.wav"); //TODO add default file path
@@ -39,7 +41,7 @@ public class Sound {
             clip.open(audioInputStream);
 
             FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(-30f);
+            volume.setValue(-20f);
 
             clip.start();
 

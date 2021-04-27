@@ -37,7 +37,7 @@ public class Player extends Entity{
         this.handler = handler;
         this.world = world;
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
-        item = new Item(posX, posY, 2, 20, 20, handler, world); //temporary
+        item = new Item(posX, posY, 5, 20, 20, handler, world); //temporary
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
     }
 
