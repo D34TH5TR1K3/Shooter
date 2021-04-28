@@ -107,7 +107,7 @@ public class Player extends Entity{
         AffineTransform reset = g2d.getTransform();
         g2d.rotate(Math.toRadians(dirPlayer), posX+60-handler.getxOffset(), posY+60-handler.getyOffset());
 
-        g.drawImage(Assets.player, (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
+        g2d.drawImage(Assets.player, (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
 
         g2d.setTransform(reset);
         //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);

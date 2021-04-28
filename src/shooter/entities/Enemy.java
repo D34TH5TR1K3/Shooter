@@ -1,7 +1,10 @@
 package shooter.entities;
 
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+
 import shooter.Handler;
+import shooter.gfx.Assets;
 import shooter.gfx.World;
 
 public class Enemy extends Entity{
@@ -21,6 +24,12 @@ public class Enemy extends Entity{
     }
     @Override
     public void render(Graphics g) {
-        //TODO render Enemies
+        Graphics2D g2d = (Graphics2D)g;
+        AffineTransform reset = g2d.getTransform();
+        g2d.rotate(Math.toRadians(dir), posX+60-handler.getxOffset(), posY+60-handler.getyOffset());
+
+        g2d.drawImage(Assets.enemy, (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
+
+        g2d.setTransform(reset);
     }
 }

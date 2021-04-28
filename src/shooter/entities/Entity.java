@@ -20,7 +20,7 @@ public abstract class Entity {
     posZ 4: Player/Enemies
     posZ 5: Interactables
     */
-    private float dir = 0;
+    protected float dir = 0;
     private boolean solid = false;
     protected boolean active = true;
     World world;
