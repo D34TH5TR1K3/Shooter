@@ -29,12 +29,14 @@ public class Bullet extends Entity {
     }
     @Override
     public void render(Graphics g) {
+        // for debugging
+        //g.fillOval((int)(posX - handler.getxOffset()), (int)(posY - handler.getyOffset()), 10, 10);
         AffineTransform reset = new AffineTransform();
-        reset.rotate(0, 0, 0);
+        reset.rotate(0, 0, 0);  //save before rotation
         Graphics2D g2 = (Graphics2D)g;  // cast Graphics to Graphics 2d
-        g2.rotate(Math.toRadians(dir), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));
-        g2.drawImage(Assets.Bullet,(int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()),  null);
-        g2.setTransform(reset);
+        g2.rotate(Math.toRadians(dir), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));   //rotate graphics object
+        g.drawImage(Assets.Bullet,(int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()),  null);
+        g2.setTransform(reset); //reset rotation
         //TODO implement rendering for the Bullet
     }
 }

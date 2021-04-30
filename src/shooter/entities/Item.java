@@ -64,6 +64,7 @@ public class Item extends Entity{
     }
 
     public void activate(Entity activator) {
+        System.out.println(activator.getX()+CREATURESIZE/2+"   "+ activator.getY()+CREATURESIZE/2);
         //System.out.println("activated");
         //System.out.println(type);
         now = System.currentTimeMillis();

@@ -17,7 +17,7 @@ public class World {
     private Color tileColor;
 
     private Handler handler;
-    private EntityManager entityManager;
+    private EntityManager entityManager;    //holds all entities of the world and ticks and renders them
 
     public World(Handler handler) {
         tiles = new Tile[64 * mapsize][36 * mapsize];
@@ -59,7 +59,7 @@ public class World {
         }
     }
 
-    public void fillTiles() {
+    public void fillTiles() {   //reads map layout and detects sold walls. Fills tiles array and sets tiles solid if necessary
         for(int x = 0; x < 64 * mapsize; x++){
             for(int y = 0; y < 36 * mapsize; y++){
 
