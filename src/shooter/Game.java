@@ -97,6 +97,8 @@ public class Game implements Runnable {
     public void run() { // run game
         init();
 
+
+
         int fps = 60; //TODO: Change for performance?
         double timePerTick = 1000000000 / fps;
         double delta = 0;
@@ -113,8 +115,14 @@ public class Game implements Runnable {
             lastTime = now;
 
             if(delta >= 1) {
+                now = System.nanoTime();
                 tick();
+                System.out.println("tick");
+                System.out.println((System.nanoTime()-now)/1000000f);
+                now = System.nanoTime();
                 render();
+                System.out.println("render");
+                System.out.println((System.nanoTime()-now)/1000000f);
                 ticks++;
                 delta--;
             }
