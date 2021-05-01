@@ -72,7 +72,7 @@ public class Game implements Runnable {
         State.getState().tick();
         sound.tick();
     }
-
+long now;
     public void render() {
         bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
@@ -84,20 +84,22 @@ public class Game implements Runnable {
 
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
         //map1.renderTiles(g);
-        State.getState().render(g);
 
+        State.getState().render(g);
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
         //world.renderTiles(g);
 
-        
+        now = System.nanoTime();
         bs.show();
+        System.out.println((System.nanoTime() - now) / 1000000f);
         g.dispose();
+
     }
 
     public void run() { // run game
         init();
 
-
+        boolean debug = true;
 
         int fps = 60; //TODO: Change for performance?
         double timePerTick = 1000000000 / fps;
@@ -115,14 +117,20 @@ public class Game implements Runnable {
             lastTime = now;
 
             if(delta >= 1) {
-                now = System.nanoTime();
+                if(debug) {
+                    now = System.nanoTime();
+                }
                 tick();
-                System.out.println("tick");
-                System.out.println((System.nanoTime()-now)/1000000f);
-                now = System.nanoTime();
+                if(debug) {
+                    System.out.println("tick");
+                    System.out.println((System.nanoTime() - now) / 1000000f);
+                    now = System.nanoTime();
+                }
                 render();
-                System.out.println("render");
-                System.out.println((System.nanoTime()-now)/1000000f);
+                if(debug) {
+                    System.out.println("render");
+                    System.out.println((System.nanoTime() - now) / 1000000f);
+                }
                 ticks++;
                 delta--;
             }
