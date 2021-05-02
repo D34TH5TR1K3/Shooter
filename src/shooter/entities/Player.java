@@ -40,9 +40,15 @@ public class Player extends Entity{
         this.handler = handler;
         this.world = world;
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
-        item = new Item(posX, posY, 2, 20, 20, handler, world); //temporary
+        item = new Item(posX, posY, 3, 20, 20, handler, world); //temporary
         world.getEntityManager().addEntitytemp(item);
-        world.getEntityManager().addEntitytemp(new Item(100, 100, 5, 100, 100, handler, world));
+        for(int y = 0; y < 3; y++) {
+            world.getEntityManager().addEntitytemp(new Item(100, 100+50*y, 1, 100, 100, handler, world));
+            world.getEntityManager().addEntitytemp(new Item(150, 100+50*y, 2, 100, 100, handler, world));
+            world.getEntityManager().addEntitytemp(new Item(200, 100+50*y, 3, 100, 100, handler, world));
+            world.getEntityManager().addEntitytemp(new Item(250, 100+50*y, 4, 100, 100, handler, world));
+            world.getEntityManager().addEntitytemp(new Item(300, 100+50*y, 5, 100, 100, handler, world));
+        }
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
         // every anmiation has to be initialized here
         walkAnimation = new Animation(100, Assets.enemy_walk);

@@ -49,11 +49,11 @@ public class Item extends Entity{
                 break;
             case 3:
                 ammo = 800;
-                bulletSpeed = 20;
-                rpm = 300;
+                bulletSpeed = 15;
+                rpm = 600;
                 break;
             case 4:
-                ammo = 800;
+                ammo = 6;
                 bulletSpeed = 20;
                 rpm = 50;
                 break;
@@ -108,7 +108,8 @@ public class Item extends Entity{
                     lastTime = System.currentTimeMillis();
                     ammo--;
                     Sound.play("Uzi");
-                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, 0, handler, world));
+                    float dirOffset = (float)(Math.random() * 8);
+                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180f-4f+dirOffset, bulletSpeed, 0, handler, world));
                 }
                 break;
             case 4:
@@ -159,6 +160,7 @@ public class Item extends Entity{
                 case 3:
                     break;
                 case 4:
+                    g.drawImage(Assets.item_shotgun_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
                     break;
                 case 5:
                     if(ammo > 0)
