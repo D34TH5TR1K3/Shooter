@@ -8,10 +8,11 @@ import shooter.gfx.World;
 import java.awt.*;
 
 public abstract class Entity {
-    protected float posX, posY;
+    protected float posX;
+    protected float posY;
     private int posZ = 0;
     private int width, height;
-    public static final int CREATURESIZE = 120;
+    public static final int CREATURESIZE = 180;
     /*
     posZ in Form von Integern
     posZ 0: Level
@@ -23,10 +24,10 @@ public abstract class Entity {
     */
     protected float dir = 0;
     private boolean solid = false;
-    protected boolean active = true;
+    protected boolean active = false;
     protected World world;
     protected Handler handler;
-    protected Animation activAnimation;
+    protected Animation activeAnimation;
 
     public Entity(float posX, float posY, int posZ, Handler handler, World world) {
         this.world = world;

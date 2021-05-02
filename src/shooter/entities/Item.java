@@ -5,6 +5,7 @@ import java.awt.desktop.SystemSleepEvent;
 import java.util.ArrayList;
 
 import shooter.Handler;
+import shooter.gfx.Assets;
 import shooter.gfx.World;
 import shooter.sound.Sound;
 
@@ -62,6 +63,12 @@ public class Item extends Entity{
         }
         bulletDelay = 60 / rpm * 1000;
         //bulletDelay = 1000;
+    }
+
+    public void drop(Entity activator){
+        active = true;
+        posX = activator.getX();
+        posY = activator.getY();
     }
 
     public void activate(Entity activator) {
@@ -128,6 +135,24 @@ public class Item extends Entity{
     }
     @Override
     public void render(Graphics g) {
+        if(active){
+            switch(type) {
+                case 1:
+                    break;
+                case 2:
+                    g.drawImage(Assets.item_ak, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    //System.out.println(posX+"  "+posY);
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    break;
+            }
+        }
         //TODO render Item, render for each bullet
     }
 

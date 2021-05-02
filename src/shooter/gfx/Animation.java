@@ -6,6 +6,7 @@ public class Animation {
     private int speed, index;
     private long lastTime, timer;
     private BufferedImage[] frames;
+    private boolean active = true;
 
     public Animation(int speed, BufferedImage[] frames) {
         this.speed = speed;
@@ -22,6 +23,16 @@ public class Animation {
         lastTime = System.currentTimeMillis();
     }
 
+    public void stop() {
+        active = false;
+    }
+
+    public void start() {
+        if(!active)
+            index = 0;
+        active = true;
+    }
+
     public void tick() {
         if(System.currentTimeMillis()	- lastTime > speed) {
             index++;
@@ -32,6 +43,9 @@ public class Animation {
     }
 
     public BufferedImage getCurrentFrame() {
-        return frames[index];
+        if(active)
+            return frames[index];
+        else
+            return frames[0];
     }
 }

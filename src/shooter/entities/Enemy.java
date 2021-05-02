@@ -26,7 +26,7 @@ public class Enemy extends Entity{
     public void render(Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform reset = g2d.getTransform();
-        g2d.rotate(Math.toRadians(dir), posX+60-handler.getxOffset(), posY+60-handler.getyOffset());
+        g2d.rotate(Math.toRadians(dir), posX+CREATURESIZE/2-handler.getxOffset(), posY+CREATURESIZE/2-handler.getyOffset());
 
         g2d.drawImage(Assets.enemy, (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
 

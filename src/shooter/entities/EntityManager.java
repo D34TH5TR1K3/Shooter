@@ -26,6 +26,14 @@ public class EntityManager {
         entities.add(entity);
     }
 
+    public void getClosestItem(float x, float y) {
+        for(Entity entity : entities){
+            if(entity.getClass() == Item.class && entity.active){
+                System.out.println("found item");
+            }
+        }
+    }
+
     public void tick(){
         for(Entity e : entities) {
             e.tick();

@@ -211,6 +211,9 @@ public class Menu {
             //g.fillOval((int)(xc) - 22, (int)(yc) - 22, 44, 44);
             //g.setColor(Color.cyan);
             //g.fillOval((int)(xc) - 20, (int)(yc) - 20, 40, 40);
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.setFont(fraktur);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setColor(Color.black);
             g.drawString(String.valueOf(slider.getValue()), slider.getXu()*10 + 5, slider.getYu()*10 - 10);
             g.setColor(Color.cyan);

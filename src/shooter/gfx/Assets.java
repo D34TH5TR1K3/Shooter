@@ -3,11 +3,12 @@ package shooter.gfx;
 import java.awt.image.BufferedImage;
 
 public class Assets {
-    public static BufferedImage enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet;
+    public static BufferedImage item_ak, enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet;
     public static BufferedImage[] enemy_walk, enemy_walk_ak;
 
     public static void init() {
         SpriteSheet sprite1 = new SpriteSheet(ImageLoader.loadImage("/textures/sprite1.png"));
+        item_ak = sprite1.crop(9*60, 0, 60, 60);
         map_1 = ImageLoader.loadImage("/textures/Map1.png");
         enemy = ImageLoader.loadImage("/textures/player_1.png");
         map_1layout = ImageLoader.loadImage("/textures/Map1_layout.png");
