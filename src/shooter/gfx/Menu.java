@@ -18,7 +18,7 @@ public class Menu {
     Handler handler;
     BufferedImage menu, menu_layout;
     String[] actionButtons, actionSliders;
-    private boolean debug = true;
+    private boolean debug = false;
 
     public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
         this.actionButtons = actionButtons;
@@ -177,15 +177,19 @@ public class Menu {
             if(debug) {
                 Graphics2D g2d = (Graphics2D)g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);   //antialiasing for font
-                g2d.setColor(Color.green);
                 g2d.setFont(fraktur);
+                g2d.setColor(Color.black);
                 //g.setFont(new Font("Monospaced", Font.PLAIN, 36));
+                g2d.drawString(String.valueOf(button.getIndex()), button.getXo() * 10 + 5, button.getYo() * 10 + 5);
+                g2d.setColor(Color.green);
                 g2d.drawString(String.valueOf(button.getIndex()), button.getXo() * 10, button.getYo() * 10);
             }
         }
         g.setColor(Color.cyan);
         for(Slider slider : sliders){
             if(debug) {
+                g.setColor(Color.black);
+                g.drawString(String.valueOf(slider.getIndex()), slider.getXo() * 10 + 5, slider.getYo() * 10 + 5);
                 g.setColor(Color.green);
                 //g.setFont(new Font("Monospaced", Font.PLAIN, 36));
                 g.drawString(String.valueOf(slider.getIndex()), slider.getXo() * 10, slider.getYo() * 10);
@@ -207,6 +211,8 @@ public class Menu {
             //g.fillOval((int)(xc) - 22, (int)(yc) - 22, 44, 44);
             //g.setColor(Color.cyan);
             //g.fillOval((int)(xc) - 20, (int)(yc) - 20, 40, 40);
+            g.setColor(Color.black);
+            g.drawString(String.valueOf(slider.getValue()), slider.getXu()*10 + 5, slider.getYu()*10 - 10);
             g.setColor(Color.cyan);
             //g.setFont(new Font("Monospaced", Font.PLAIN, 36));
             g.drawString(String.valueOf(slider.getValue()), slider.getXu()*10, slider.getYu()*10 - 15);

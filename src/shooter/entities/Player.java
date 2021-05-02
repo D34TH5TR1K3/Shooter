@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 import shooter.Handler;
+import shooter.gfx.Animation;
 import shooter.gfx.Assets;
 import shooter.gfx.World;
 
@@ -17,6 +18,7 @@ public class Player extends Entity{
     private Handler handler;
     private World world;
     private Item item;
+    private Animation walkAnimation, walkAnimation_ak;
 
     public Player(int posX, int posY, int width, int height, Handler handler, World world) {
         super(posX, posY, 4, handler, world);
@@ -38,14 +40,37 @@ public class Player extends Entity{
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         item = new Item(posX, posY, 2, 20, 20, handler, world); //temporary
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
+
+        walkAnimation = new Animation(100, Assets.enemy_walk);
+        walkAnimation_ak = new Animation(100, Assets.enemy_walk_ak);
+        activAnimation = walkAnimation;
     }
 
     @Override
     public void tick() {
-        if(handler.getMouseManager().isLeftPressed()){
-            item.activate(this);
-            //world.getEntityManager().addEntitytemp(new Bullet(posX + CREATURESIZE/2, posY + CREATURESIZE/2, dir + 180, handler, world));
+        if(item != null) {
+            switch (item.getType()) {
+                case 1:
+                    break;
+                case 2:
+                    activAnimation = walkAnimation_ak;
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    activAnimation = walkAnimation;
+                    break;
+            }
+            if(handler.getMouseManager().isLeftPressed()){
+                item.activate(this);
+                //world.getEntityManager().addEntitytemp(new Bullet(posX + CREATURESIZE/2, posY + CREATURESIZE/2, dir + 180, handler, world));
+            }
         }
+        activAnimation.tick();
         //System.out.println(posX+"   "+posY);
         //System.out.println(posX + "   "+posY+"   "+velX);
         //System.out.println(hitbox.getBounds());
@@ -104,7 +129,7 @@ public class Player extends Entity{
         //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.rotate(Math.toRadians(dir), posX+60-handler.getxOffset(), posY+60-handler.getyOffset());
 
-        g2d.drawImage(Assets.player, (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
+        g2d.drawImage(activAnimation.getCurrentFrame(), (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
 
         g2d.setTransform(reset);
 

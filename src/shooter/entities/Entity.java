@@ -1,6 +1,7 @@
 package shooter.entities;
 
 import shooter.Handler;
+import shooter.gfx.Animation;
 import shooter.gfx.Tile;
 import shooter.gfx.World;
 
@@ -23,9 +24,9 @@ public abstract class Entity {
     protected float dir = 0;
     private boolean solid = false;
     protected boolean active = true;
-    World world;
-
+    protected World world;
     protected Handler handler;
+    protected Animation activAnimation;
 
     public Entity(float posX, float posY, int posZ, Handler handler, World world) {
         this.world = world;

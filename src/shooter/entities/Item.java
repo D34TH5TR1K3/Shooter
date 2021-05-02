@@ -79,8 +79,8 @@ public class Item extends Entity{
                     ammo--;
                     Sound.play("Ak");
                     //System.out.println("shooting");
-                    buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+20)) * offset);
-                    buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+20)) * offset);
+                    buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
+                    buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
                     world.getEntityManager().addEntitytemp(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, handler, world));
                 }
                 break;
@@ -129,5 +129,9 @@ public class Item extends Entity{
     @Override
     public void render(Graphics g) {
         //TODO render Item, render for each bullet
+    }
+
+    public int getType() {
+        return type;
     }
 }
