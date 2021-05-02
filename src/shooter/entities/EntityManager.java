@@ -33,6 +33,7 @@ public class EntityManager {
         entities.addAll(tempentities);
         tempentities.clear();
         entities.removeAll(removeEntities);
+        removeEntities.clear();
 
 
         //System.out.println(entities.size());

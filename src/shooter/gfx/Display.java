@@ -4,6 +4,8 @@ import shooter.utils.Writer;
 
 import java.awt.*;
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.JFrame;
 
 public class Display {
@@ -11,10 +13,20 @@ public class Display {
     private JFrame frame;
     private Canvas canvas;
     private Writer writer;
+    public static Font fraktur;
 
     public Display(Writer writer) {
         this.writer = writer;
         createDisplay();
+        try{
+            // load a custom font in your project folder
+            fraktur = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")).deriveFont(30f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")));
+        }
+        catch(IOException | FontFormatException e){
+
+        }
     }
 
     public void createDisplay() {

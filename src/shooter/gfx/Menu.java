@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import static shooter.gfx.Display.fraktur;
+
 public class Menu {
 
     private ArrayList<Point> points; //Point for rectangle that makes a Button
@@ -16,7 +18,7 @@ public class Menu {
     Handler handler;
     BufferedImage menu, menu_layout;
     String[] actionButtons, actionSliders;
-    private boolean debug = false;
+    private boolean debug = true;
 
     public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
         this.actionButtons = actionButtons;
@@ -173,16 +175,19 @@ public class Menu {
                 g.fillOval(button.getXu()*10-40-30, (button.getYo()*10 + (button.getYu()*10 - button.getYo()*10)/2)-26, 60, 60);
             }
             if(debug) {
-                g.setColor(Color.green);
-                g.setFont(new Font("Monospaced", Font.PLAIN, 36));
-                g.drawString(String.valueOf(button.getIndex()), button.getXo() * 10, button.getYo() * 10);
+                Graphics2D g2d = (Graphics2D)g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);   //antialiasing for font
+                g2d.setColor(Color.green);
+                g2d.setFont(fraktur);
+                //g.setFont(new Font("Monospaced", Font.PLAIN, 36));
+                g2d.drawString(String.valueOf(button.getIndex()), button.getXo() * 10, button.getYo() * 10);
             }
         }
         g.setColor(Color.cyan);
         for(Slider slider : sliders){
             if(debug) {
                 g.setColor(Color.green);
-                g.setFont(new Font("Monospaced", Font.PLAIN, 36));
+                //g.setFont(new Font("Monospaced", Font.PLAIN, 36));
                 g.drawString(String.valueOf(slider.getIndex()), slider.getXo() * 10, slider.getYo() * 10);
             }
             //System.out.println(slider.getXo()+"   "+slider.getXu()+"   "+slider.getYo()+"   "+slider.getYu()+"   "+slider.getValue()+"   "+slider.getMax()+"   "+slider.getMin());
@@ -203,7 +208,7 @@ public class Menu {
             //g.setColor(Color.cyan);
             //g.fillOval((int)(xc) - 20, (int)(yc) - 20, 40, 40);
             g.setColor(Color.cyan);
-            g.setFont(new Font("Monospaced", Font.PLAIN, 36));
+            //g.setFont(new Font("Monospaced", Font.PLAIN, 36));
             g.drawString(String.valueOf(slider.getValue()), slider.getXu()*10, slider.getYu()*10 - 15);
         }
         //for(Button button : buttons){

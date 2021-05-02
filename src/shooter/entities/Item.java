@@ -25,6 +25,7 @@ public class Item extends Entity{
     private float bulletDelay;
     private long now = 0;
     private long lastTime = 0;
+    private int offset;
 
     public Item(float posX, float posY, int type, int width, int height, Handler handler, World world) {
         super(posX,posY,2, handler, world);
@@ -36,9 +37,10 @@ public class Item extends Entity{
                 rpm = 300;
                 break;
             case 2:
-                ammo = 800;
-                bulletSpeed = 10;
-                rpm = 300;
+                ammo = 8000;
+                bulletSpeed = 20;
+                rpm = 900;
+                offset = 50;
                 break;
             case 3:
                 ammo = 800;
@@ -58,12 +60,12 @@ public class Item extends Entity{
             default:
                 break;
         }
-
         bulletDelay = 60 / rpm * 1000;
         //bulletDelay = 1000;
     }
 
     public void activate(Entity activator) {
+        float buX, buY;
         //System.out.println(activator.getX()+CREATURESIZE/2+"   "+ activator.getY()+CREATURESIZE/2);
         //System.out.println("activated");
         //System.out.println(type);
@@ -75,8 +77,11 @@ public class Item extends Entity{
                 if(ammo!=0 && now - lastTime > bulletDelay) {
                     lastTime = now;
                     ammo--;
+                    Sound.play("Ak");
                     //System.out.println("shooting");
-                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, handler, world));
+                    buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+20)) * offset);
+                    buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+20)) * offset);
+                    world.getEntityManager().addEntitytemp(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, handler, world));
                 }
                 break;
             case 3:

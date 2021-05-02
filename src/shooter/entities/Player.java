@@ -13,7 +13,6 @@ public class Player extends Entity{
     private int velXmax = 10, velYmax = 10;   //maximum velocity
     private Item gun = null;
     private int imageWidth = 50, imageHeight = 50;
-    private float dirPlayer;
     private float PosX, PosY;
     private Handler handler;
     private World world;
@@ -31,7 +30,7 @@ public class Player extends Entity{
 
     public Player(int posX, int posY, float dir, int width, int height, Handler handler, World world) {
         super(posX, posY, 4, handler, world);
-        this.dirPlayer = dir;
+        this.dir = dir;
         this.PosX = posX;
         this.PosY = posY;
         this.handler = handler;
@@ -51,12 +50,10 @@ public class Player extends Entity{
         //System.out.println(posX + "   "+posY+"   "+velX);
         //System.out.println(hitbox.getBounds());
         //hitbox.setLocation(((int) posX + CREATURESIZE/2 - 15), ((int) posY + CREATURESIZE/2 - 25));
-        dirPlayer = (float) (180 + Math.toDegrees(Math.atan2(posY - handler.getMouseManager().getMouseY() - handler.getGameCamera().getyOffset() + CREATURESIZE/2, posX - handler.getMouseManager().getMouseX() - handler.getGameCamera().getxOffset() + CREATURESIZE/2)));
-        setDir(dirPlayer);
+        dir = (float) (180 + Math.toDegrees(Math.atan2(posY - handler.getMouseManager().getMouseY() - handler.getGameCamera().getyOffset() + CREATURESIZE/2, posX - handler.getMouseManager().getMouseX() - handler.getGameCamera().getxOffset() + CREATURESIZE/2)));
+        //setDir(dirPlayer);
         if(handler.getKeyManager().left && velX > -velXmax){
             velX -= 1;
-        }else if(handler.getKeyManager().left && velX == velXmax){
-
         }else if(!handler.getKeyManager().right && !handler.getKeyManager().left){
             velX = 0;
         }
@@ -87,7 +84,7 @@ public class Player extends Entity{
                 if (!collisionCheck(hitbox)) {
                     move(0, velY);
                 }else {
-                    hitbox.setLocation(((int) posX), ((int) (posY - velY)));
+                    hitbox.setLocation(((int) posX), ((int) (posY)));
                 }
             }
         }
@@ -104,11 +101,13 @@ public class Player extends Entity{
 
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform reset = g2d.getTransform();
-        g2d.rotate(Math.toRadians(dirPlayer), posX+60-handler.getxOffset(), posY+60-handler.getyOffset());
+        //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.rotate(Math.toRadians(dir), posX+60-handler.getxOffset(), posY+60-handler.getyOffset());
 
         g2d.drawImage(Assets.player, (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
 
         g2d.setTransform(reset);
+
         //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);
         //TODO render Player
     }

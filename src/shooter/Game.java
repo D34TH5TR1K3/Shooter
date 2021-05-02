@@ -72,7 +72,7 @@ public class Game implements Runnable {
         State.getState().tick();
         sound.tick();
     }
-long now;
+    long now;
     public void render() {
         bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
@@ -81,7 +81,6 @@ long now;
         }
         g = bs.getDrawGraphics();
         g.clearRect(0,0, width, height); // Clear Screen
-
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
         //map1.renderTiles(g);
 
@@ -89,9 +88,9 @@ long now;
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
         //world.renderTiles(g);
 
-        now = System.nanoTime();
+        //now = System.nanoTime();
         bs.show();
-        System.out.println((System.nanoTime() - now) / 1000000f);
+        //System.out.println((System.nanoTime() - now) / 1000000f);
         g.dispose();
 
     }
@@ -99,7 +98,7 @@ long now;
     public void run() { // run game
         init();
 
-        boolean debug = true;
+        boolean debug = false;
 
         int fps = 60; //TODO: Change for performance?
         double timePerTick = 1000000000 / fps;

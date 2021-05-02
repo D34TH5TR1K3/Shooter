@@ -1,1 +1,9 @@
 /out/production/
+src/shooter/entities/entities.plantuml
+src/shooter/gfx/gfx.plantuml
+src/shooter/input/input.plantuml
+src/shooter/sound/sound.plantuml
+src/shooter/states/states.plantuml
+src/shooter/utils/utils.plantuml
+src/shooter/shooter.plantuml
+Shooter.plantuml

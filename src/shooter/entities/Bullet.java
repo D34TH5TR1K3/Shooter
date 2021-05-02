@@ -9,7 +9,6 @@ import shooter.gfx.World;
 
 public class Bullet extends Entity {
     private float speed = 25;
-    private float dir;
 
     public Bullet(float posX, float posY, float dir, int speed, Handler handler, World world) {
         super(posX, posY,3, dir, handler, world);
@@ -35,7 +34,7 @@ public class Bullet extends Entity {
         reset.rotate(0, 0, 0);  //save before rotation
         Graphics2D g2 = (Graphics2D)g;  // cast Graphics to Graphics 2d
         g2.rotate(Math.toRadians(dir), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));   //rotate graphics object
-        g.drawImage(Assets.Bullet,(int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()),  null);
+        g2.drawImage(Assets.Bullet,(int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()),  null);
         g2.setTransform(reset); //reset rotation
         //TODO implement rendering for the Bullet
     }
