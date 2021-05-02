@@ -38,8 +38,10 @@ public class Item extends Entity{
         active = true;
         switch(type) {
             case 1:
-                ammo = 1;
-                rpm = 300;
+                ammo = 8;
+                bulletSpeed = 20;
+                rpm = 200;
+                offset = 50;
                 break;
             case 2:
                 ammo = 30;
@@ -89,6 +91,18 @@ public class Item extends Entity{
         now = System.currentTimeMillis();
         //now = System.nanoTime() * 1000000;
         switch(type) {
+            case 1:
+                //System.out.println(ammo);
+                if(ammo!=0 && now - lastTime > bulletDelay) {
+                    lastTime = now;
+                    ammo--;
+                    Sound.play("Uzi");
+                    //System.out.println("shooting");
+                    buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
+                    buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
+                    world.getEntityManager().addEntitytemp(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
+                }
+                break;
             case 2:
                 //System.out.println(ammo);
                 if(ammo!=0 && now - lastTime > bulletDelay) {
@@ -149,6 +163,7 @@ public class Item extends Entity{
         if(active){
             switch(type) {
                 case 1:
+                    g.drawImage(Assets.item_pistol, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 30, 30, null);
                     break;
                 case 2:
                     if(ammo > 0)
@@ -158,6 +173,7 @@ public class Item extends Entity{
                     //System.out.println(posX+"  "+posY);
                     break;
                 case 3:
+                    g.drawImage(Assets.item_uzi, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
                     break;
                 case 4:
                     g.drawImage(Assets.item_shotgun_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
