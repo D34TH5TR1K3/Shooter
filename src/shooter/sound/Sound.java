@@ -23,6 +23,12 @@ public class Sound {
             case "Shotgun":
                 soundResult = new File("res/sound/Shotgun.wav");  //TODO add path
                 break;
+            case "RocketExplode":
+                soundResult = new File("res/sound/RocketExplode.wav");  //TODO add path
+                break;
+            case "RocketLaunch":
+                soundResult = new File("res/sound/RocketLaunch.wav");  //TODO add path
+                break;
             case "Uzi":
                 soundResult = new File("res/sound/sndUzi.wav");
                 break;

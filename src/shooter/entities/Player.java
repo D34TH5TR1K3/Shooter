@@ -19,6 +19,8 @@ public class Player extends Entity{
     private World world;
     private Item item;
     private Animation walkAnimation, walkAnimation_ak;
+    private boolean ableToPickup = true;   //Prevents loop of picking up and dropping items when button held down. Will reset if button is released
+    private boolean ableToDrop = true;
 
     public Player(int posX, int posY, int width, int height, Handler handler, World world) {
         super(posX, posY, 4, handler, world);
@@ -40,6 +42,7 @@ public class Player extends Entity{
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         item = new Item(posX, posY, 2, 20, 20, handler, world); //temporary
         world.getEntityManager().addEntitytemp(item);
+        world.getEntityManager().addEntitytemp(new Item(100, 100, 5, 100, 100, handler, world));
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
         // every anmiation has to be initialized here
         walkAnimation = new Animation(100, Assets.enemy_walk);
@@ -69,15 +72,24 @@ public class Player extends Entity{
             if(handler.getMouseManager().isLeftPressed()){
                 item.activate(this);
                 //world.getEntityManager().addEntitytemp(new Bullet(posX + CREATURESIZE/2, posY + CREATURESIZE/2, dir + 180, handler, world));
-            }else if(handler.getMouseManager().isRightPressed()){
+            }else if(handler.getMouseManager().isRightPressed() && ableToDrop){
                 item.drop(this);
                 item = null;
+                ableToDrop = false;
                 //world.getEntityManager().addEntitytemp(new Bullet(posX + CREATURESIZE/2, posY + CREATURESIZE/2, dir + 180, handler, world));
+            }else if(!handler.getMouseManager().isRightPressed()){
+                ableToDrop = true;
             }
         }else{
             activeAnimation = walkAnimation;
-            if(handler.getMouseManager().isRightPressed()){
-                world.getEntityManager().getClosestItem(posX, posY);
+            if(handler.getMouseManager().isRightPressed() && ableToPickup){
+                item = (Item)(world.getEntityManager().getClosestItem(posX, posY));
+                if(item != null) {
+                    item.pick_up(this);
+                    ableToPickup = false;
+                }
+            }else if(!handler.getMouseManager().isRightPressed()){
+                ableToPickup = true;
             }
         }
         activeAnimation.tick();

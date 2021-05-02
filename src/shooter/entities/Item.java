@@ -1,7 +1,6 @@
 package shooter.entities;
 
 import java.awt.Graphics;
-import java.awt.desktop.SystemSleepEvent;
 import java.util.ArrayList;
 
 import shooter.Handler;
@@ -14,8 +13,12 @@ public class Item extends Entity{
     private int type;
     /*
     type in Form von Integern
-    type 1: Stimpack
-    type 2: Handgun
+    type 1: Handgun
+    type 2: Ak
+    type 3: m16
+    type 4: shotgun
+    type 5: rpg
+    type 6:
     */
     //TODO add gun types
     private int ammo = 0;
@@ -32,13 +35,14 @@ public class Item extends Entity{
         super(posX,posY,2, handler, world);
         this.type = type;
         this.world = world;
+        active = true;
         switch(type) {
             case 1:
                 ammo = 1;
                 rpm = 300;
                 break;
             case 2:
-                ammo = 8000;
+                ammo = 30;
                 bulletSpeed = 20;
                 rpm = 900;
                 offset = 50;
@@ -54,9 +58,9 @@ public class Item extends Entity{
                 rpm = 50;
                 break;
             case 5:
-                ammo = 800;
+                ammo = 1;
                 bulletSpeed = 20;
-                rpm = 450;
+                rpm = 30;
                 break;
             default:
                 break;
@@ -67,6 +71,12 @@ public class Item extends Entity{
 
     public void drop(Entity activator){
         active = true;
+        posX = activator.getX();
+        posY = activator.getY();
+    }
+
+    public void pick_up(Entity activator){
+        active = false;
         posX = activator.getX();
         posY = activator.getY();
     }
@@ -88,7 +98,7 @@ public class Item extends Entity{
                     //System.out.println("shooting");
                     buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
                     buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
-                    world.getEntityManager().addEntitytemp(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, handler, world));
+                    world.getEntityManager().addEntitytemp(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
                 }
                 break;
             case 3:
@@ -98,7 +108,7 @@ public class Item extends Entity{
                     lastTime = System.currentTimeMillis();
                     ammo--;
                     Sound.play("Uzi");
-                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, handler, world));
+                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, 0, handler, world));
                 }
                 break;
             case 4:
@@ -109,7 +119,7 @@ public class Item extends Entity{
                     Sound.play("Shotgun");
                     for(int i = 0; i < 6; i++) {
                         float dirOffset = (float)(Math.random() * 20);
-                        world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE / 2, activator.getY() + CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset, bulletSpeed, handler, world));
+                        world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE / 2, activator.getY() + CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset, bulletSpeed, 0, handler, world));
                     }
                 }
                 break;
@@ -119,8 +129,8 @@ public class Item extends Entity{
                     //System.out.println(now - lastTime +"   "+bulletDelay);
                     lastTime = System.currentTimeMillis();
                     ammo--;
-                    Sound.play("Ak");
-                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, handler, world));
+                    Sound.play("RocketLaunch");
+                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, 1, handler, world));
                 }
                 break;
             default:
@@ -140,7 +150,10 @@ public class Item extends Entity{
                 case 1:
                     break;
                 case 2:
-                    g.drawImage(Assets.item_ak, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    if(ammo > 0)
+                        g.drawImage(Assets.item_ak_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    else if(ammo == 0)
+                        g.drawImage(Assets.item_ak_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
                     //System.out.println(posX+"  "+posY);
                     break;
                 case 3:
@@ -148,6 +161,10 @@ public class Item extends Entity{
                 case 4:
                     break;
                 case 5:
+                    if(ammo > 0)
+                        g.drawImage(Assets.item_rpg_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    if(ammo == 0)
+                        g.drawImage(Assets.item_rpg_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
                     break;
                 default:
                     break;

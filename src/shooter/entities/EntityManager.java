@@ -8,6 +8,7 @@ public class EntityManager {
     private ArrayList<Entity> entities;
     private ArrayList<Entity> tempentities;
     private ArrayList<Entity> removeEntities;
+
     public EntityManager() {
         entities = new ArrayList<Entity>();
         tempentities = new ArrayList<Entity>();
@@ -22,15 +23,30 @@ public class EntityManager {
         removeEntities.add(entity);
     }
 
-    public void addEntity(Entity entity) {
-        entities.add(entity);
-    }
-
-    public void getClosestItem(float x, float y) {
+    public Entity getClosestItem(float x, float y) {
+        ArrayList<Entity> items = new ArrayList<Entity>();
         for(Entity entity : entities){
             if(entity.getClass() == Item.class && entity.active){
-                System.out.println("found item");
+                items.add(entity);
             }
+        }
+        float lowestDistance = 0;
+        Entity closestEntity = null;
+        for(Entity item : items){
+            float dx = x - item.getX();                      //pythagoras
+            float dy = y - item.getY();                      //pythagoras
+            float distance = ((float) (Math.sqrt((dx * dx) + (dy * dy))));  //pythagoras
+            //System.out.println(distance);
+            if(distance < lowestDistance || closestEntity == null){
+                closestEntity = item;
+                lowestDistance = distance;
+            }
+        }
+        if(lowestDistance < 50) {
+            //System.out.println("lowestdistance: "+lowestDistance);
+            return closestEntity;
+        } else {
+            return null;
         }
     }
 
@@ -47,6 +63,7 @@ public class EntityManager {
         //System.out.println(entities.size());
     }
     public void render(Graphics g){
+        //TODO add render order (sort entities by Z level and render on after another)
         for(Entity e : entities) {
             e.render(g);
         }

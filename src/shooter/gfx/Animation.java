@@ -42,6 +42,13 @@ public class Animation {
         }
     }
 
+    public boolean lastFrame() {
+        if(index == frames.length-1)
+            return true;
+        else
+            return false;
+    }
+
     public BufferedImage getCurrentFrame() {
         if(active)
             return frames[index];

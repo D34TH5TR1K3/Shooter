@@ -2,6 +2,7 @@ package shooter.gfx;
 
 import shooter.entities.Entity;
 import shooter.entities.EntityManager;
+import shooter.entities.ParticleManager;
 import shooter.entities.Player;
 import shooter.Handler;
 
@@ -18,16 +19,19 @@ public class World {
 
     private Handler handler;
     private EntityManager entityManager;    //holds all entities of the world and ticks and renders them
+    private ParticleManager particleManager;
 
     public World(Handler handler) {
         tiles = new Tile[64 * mapsize][36 * mapsize];
         this.handler = handler;
         entityManager = new EntityManager();
+        particleManager = new ParticleManager();
         fillTiles();
     }
 
     public void tick(){
         entityManager.tick();
+        particleManager.tick();
     }
 
     public void render(Graphics g){
@@ -35,6 +39,7 @@ public class World {
         //System.out.println((int)(0 - handler.getGameCamera().getxOffset())+"   "+(int)(0 - handler.getGameCamera().getyOffset()));
         //renderTiles(g);
         entityManager.render(g);
+        particleManager.render(g);
     }
 
     public void renderTiles(Graphics g){
@@ -79,7 +84,7 @@ public class World {
             }
         }
 
-        entityManager.addEntity(new Player(100, 100, 45, Entity.CREATURESIZE, Entity.CREATURESIZE, handler, this));
+        entityManager.addEntitytemp(new Player(100, 100, 45, Entity.CREATURESIZE, Entity.CREATURESIZE, handler, this));
         //TODO find spot to make new player
     }
 
@@ -93,5 +98,9 @@ public class World {
 
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    public ParticleManager getParticleManager() {
+        return particleManager;
     }
 }
