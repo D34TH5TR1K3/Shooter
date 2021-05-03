@@ -109,6 +109,11 @@ public class Item extends Entity{
                     lastTime = now;
                     ammo--;
                     Sound.play("Ak");
+
+
+                    world.getParticleManager().addParticle(new Particle(((int) (activator.getX() + CREATURESIZE / 2)), ((int) (activator.getY() + CREATURESIZE / 2)), 5, activator.getDir(), Assets.shell, handler, world));
+
+
                     //System.out.println("shooting");
                     buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
                     buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);

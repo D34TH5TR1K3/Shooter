@@ -22,6 +22,7 @@ public class Player extends Entity{
         super(posX, posY, 4,dir, handler, world);
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         item = new Item(posX, posY, 3, 20, 20, handler, world); //temporary
+        item.setInActive();
         world.getEntityManager().addEntity(item);
         for(int y = 0; y < 3; y++) {
             world.getEntityManager().addEntity(new Item(100, 100+50*y, 1, 100, 100, handler, world));
@@ -39,7 +40,6 @@ public class Player extends Entity{
 
     @Override
     public void tick() {
-
         if(item != null) {
             switch (item.getType()) {
                 case 1:

@@ -24,7 +24,7 @@ public class ParticleManager {
 
     public void tick(){
         for(Particle p : particles) {
-            if(p.getAminParticle().lastFrame()){
+            if(p.getType() == 0 && p.getAminParticle().lastFrame()){
                 removeParticle(p);
             }
         }

@@ -7,7 +7,8 @@ public class Tile {
     private boolean isSolid = false;
     private int width = 30, height = 30;
     private int TposX, TposY; // T... means tile coordinate; T... * tilesize (30) = normal coordinate
-    Rectangle hitbox;
+    private Rectangle hitbox;
+    private Color color = Color.green;
 
     public Tile(int x, int y, boolean isSolid){
         this.TposX = x;
@@ -38,5 +39,13 @@ public class Tile {
 
     public Rectangle getHitbox() {
         return hitbox;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

@@ -35,20 +35,21 @@ public class World {
         g.drawImage(Assets.map_1, (int)(0 - handler.getGameCamera().getxOffset()), (int)(0 - handler.getGameCamera().getyOffset()), null);
         //System.out.println((int)(0 - handler.getGameCamera().getxOffset())+"   "+(int)(0 - handler.getGameCamera().getyOffset()));
         //renderTiles(g);
-        entityManager.render(g);
+        //renderTiles(g);
         particleManager.render(g);
+        entityManager.render(g);
     }
 
     public void renderTiles(Graphics g){
         for(int x = 0; x < 64 * mapsize; x++){
             for(int y = 0; y < 36 * mapsize; y++){
+                g.setColor(tiles[x][y].getColor());
                 if(tiles[x][y].isSolid()){
                     g.setColor(Color.red);
-                }else{
-                    g.setColor(Color.cyan);
                 }
+                
                 //g.setColor(tiles[x][y].getTileColor());
-                g.fillRect(tilesize*x, tilesize*y, tilesize*x+tilesize, tilesize*y+tilesize);
+                g.fillRect(((int) (tilesize * x - handler.getxOffset())), ((int) (tilesize * y - handler.getyOffset())), tilesize*x+tilesize, tilesize*y+tilesize);
             }
         }
     }
@@ -83,16 +84,27 @@ public class World {
 
         this.player = new Player(100, 100, 45, handler, this);
         entityManager.addEntity(player);
-        entityManager.addEntity(new Enemy(110,110,135,2, handler, this));
+        entityManager.addEntity(new Enemy(200,200,135,2, handler, this));
         //TODO find spot to make new player
     }
 
     public Tile getTiles(int x, int y) {
-        return tiles[x][y];
+        if(x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize)
+            return tiles[x][y];
+        else
+            return tiles[0][0];
     }
 
     public Tile[][] getTiles() {
         return tiles;
+    }
+
+    public void setAllTiles(Color color){
+        for(int x = 0; x < 64 * mapsize; x++){
+            for(int y = 0; y < 36 * mapsize; y++){
+                tiles[x][y].setColor(color);
+            }
+        }
     }
 
     public EntityManager getEntityManager() {

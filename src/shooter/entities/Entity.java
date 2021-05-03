@@ -109,6 +109,7 @@ public abstract class Entity {
     }
 
     public void setInActive() { active = false; }
+    public void setActive() { active = true; }
     public boolean isSolid() { return solid; }
     public float getX() { return posX; }
     public float getY() { return posY; }
