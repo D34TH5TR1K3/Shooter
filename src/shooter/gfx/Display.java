@@ -30,6 +30,7 @@ public class Display {
     }
 
     public void createDisplay() {
+
         //set window scaling independently from windows scaling
         //100% for 1080p; 150% for 1440p;
         //float scale = writer.GetSettingValue("Scale");
@@ -63,7 +64,6 @@ public class Display {
 
         frame.add(canvas);
         frame.pack();
-        System.setProperty("sun.java2d.uiScale", "1.5");
     }
 
     public JFrame getFrame() { return frame; }

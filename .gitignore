@@ -1,4 +1,5 @@
 /out/production/
+/out/artifacts/
 src/shooter/entities/entities.plantuml
 src/shooter/gfx/gfx.plantuml
 src/shooter/input/input.plantuml

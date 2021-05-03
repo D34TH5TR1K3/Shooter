@@ -58,6 +58,7 @@ public class Player extends Entity{
 
     @Override
     public void tick() {
+
         if(item != null) {
             switch (item.getType()) {
                 case 1:

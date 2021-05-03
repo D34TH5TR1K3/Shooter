@@ -46,7 +46,7 @@ public class Bullet extends Entity {
         if(collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10))){
             if(type == 1) {
                 Sound.play("RocketExplode");
-                world.getParticleManager().addParticle(new Particle(((int) posX), ((int) posY), 12, Assets.explosion, handler, world));
+                world.getParticleManager().addParticle(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, world));
             }
             else if(type == 0) {
                 world.getParticleManager().addParticle(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, world));
