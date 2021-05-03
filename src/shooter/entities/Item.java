@@ -46,11 +46,11 @@ public class Item extends Entity{
             case 2:
                 ammo = 30;
                 bulletSpeed = 20;
-                rpm = 900;
+                rpm = 450;
                 offset = 50;
                 break;
             case 3:
-                ammo = 800;
+                ammo = 25;
                 bulletSpeed = 15;
                 rpm = 600;
                 break;
@@ -100,7 +100,7 @@ public class Item extends Entity{
                     //System.out.println("shooting");
                     buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
                     buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
-                    world.getEntityManager().addEntitytemp(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
+                    world.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
                 }
                 break;
             case 2:
@@ -112,7 +112,7 @@ public class Item extends Entity{
                     //System.out.println("shooting");
                     buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
                     buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
-                    world.getEntityManager().addEntitytemp(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
+                    world.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
                 }
                 break;
             case 3:
@@ -123,7 +123,7 @@ public class Item extends Entity{
                     ammo--;
                     Sound.play("Uzi");
                     float dirOffset = (float)(Math.random() * 8);
-                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180f-4f+dirOffset, bulletSpeed, 0, handler, world));
+                    world.getEntityManager().addEntity(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180f-4f+dirOffset, bulletSpeed, 0, handler, world));
                 }
                 break;
             case 4:
@@ -134,7 +134,7 @@ public class Item extends Entity{
                     Sound.play("Shotgun");
                     for(int i = 0; i < 6; i++) {
                         float dirOffset = (float)(Math.random() * 20);
-                        world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE / 2, activator.getY() + CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset, bulletSpeed, 0, handler, world));
+                        world.getEntityManager().addEntity(new Bullet(activator.getX() + CREATURESIZE / 2, activator.getY() + CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset, bulletSpeed, 0, handler, world));
                     }
                 }
                 break;
@@ -145,7 +145,7 @@ public class Item extends Entity{
                     lastTime = System.currentTimeMillis();
                     ammo--;
                     Sound.play("RocketLaunch");
-                    world.getEntityManager().addEntitytemp(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, 1, handler, world));
+                    world.getEntityManager().addEntity(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, 1, handler, world));
                 }
                 break;
             default:
@@ -155,9 +155,7 @@ public class Item extends Entity{
     }
 
     @Override
-    public void tick() { 
-        //TODO tick for each bullet
-    }
+    public void tick() { }
     @Override
     public void render(Graphics g) {
         if(active){

@@ -1,9 +1,6 @@
 package shooter.gfx;
 
-import shooter.entities.Entity;
-import shooter.entities.EntityManager;
-import shooter.entities.ParticleManager;
-import shooter.entities.Player;
+import shooter.entities.*;
 import shooter.Handler;
 
 import java.awt.*;
@@ -84,7 +81,9 @@ public class World {
             }
         }
 
-        entityManager.addEntitytemp(new Player(100, 100, 45, Entity.CREATURESIZE, Entity.CREATURESIZE, handler, this));
+        this.player = new Player(100, 100, 45, handler, this);
+        entityManager.addEntity(player);
+        entityManager.addEntity(new Enemy(110,110,135,2, handler, this));
         //TODO find spot to make new player
     }
 
@@ -102,5 +101,11 @@ public class World {
 
     public ParticleManager getParticleManager() {
         return particleManager;
+    }
+    public Player getPlayer() {
+        return player;
+    }
+    public int getMapsize(){
+        return mapsize;
     }
 }

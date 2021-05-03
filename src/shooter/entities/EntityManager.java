@@ -15,7 +15,7 @@ public class EntityManager {
         removeEntities = new ArrayList<Entity>();
     }
 
-    public void addEntitytemp(Entity entity) {
+    public void addEntity(Entity entity) {
         tempentities.add(entity);
     }
 
@@ -67,5 +67,8 @@ public class EntityManager {
         for(Entity e : entities) {
             e.render(g);
         }
+    }
+    public ArrayList<Entity> getEntities(){
+        return entities;
     }
 }

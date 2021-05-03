@@ -6,6 +6,7 @@ import shooter.gfx.Tile;
 import shooter.gfx.World;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 
 public abstract class Entity {
     protected float posX;
@@ -63,6 +64,29 @@ public abstract class Entity {
                 }
             }
             //System.out.println();
+        }
+        return false;
+    }
+    public boolean checkEnemyCollision(Rectangle rect){
+        try{
+            for(Entity e : world.getEntityManager().getEntities()){
+                if(e.getClass().equals(Enemy.class)&&((Enemy)e).getHitbox().intersects(rect)){
+                    ((Enemy)e).die();
+                    return true;
+                }
+            }
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+    }
+    public boolean checkLineOfSight(Line2D.Float line){
+        for(int x=0;x<64*world.getMapsize();x++){
+            for(int y=0;y<36*world.getMapsize();y++){
+                Tile temptile = world.getTiles(x,y);
+                if(line.intersects(temptile.getHitbox())&& temptile.isSolid())
+                    return true;
+            }
         }
         return false;
     }

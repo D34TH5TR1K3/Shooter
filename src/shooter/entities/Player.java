@@ -12,42 +12,23 @@ public class Player extends Entity{
     private Rectangle hitbox;
     private int velX = 0, velY = 0;   //velocity in x and y direction
     private int velXmax = 10, velYmax = 10;   //maximum velocity
-    private Item gun = null;
     private int imageWidth = 50, imageHeight = 50;
-    private float PosX, PosY;
-    private Handler handler;
-    private World world;
     private Item item;
     private Animation walkAnimation, walkAnimation_ak;
     private boolean ableToPickup = true;   //Prevents loop of picking up and dropping items when button held down. Will reset if button is released
     private boolean ableToDrop = true;
 
-    public Player(int posX, int posY, int width, int height, Handler handler, World world) {
-        super(posX, posY, 4, handler, world);
-        hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
-        this.PosX = posX;
-        this.PosY = posY;
-        this.handler = handler;
-        this.world = world;
-        //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
-    }
-
-    public Player(int posX, int posY, float dir, int width, int height, Handler handler, World world) {
-        super(posX, posY, 4, handler, world);
-        this.dir = dir;
-        this.PosX = posX;
-        this.PosY = posY;
-        this.handler = handler;
-        this.world = world;
+    public Player(int posX, int posY, float dir, Handler handler, World world) {
+        super(posX, posY, 4,dir, handler, world);
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         item = new Item(posX, posY, 3, 20, 20, handler, world); //temporary
-        world.getEntityManager().addEntitytemp(item);
+        world.getEntityManager().addEntity(item);
         for(int y = 0; y < 3; y++) {
-            world.getEntityManager().addEntitytemp(new Item(100, 100+50*y, 1, 100, 100, handler, world));
-            world.getEntityManager().addEntitytemp(new Item(150, 100+50*y, 2, 100, 100, handler, world));
-            world.getEntityManager().addEntitytemp(new Item(200, 100+50*y, 3, 100, 100, handler, world));
-            world.getEntityManager().addEntitytemp(new Item(250, 100+50*y, 4, 100, 100, handler, world));
-            world.getEntityManager().addEntitytemp(new Item(300, 100+50*y, 5, 100, 100, handler, world));
+            world.getEntityManager().addEntity(new Item(100, 100+50*y, 1, 100, 100, handler, world));
+            world.getEntityManager().addEntity(new Item(150, 100+50*y, 2, 100, 100, handler, world));
+            world.getEntityManager().addEntity(new Item(200, 100+50*y, 3, 100, 100, handler, world));
+            world.getEntityManager().addEntity(new Item(250, 100+50*y, 4, 100, 100, handler, world));
+            world.getEntityManager().addEntity(new Item(300, 100+50*y, 5, 100, 100, handler, world));
         }
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
         // every anmiation has to be initialized here

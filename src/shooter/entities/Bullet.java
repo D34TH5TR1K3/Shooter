@@ -43,7 +43,7 @@ public class Bullet extends Entity {
         posY = posY + (float) (Math.sin(Math.toRadians(dir) + Math.PI) * speed);
         //TODO implement directional movement
         moveAbs(posX, posY);
-        if(collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10))){
+        if(collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10))||checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10))){
             if(type == 1) {
                 Sound.play("RocketExplode");
                 world.getParticleManager().addParticle(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, world));
