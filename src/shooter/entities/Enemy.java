@@ -68,6 +68,10 @@ public class Enemy extends Entity{
     }
     @Override
     public void tick() {
+        if(item.getAmmo()==0){
+            item.reload();
+            return;
+        }
         if(active) {
             if (lineOfSight()) {
                 dir = (float) (180 + Math.toDegrees(Math.atan2(posY - world.getPlayer().getY(), posX - world.getPlayer().getX() )));
@@ -76,7 +80,6 @@ public class Enemy extends Entity{
                 System.out.println("lineOfSight");
             }
         }
-
         activeAnimation.tick();
     }
     @Override

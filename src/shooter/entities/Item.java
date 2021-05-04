@@ -26,6 +26,7 @@ public class Item extends Entity{
     private World world;
     private int bulletSpeed;
     private float rpm;
+    private int reloadTime;
     private float bulletDelay;
     private long now = 0;
     private long lastTime = 0;
@@ -41,34 +42,81 @@ public class Item extends Entity{
                 ammo = 8;
                 bulletSpeed = 20;
                 rpm = 200;
+                reloadTime = 120;
                 offset = 50;
                 break;
             case 2:
                 ammo = 30;
                 bulletSpeed = 20;
                 rpm = 450;
+                reloadTime = 180;
                 offset = 50;
                 break;
             case 3:
                 ammo = 25;
                 bulletSpeed = 15;
                 rpm = 600;
+                reloadTime = 120;
                 break;
             case 4:
                 ammo = 6;
                 bulletSpeed = 20;
                 rpm = 50;
+                reloadTime = 240;
                 break;
             case 5:
                 ammo = 1;
                 bulletSpeed = 20;
                 rpm = 30;
+                reloadTime = 240;
                 break;
             default:
                 break;
         }
         bulletDelay = 60 / rpm * 1000;
         //bulletDelay = 1000;
+    }
+
+    public void reload() {
+        switch(type) {
+            case 1:
+                reloadTime--;
+                if(reloadTime == 0){
+                    ammo = 8;
+                    reloadTime = 120;
+                }
+                break;
+            case 2:
+                reloadTime--;
+                if(reloadTime == 0){
+                    ammo = 30;
+                    reloadTime = 150;
+                }
+                break;
+            case 3:
+                reloadTime--;
+                if(reloadTime == 0){
+                    ammo = 25;
+                    reloadTime = 120;
+                }
+                break;
+            case 4:
+                reloadTime--;
+                if(reloadTime == 0){
+                    ammo = 6;
+                    reloadTime = 240;
+                }
+                break;
+            case 5:
+                reloadTime--;
+                if(reloadTime == 0){
+                    ammo = 1;
+                    reloadTime = 240;
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     public void drop(Entity activator){
@@ -196,5 +244,8 @@ public class Item extends Entity{
 
     public int getType() {
         return type;
+    }
+    public int getAmmo(){
+        return ammo;
     }
 }
