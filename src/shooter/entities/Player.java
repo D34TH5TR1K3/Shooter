@@ -150,6 +150,11 @@ public class Player extends Entity{
 
         g2d.setTransform(reset);
 
+        if(item!=null)
+            g.drawString(Integer.toString(item.getAmmo()),100,800);
+        else
+            g.drawString("No Weapon",100,800);
+
         //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);
         //TODO render Player
     }

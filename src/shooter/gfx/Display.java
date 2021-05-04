@@ -25,7 +25,7 @@ public class Display {
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")));
         }
         catch(IOException | FontFormatException e){
-
+            System.exit(2);
         }
     }
 
