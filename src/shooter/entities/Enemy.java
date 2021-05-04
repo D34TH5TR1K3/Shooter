@@ -68,7 +68,7 @@ public class Enemy extends Entity{
     }
     @Override
     public void tick() {
-        if(item.getAmmo()==0){
+        if(item.getAmmo()==0&&this.active){
             item.reload();
             return;
         }
