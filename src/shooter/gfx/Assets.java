@@ -3,7 +3,7 @@ package shooter.gfx;
 import java.awt.image.BufferedImage;
 
 public class Assets {
-    public static BufferedImage shell, item_pistol, item_uzi, item_shotgun_empty, item_shotgun_full, item_ak_empty, item_ak_full, enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet, item_rpg_empty, item_rpg_full;
+    public static BufferedImage Map1_walls, shell, item_pistol, item_uzi, item_shotgun_empty, item_shotgun_full, item_ak_empty, item_ak_full, enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet, item_rpg_empty, item_rpg_full;
     public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1;
 
     public static void init() {
@@ -13,6 +13,7 @@ public class Assets {
         SpriteSheet sprite_rpg = new SpriteSheet(ImageLoader.loadImage("/textures/200xSprite.png"));
         SpriteSheet sprite_particles1 = new SpriteSheet(ImageLoader.loadImage("/textures/particles1.png"));
 
+        Map1_walls = ImageLoader.loadImage("/textures/Map1_walls.png");
         item_ak_empty = sprite1.crop(8*60, 0, 60, 60);
         item_ak_full = sprite1.crop(9*60, 0, 60, 60);
         item_shotgun_empty = sprite1.crop(8*60, 60, 60, 60);

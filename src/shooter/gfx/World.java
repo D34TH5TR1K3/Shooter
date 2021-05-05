@@ -24,6 +24,7 @@ public class World {
         entityManager = new EntityManager();
         particleManager = new ParticleManager();
         fillTiles();
+        fillHalfSolidTiles();
     }
 
     public void tick(){
@@ -34,22 +35,40 @@ public class World {
     public void render(Graphics g){
         g.drawImage(Assets.map_1, (int)(0 - handler.getGameCamera().getxOffset()), (int)(0 - handler.getGameCamera().getyOffset()), null);
         //System.out.println((int)(0 - handler.getGameCamera().getxOffset())+"   "+(int)(0 - handler.getGameCamera().getyOffset()));
-        //renderTiles(g);
-        //renderTiles(g);
+
+        renderTiles(g);
         particleManager.render(g);
         entityManager.render(g);
+        g.drawImage(Assets.Map1_walls, (int)(0 - handler.getGameCamera().getxOffset()), (int)(0 - handler.getGameCamera().getyOffset()), null);
     }
 
     public void renderTiles(Graphics g){
         for(int x = 0; x < 64 * mapsize; x++){
             for(int y = 0; y < 36 * mapsize; y++){
                 g.setColor(tiles[x][y].getColor());
-                if(tiles[x][y].isSolid()){
-                    g.setColor(Color.red);
-                }
+//                if(tiles[x][y].isHalfSolid()){
+//                    g.setColor(Color.red);
+//                }else{
+//                    g.setColor(Color.green);
+//                }
                 
                 //g.setColor(tiles[x][y].getTileColor());
                 g.fillRect(((int) (tilesize * x - handler.getxOffset())), ((int) (tilesize * y - handler.getyOffset())), tilesize*x+tilesize, tilesize*y+tilesize);
+            }
+        }
+    }
+
+    public void fillHalfSolidTiles(){
+        for(int x = 0; x < 64 * mapsize; x++) {
+            for (int y = 0; y < 36 * mapsize; y++) {
+                if(tiles[x][y].isSolid()){
+                    for(int X = -1; X < 2; X++){
+                        for(int Y = -1; Y < 2; Y++){
+                            if(x+X >= 0 && x+X < 64 * mapsize && y+Y >= 0 && y+Y < 36 * mapsize)
+                            tiles[x+X][y+Y].setHalfSolid(true);
+                        }
+                    }
+                }
             }
         }
     }
@@ -89,9 +108,10 @@ public class World {
     }
 
     public Tile getTiles(int x, int y) {
-        if(x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize)
+        if(x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize) {
+            //System.out.println(x + "   " + y);
             return tiles[x][y];
-        else
+        }else
             return tiles[0][0];
     }
 

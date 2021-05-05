@@ -8,6 +8,8 @@ import shooter.gfx.Animation;
 import shooter.gfx.Assets;
 import shooter.gfx.World;
 
+import static shooter.gfx.Display.fraktur;
+
 public class Player extends Entity{
     private Rectangle hitbox;
     private int velX = 0, velY = 0;   //velocity in x and y direction
@@ -149,7 +151,7 @@ public class Player extends Entity{
         g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
 
         g2d.setTransform(reset);
-
+        g.setFont(fraktur);
         if(item!=null)
             g.drawString(Integer.toString(item.getAmmo()),100,800);
         else

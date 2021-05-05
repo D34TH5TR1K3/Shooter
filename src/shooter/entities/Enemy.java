@@ -11,7 +11,21 @@ import shooter.gfx.Assets;
 import shooter.gfx.Tile;
 import shooter.gfx.World;
 
+import static java.lang.Math.abs;
+
 public class Enemy extends Entity{
+    //PATHFINDING
+    private ArrayList<Tile> openlist = new ArrayList<>();
+    private ArrayList<Tile> closedlist = new ArrayList<>();
+    private ArrayList<Tile> neighbors = new ArrayList<>();
+    private int iterations = 0;
+    private int pathlenght = 0;
+    private int addGCost, dx, dy;
+    private int tempHCost, tempGCost;
+    public ArrayList<Tile> trace = new ArrayList<>();
+    private Tile current = null;
+    private Tile tempNode = null;
+    //END PATHFINDING
     private Rectangle hitbox;
     private final int SPEED = 8;
     private int imageWidth = 50, imageHeight = 50;
@@ -28,6 +42,208 @@ public class Enemy extends Entity{
         walkAnimation = new Animation(100, Assets.enemy_walk);
         walkAnimation_ak = new Animation(100, Assets.enemy_walk_ak);
         activeAnimation = walkAnimation_ak;
+    }
+    Tile currentTarget;
+    public void followTrace(ArrayList<Tile> trace){
+        if(!trace.isEmpty() && trace.size() > 1){
+            currentTarget = trace.get(trace.size() - 2);
+            currentTarget.setColor(Color.white);
+            System.out.println(Math.abs(posX+ CREATURESIZE/2 - currentTarget.getTposX()*30+15)+"   "+Math.abs(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30+15));
+            if(Math.abs(posX+ CREATURESIZE/2 - currentTarget.getTposX()*30-15) < 20 && Math.abs(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30-15) < 20){
+                trace.remove(currentTarget);
+            }
+//            posX = currentTarget.getposX() - CREATURESIZE/2;
+//            posY = currentTarget.getposY() - CREATURESIZE/2;
+//            trace.remove(currentTarget);
+
+//            dir = (float) (180+Math.toDegrees(Math.atan2(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30 +15, posX+ CREATURESIZE/2- currentTarget.getTposX()*30+15)));
+            dir = (float) (180 + Math.toDegrees(Math.atan2(posY +CREATURESIZE/2- currentTarget.getTposY()*30-15, posX +CREATURESIZE/2- currentTarget.getTposX()*30-15)));
+            //System.out.println(posY+ 90+"   "+posX+ 90+"   "+currentTarget.getTposY()*30+"   "+currentTarget.getTposX()*30);
+            posX = posX + (float) (Math.cos(Math.toRadians(dir+180) + Math.PI) * 5);
+            posY = posY + (float) (Math.sin(Math.toRadians(dir+180) + Math.PI) * 5);
+        }
+
+    }
+    public void drawtrace(Tile end, Tile start){
+        //System.out.println("drawing trace");
+        if(trace.isEmpty()){
+            trace.add(end);
+        }
+        if(end != start) {
+            trace.add(end.getParent());
+            end.getParent().setColor(Color.orange); //Uncomment to mark path
+            pathlenght++;
+            drawtrace(end.getParent(), start);
+        }
+
+    }
+    public void resettiles(){
+        for(int i = 0; i < 64 * world.getMapsize(); i++){
+            for(int j = 0; j < 36 * world.getMapsize(); j++){
+
+//                if(!world.getTiles()[i][j].isSolid()){
+//                    world.getTiles()[i][j].setColor(Color.cyan);
+//                }else if(world.getTiles()[i][j].isSolid()){
+//                    world.getTiles()[i][j].setColor(Color.black);
+//                }
+                world.getTiles()[i][j].setColor(Color.green);
+                //tiles[i][j].setSolidFalse();
+                world.getTiles()[i][j].setParent(null);
+                world.getTiles()[i][j].setVisited(false);
+                world.getTiles()[i][j].setfCost(0);
+                world.getTiles()[i][j].sethCost(0);
+                world.getTiles()[i][j].setgCost(0);
+            }
+        }
+    }
+    public void findpath(Tile start, Tile end){
+        resettiles();
+        System.out.println(start.getTposX()+"   "+start.getTposY()+"   "+end.getTposX()+"   "+end.getTposY());
+        closedlist.clear();
+        openlist.clear();
+        start.setColor(Color.red);
+        end.setColor(Color.green);
+        openlist.add(start);
+        start.setVisited(true);
+
+        while(!openlist.isEmpty()){
+            iterations += 1;
+            try {
+                Thread.sleep(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //System.out.println("loopStart");
+            current = openlist.get(0);
+            for(Tile t : openlist){
+                if(t.getfCost() < current.getfCost()){
+                    current = t;
+                }
+            }
+            //System.out.println("OpenlistCost:  ");
+            //for(tile t : openlist){
+            //    System.out.println(t.getfCost());
+            //}
+            //System.out.print("current Cost: ");
+            //System.out.println(current.getfCost());
+            current.setColor(Color.pink);
+            openlist.remove(current);
+            closedlist.add(current);
+
+            if(current == end){
+                //System.out.println("Target found!");
+                //current.setColor(Color.green);
+                trace.clear();
+                pathlenght = 0;
+                drawtrace(current, start);
+                //start();
+                break;
+            }
+
+            neighbors.clear();
+            neighborsadd(current.getTposX() - 1, current.getTposY());
+            neighborsadd(current.getTposX() + 1, current.getTposY());
+            neighborsadd(current.getTposX(),        current.getTposY() -1);
+            neighborsadd(current.getTposX(),        current.getTposY() +1);
+            if(current.getTposX()-1 >= 0 && current.getTposY()-1 >= 0) {
+                if (!world.getTiles()[current.getTposX()][current.getTposY() - 1].isHalfSolid() || !world.getTiles()[current.getTposX() - 1][current.getTposY()].isHalfSolid()) {
+                    neighborsadd(current.getTposX() - 1, current.getTposY() - 1);// LINKS OBEN
+                }
+            }
+            if(current.getTposX()+1 <36 * world.getMapsize() && current.getTposY()-1 >= 0) {
+                if (!world.getTiles()[current.getTposX()][current.getTposY() - 1].isHalfSolid() || !world.getTiles()[current.getTposX() + 1][current.getTposY()].isHalfSolid()) {
+                    neighborsadd(current.getTposX() + 1, current.getTposY() - 1);// RECHTS OBEN
+                }
+            }
+            if(current.getTposX()-1 >= 0 && current.getTposY()+1 < 36 * world.getMapsize()) {
+                if (!world.getTiles()[current.getTposX()][current.getTposY() + 1].isHalfSolid() || !world.getTiles()[current.getTposX() - 1][current.getTposY()].isHalfSolid()) {
+                    neighborsadd(current.getTposX() - 1, current.getTposY() + 1);// LINKS UNTEN
+                }
+            }
+            if(current.getTposX()+1 < 36 * world.getMapsize() && current.getTposY()+1 < 36 * world.getMapsize()) {
+                if (!world.getTiles()[current.getTposX()][current.getTposY() + 1].isHalfSolid() || !world.getTiles()[current.getTposX() + 1][current.getTposY()].isHalfSolid()) {
+                    neighborsadd(current.getTposX() + 1, current.getTposY() + 1);// RECHTS UNTEN
+                }
+            }
+
+            for (Tile temptile : neighbors) {
+//                if(false) {     //toggle experimental diagonal avoidance
+//                    if (i == 0) {
+//                        wallL = neighbors.get(i).isSolid();
+//                        System.out.println("WALLS:");
+//                        System.out.println(wallL);
+//                    } else if (i == 1) {
+//                        wallR = neighbors.get(i).isSolid();
+//                        System.out.println(wallR);
+//                    } else if (i == 2) {
+//                        wallO = neighbors.get(i).isSolid();
+//                        System.out.println(wallO);
+//                    } else if (i == 3) {
+//                        wallU = neighbors.get(i).isSolid();
+//                        System.out.println(wallU);
+//                        System.out.println("WALLS_END");
+//                    } else if (i == 4 && wallO == true && wallL == true) {
+//                        neighbors.get(i).setSolid();
+//                    } else if (i == 5 && wallO == true && wallR == true) {
+//                        neighbors.get(i).setSolid();
+//                    } else if (i == 6 && wallU == true && wallL == true) {
+//                        neighbors.get(i).setSolid();
+//                    } else if (i == 7 && wallU == true && wallR == true) {
+//                        neighbors.get(i).setSolid();
+//                    }
+//                }
+                //System.out.println(neighbors.size());
+                if (!temptile.isClosed() && !temptile.isHalfSolid()
+                ) {
+
+
+                    if (current.getTposX() == temptile.getTposX() || current.getTposY() == temptile.getTposY()) {
+                        addGCost = 10;
+                    } else {
+                        addGCost = 14;
+                    }
+                    tempGCost = (current.getgCost() + addGCost);
+
+                    int mathfunction = 1;
+                    if (mathfunction == 0) {
+                        dx = end.getTposX() - temptile.getTposX();                      //pythagoras
+                        dy = end.getTposY() - temptile.getTposY();                      //pythagoras
+                        tempHCost = ((int) (10 * Math.sqrt((dx * dx) + (dy * dy))));  //pythagoras
+                    } else if (mathfunction == 1) {
+                        dx = abs(end.getTposX() - temptile.getTposX()); //fast distance
+                        dy = abs(end.getTposY() - temptile.getTposY()); //fast distance
+                        tempHCost = (dx + dy) * 10;             //fast distance
+                    }
+
+                    if (tempHCost + tempGCost < temptile.getfCost() || !temptile.isVisited()) {
+                        temptile.sethCost(tempHCost);
+                        temptile.setgCost(tempGCost);
+
+                        temptile.setParent(current);
+                        if (!temptile.isVisited()) {
+                            //System.out.println("helloOoOoo");
+                            openlist.add(temptile);
+                            temptile.setVisited(true);
+                            temptile.setColor(Color.blue);
+                        }
+                    }
+
+                }
+                //if(temptile.isClosed() || temptile.isSolid()){
+                //    neighbors.remove(temptile);
+                //}
+            }
+            //render(g);
+        }
+    }
+    public void neighborsadd(int x, int y){
+
+        if(x < 64 * world.getMapsize() && x > -1 && y < 36 * world.getMapsize() && y > -1){
+            neighbors.add(world.getTiles()[x][y]);
+            //System.out.println("neigbours added");
+        }else{
+            //System.out.println("LESS THAN 8 NEIGHBOURS");
+        }
     }
     public void die(){
         item.drop(this);
@@ -68,6 +284,11 @@ public class Enemy extends Entity{
     }
     @Override
     public void tick() {
+        followTrace(trace);
+        if(handler.getMouseManager().isRightPressed())
+            findpath(world.getTiles(((int) ((posX +CREATURESIZE/2) / 30)), ((int) ((posY+CREATURESIZE/2) / 30))), world.getTiles((int) ((world.getPlayer().getX()+CREATURESIZE/2) / 30), (int) ((world.getPlayer().getY()+CREATURESIZE/2) / 30)));
+
+        //findpath(world.getTiles(3, 3), world.getTiles(30, 30));
         if(item.getAmmo()==0&&this.active){
             item.reload();
             return;
@@ -77,7 +298,7 @@ public class Enemy extends Entity{
                 dir = (float) (180 + Math.toDegrees(Math.atan2(posY - world.getPlayer().getY(), posX - world.getPlayer().getX() )));
                 if (item != null)
                     item.activate(this);
-                System.out.println("lineOfSight");
+                //System.out.println("lineOfSight");
             }
         }
         activeAnimation.tick();
@@ -94,7 +315,12 @@ public class Enemy extends Entity{
         g2d.rotate(Math.toRadians(dir), posX+CREATURESIZE/2-handler.getxOffset(), posY+CREATURESIZE/2-handler.getyOffset());
 
         g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
-
+        g2d.setColor(Color.red);
+        g2d.fillRect(((int) (posX + 89 - handler.getxOffset())), ((int) (posY + 89 - handler.getyOffset())),2, 2 );
+        if(currentTarget != null) {
+            //g2d.fillRect(((int) (currentTarget.getposX()+15-handler.getxOffset())), ((int) (currentTarget.getposY()+15-handler.getyOffset())), 2, 2);
+            //g2d.drawLine((int) (posX + 89 - handler.getxOffset()), ((int) (posY + 89 - handler.getyOffset())), ((int) (currentTarget.getposX() + 15 - handler.getxOffset())), ((int) (currentTarget.getposY() + 15 - handler.getyOffset())));
+        }
         g2d.setTransform(reset);
 
         //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);

@@ -76,7 +76,7 @@ public class Particle {
         if(type == 0) {
             AnimParticle.tick();
         }else if(type == 1){
-            yNew += 1*speedFactor;
+            yNew += 1*speedFactor;  //TODO: random shells
             if(speedFactor > 0)
                 speedFactor--;
         }
