@@ -42,6 +42,7 @@ public class Player extends Entity{
 
     @Override
     public void tick() {
+        System.out.println(posX+"  "+posY);
         if(item != null) {
             switch (item.getType()) {
                 case 1:

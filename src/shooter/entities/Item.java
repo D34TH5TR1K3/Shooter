@@ -53,15 +53,15 @@ public class Item extends Entity{
                 offset = 50;
                 break;
             case 3:
-                ammo = 25;
+                ammo = 250;
                 bulletSpeed = 15;
-                rpm = 600;
+                rpm = 6000;
                 reloadTime = 120;
                 break;
             case 4:
-                ammo = 6;
+                ammo = 600;
                 bulletSpeed = 20;
-                rpm = 50;
+                rpm = 5000;
                 reloadTime = 240;
                 break;
             case 5:

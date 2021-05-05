@@ -43,12 +43,12 @@ public class Enemy extends Entity{
         walkAnimation_ak = new Animation(100, Assets.enemy_walk_ak);
         activeAnimation = walkAnimation_ak;
     }
-    Tile currentTarget;
+
     public void followTrace(ArrayList<Tile> trace){
         if(!trace.isEmpty() && trace.size() > 1){
-            currentTarget = trace.get(trace.size() - 2);
-            currentTarget.setColor(Color.white);
-            System.out.println(Math.abs(posX+ CREATURESIZE/2 - currentTarget.getTposX()*30+15)+"   "+Math.abs(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30+15));
+            Tile currentTarget = trace.get(trace.size() - 2);
+            //currentTarget.setColor(Color.white);
+            //System.out.println(Math.abs(posX+ CREATURESIZE/2 - currentTarget.getTposX()*30+15)+"   "+Math.abs(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30+15));
             if(Math.abs(posX+ CREATURESIZE/2 - currentTarget.getTposX()*30-15) < 20 && Math.abs(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30-15) < 20){
                 trace.remove(currentTarget);
             }
@@ -284,21 +284,24 @@ public class Enemy extends Entity{
     }
     @Override
     public void tick() {
-        followTrace(trace);
         if(handler.getMouseManager().isRightPressed())
             findpath(world.getTiles(((int) ((posX +CREATURESIZE/2) / 30)), ((int) ((posY+CREATURESIZE/2) / 30))), world.getTiles((int) ((world.getPlayer().getX()+CREATURESIZE/2) / 30), (int) ((world.getPlayer().getY()+CREATURESIZE/2) / 30)));
 
         //findpath(world.getTiles(3, 3), world.getTiles(30, 30));
         if(item.getAmmo()==0&&this.active){
             item.reload();
-            return;
+            //return;
         }
         if(active) {
+            hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25)), ((int) (posY + CREATURESIZE / 2 - 25)));
+            System.out.println(hitbox);
             if (lineOfSight()) {
+                trace.clear();
                 dir = (float) (180 + Math.toDegrees(Math.atan2(posY - world.getPlayer().getY(), posX - world.getPlayer().getX() )));
                 if (item != null)
                     item.activate(this);
-                //System.out.println("lineOfSight");
+            }else{
+                followTrace(trace);
             }
         }
         activeAnimation.tick();
@@ -315,12 +318,7 @@ public class Enemy extends Entity{
         g2d.rotate(Math.toRadians(dir), posX+CREATURESIZE/2-handler.getxOffset(), posY+CREATURESIZE/2-handler.getyOffset());
 
         g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
-        g2d.setColor(Color.red);
-        g2d.fillRect(((int) (posX + 89 - handler.getxOffset())), ((int) (posY + 89 - handler.getyOffset())),2, 2 );
-        if(currentTarget != null) {
-            //g2d.fillRect(((int) (currentTarget.getposX()+15-handler.getxOffset())), ((int) (currentTarget.getposY()+15-handler.getyOffset())), 2, 2);
-            //g2d.drawLine((int) (posX + 89 - handler.getxOffset()), ((int) (posY + 89 - handler.getyOffset())), ((int) (currentTarget.getposX() + 15 - handler.getxOffset())), ((int) (currentTarget.getposY() + 15 - handler.getyOffset())));
-        }
+
         g2d.setTransform(reset);
 
         //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);

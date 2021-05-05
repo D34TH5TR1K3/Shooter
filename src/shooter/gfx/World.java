@@ -25,6 +25,11 @@ public class World {
         particleManager = new ParticleManager();
         fillTiles();
         fillHalfSolidTiles();
+        this.player = new Player(100, 100, 45, handler, this);
+        entityManager.addEntity(player);
+        //entityManager.addEntity(new Enemy(200,200,135,2, handler, this));
+        entityManager.addEntity(new Enemy(700,700,0,2, handler, this));
+        entityManager.addEntity(new Enemy(1200,1800,180,2, handler, this));
     }
 
     public void tick(){
@@ -36,10 +41,10 @@ public class World {
         g.drawImage(Assets.map_1, (int)(0 - handler.getGameCamera().getxOffset()), (int)(0 - handler.getGameCamera().getyOffset()), null);
         //System.out.println((int)(0 - handler.getGameCamera().getxOffset())+"   "+(int)(0 - handler.getGameCamera().getyOffset()));
 
-        renderTiles(g);
+        //renderTiles(g);
         particleManager.render(g);
         entityManager.render(g);
-        g.drawImage(Assets.Map1_walls, (int)(0 - handler.getGameCamera().getxOffset()), (int)(0 - handler.getGameCamera().getyOffset()), null);
+        //g.drawImage(Assets.Map1_walls, (int)(0 - handler.getGameCamera().getxOffset()), (int)(0 - handler.getGameCamera().getyOffset()), null);
     }
 
     public void renderTiles(Graphics g){
@@ -100,10 +105,6 @@ public class World {
                 tiles[x][y] = new Tile(x, y, solid);
             }
         }
-
-        this.player = new Player(100, 100, 45, handler, this);
-        entityManager.addEntity(player);
-        entityManager.addEntity(new Enemy(200,200,135,2, handler, this));
         //TODO find spot to make new player
     }
 
