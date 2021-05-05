@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class Particle {
+public class Particle{
 
     private int x, y, speed, yNew, xNew;
     private int timeLeftToLive = 1000;
@@ -22,6 +22,7 @@ public class Particle {
     private float dir;
     private int type = 0;
     private int speedFactor = 10;
+
     public Particle(int x, int y, int speed, BufferedImage[] frames, Handler handler, World world){
         this.x = x;
         this.y = y;
@@ -30,7 +31,6 @@ public class Particle {
         this.handler = handler;
         this.world = world;
         AnimParticle = new Animation(speed, frames);
-        summonParticle();
     }
     public Particle(int x, int y, int speed, float dir, BufferedImage frame, Handler handler, World world){
         this.x = x;
@@ -68,15 +68,13 @@ public class Particle {
         this.world = world;
         AnimParticle = new Animation(speed, frames);
     }
-    public void summonParticle(){
-
-    }
     public void tick(){
         timeLeftToLive--;
         if(type == 0) {
             AnimParticle.tick();
         }else if(type == 1){
-            yNew += 1*speedFactor;  //TODO: random shells
+            if(!world.collisionCheck(new Rectangle(x+27, y+21+speedFactor, 3, 3)))
+                yNew += speedFactor;  //TODO: random shells
             if(speedFactor > 0)
                 speedFactor--;
         }
@@ -93,7 +91,7 @@ public class Particle {
             Graphics2D g2 = (Graphics2D)g;  // cast Graphics to Graphics 2d
 
             g2.rotate(Math.toRadians(dir), (int) (x - handler.getGameCamera().getxOffset()), (int) (y -handler.getGameCamera().getyOffset()));   //rotate graphics object
-            g2.drawImage(frame, ((int) (xNew - handler.getxOffset())), ((int) (yNew -20- handler.getyOffset())), null);
+            g2.drawImage(frame, ((int) (xNew +27- handler.getxOffset())), ((int) (yNew +9- handler.getyOffset())), null);
 
             g2.setTransform(reset); //reset rotation
         }
@@ -102,7 +100,6 @@ public class Particle {
     public Animation getAnimParticle() {
         return AnimParticle;
     }
-
     public int getType() {
         return type;
     }

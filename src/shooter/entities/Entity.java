@@ -50,36 +50,7 @@ public abstract class Entity {
         this.handler = handler;
     }
 
-    public boolean collisionCheck(Rectangle rect){
-        //System.out.println(rect.getBounds());
-        for(int y = (int) (0 + rect.getY()/30); y < 4 + rect.getY()/30; y++){
-            for(int x = (int) (0 + rect.getX()/30); x < 4 + rect.getX()/30; x++){
-                if(x >= 0 && x < world.getTiles().length && y >= 0 && y < world.getTiles()[0].length){
-                    Tile temptile = world.getTiles(x, y);
-                    if(temptile.isSolid() && temptile.getHitbox().intersects(rect)){
-                        //System.out.println(temptile.getTposX() +"  "+ temptile.getTposY());
-                        return true;
-                    }
-                    //System.out.println(temptile.getTposX()*30 + "   " + temptile.getTposY()*30+"   ");
-                }
-            }
-            //System.out.println();
-        }
-        return false;
-    }
-    public boolean checkEnemyCollision(Rectangle rect){
-        try{
-            for(Entity e : world.getEntityManager().getEntities()){
-                if(e.getClass().equals(Enemy.class)&&((Enemy)e).getHitbox().intersects(rect)){
-                    ((Enemy)e).die();
-                    return true;
-                }
-            }
-            return false;
-        } catch(NullPointerException e) {
-            return false;
-        }
-    }
+
     public boolean checkLineOfSight(Line2D.Float line){
         for(int x=0;x<64*world.getMapsize();x++){
             for(int y=0;y<36*world.getMapsize();y++){

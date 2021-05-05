@@ -25,13 +25,13 @@ public class Player extends Entity{
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         item = new Item(posX, posY, 3, 20, 20, handler, world); //temporary
         item.setInActive();
-        world.getEntityManager().addEntity(item);
+        world.getEntityManager().addItem(item);
         for(int y = 0; y < 3; y++) {
-            world.getEntityManager().addEntity(new Item(100, 100+50*y, 1, 100, 100, handler, world));
-            world.getEntityManager().addEntity(new Item(150, 100+50*y, 2, 100, 100, handler, world));
-            world.getEntityManager().addEntity(new Item(200, 100+50*y, 3, 100, 100, handler, world));
-            world.getEntityManager().addEntity(new Item(250, 100+50*y, 4, 100, 100, handler, world));
-            world.getEntityManager().addEntity(new Item(300, 100+50*y, 5, 100, 100, handler, world));
+            world.getEntityManager().addItem(new Item(100, 100+50*y, 1, 100, 100, handler, world));
+            world.getEntityManager().addItem(new Item(150, 100+50*y, 2, 100, 100, handler, world));
+            world.getEntityManager().addItem(new Item(200, 100+50*y, 3, 100, 100, handler, world));
+            world.getEntityManager().addItem(new Item(250, 100+50*y, 4, 100, 100, handler, world));
+            world.getEntityManager().addItem(new Item(300, 100+50*y, 5, 100, 100, handler, world));
         }
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
         // every anmiation has to be initialized here
@@ -42,7 +42,7 @@ public class Player extends Entity{
 
     @Override
     public void tick() {
-        System.out.println(posX+"  "+posY);
+        //System.out.println(posX+"  "+posY);
         if(item != null) {
             switch (item.getType()) {
                 case 1:
@@ -112,17 +112,17 @@ public class Player extends Entity{
         }
         if(velX != 0 || velY != 0) {
             hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25 + velX)), ((int) (posY + CREATURESIZE / 2 - 25 + velY)));
-            if (!collisionCheck(hitbox)) {
+            if (!world.collisionCheck(hitbox)) {
                 move(velX, velY);
                 activeAnimation.start();
             } else {
                 hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25 + velX)), ((int) (posY + CREATURESIZE / 2 - 25)));
-                if (!collisionCheck(hitbox)) {
+                if (!world.collisionCheck(hitbox)) {
                     move(velX, 0);
                     activeAnimation.start();
                 } else {
                     hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25)), ((int) (posY + velY + CREATURESIZE / 2 - 25)));
-                    if (!collisionCheck(hitbox)) {
+                    if (!world.collisionCheck(hitbox)) {
                         move(0, velY);
                         activeAnimation.start();
                     } else {

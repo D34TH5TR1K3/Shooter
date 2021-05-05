@@ -19,7 +19,7 @@ public class Assets {
         item_shotgun_empty = sprite1.crop(8*60, 60, 60, 60);
         item_shotgun_full = sprite1.crop(9*60, 60, 60, 60);
         item_uzi = sprite1.crop(9*60, 60*3, 60, 60);
-        shell = sprite1.crop(9*60, 60*4, 60, 60);
+        shell = ImageLoader.loadImage("/textures/shell.png");
         item_pistol = sprite1.crop(9*60, 60*2, 60, 60);
         map_1 = ImageLoader.loadImage("/textures/Map1.png");
         enemy = ImageLoader.loadImage("/textures/player_1.png");

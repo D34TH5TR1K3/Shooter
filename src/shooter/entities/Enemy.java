@@ -38,7 +38,7 @@ public class Enemy extends Entity{
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         item = new Item(posX, posY, gunType, 20, 20, handler, world);
         item.setInActive();
-        world.getEntityManager().addEntity(item);
+        world.getEntityManager().addItem(item);
         walkAnimation = new Animation(100, Assets.enemy_walk);
         walkAnimation_ak = new Animation(100, Assets.enemy_walk_ak);
         activeAnimation = walkAnimation_ak;
@@ -98,7 +98,7 @@ public class Enemy extends Entity{
     }
     public void findpath(Tile start, Tile end){
         resettiles();
-        System.out.println(start.getTposX()+"   "+start.getTposY()+"   "+end.getTposX()+"   "+end.getTposY());
+        //System.out.println(start.getTposX()+"   "+start.getTposY()+"   "+end.getTposX()+"   "+end.getTposY());
         closedlist.clear();
         openlist.clear();
         start.setColor(Color.red);
@@ -247,7 +247,7 @@ public class Enemy extends Entity{
     }
     public void die(){
         item.drop(this);
-        hitbox = null;
+        this.hitbox = null;
         this.setInActive();
         activeAnimation = walkAnimation;
         activeAnimation.stop();
@@ -290,16 +290,17 @@ public class Enemy extends Entity{
         //findpath(world.getTiles(3, 3), world.getTiles(30, 30));
         if(item.getAmmo()==0&&this.active){
             item.reload();
-            //return;
+            return;
         }
         if(active) {
             hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25)), ((int) (posY + CREATURESIZE / 2 - 25)));
-            System.out.println(hitbox);
+            //System.out.println(hitbox);
             if (lineOfSight()) {
                 trace.clear();
                 dir = (float) (180 + Math.toDegrees(Math.atan2(posY - world.getPlayer().getY(), posX - world.getPlayer().getX() )));
-                if (item != null)
+                if (item != null){
                     item.activate(this);
+                }
             }else{
                 followTrace(trace);
             }
@@ -311,7 +312,9 @@ public class Enemy extends Entity{
         //g.drawLine((int) (world.getPlayer().getX()- handler.getxOffset())+CREATURESIZE/2, (int) (world.getPlayer().getY()+CREATURESIZE/2- handler.getyOffset()), (int) (posX+CREATURESIZE/2- handler.getxOffset()), (int) (posY+CREATURESIZE/2- handler.getyOffset()));
         //System.out.println("Position"+posX+"\t"+posY);
         //System.out.println("Offset"+handler.getxOffset()+"\t"+ handler.getyOffset());
-
+//        if(hitbox != null){
+//            g.drawRect((int) ((int) hitbox.getX()- handler.getxOffset()), (int) ((int) hitbox.getY()- handler.getyOffset()), ((int) hitbox.getWidth()), ((int) hitbox.getHeight()));
+//        }
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform reset = g2d.getTransform();
         //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

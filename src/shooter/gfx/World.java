@@ -16,25 +16,51 @@ public class World {
 
     private Handler handler;
     private EntityManager entityManager;    //holds all entities of the world and ticks and renders them
-    private ParticleManager particleManager;
 
     public World(Handler handler) {
         tiles = new Tile[64 * mapsize][36 * mapsize];
         this.handler = handler;
-        entityManager = new EntityManager();
-        particleManager = new ParticleManager();
+        entityManager = new EntityManager(this);
         fillTiles();
         fillHalfSolidTiles();
         this.player = new Player(100, 100, 45, handler, this);
-        entityManager.addEntity(player);
         //entityManager.addEntity(new Enemy(200,200,135,2, handler, this));
-        entityManager.addEntity(new Enemy(700,700,0,2, handler, this));
-        entityManager.addEntity(new Enemy(1200,1800,180,2, handler, this));
+        entityManager.addEnemy(new Enemy(700,700,0,2, handler, this));
+        entityManager.addEnemy(new Enemy(1200,1800,180,2, handler, this));
+    }
+
+    public boolean collisionCheck(Rectangle rect){
+        //System.out.println(rect.getBounds());
+        for(int y = (int) (0 + rect.getY()/30); y < 4 + rect.getY()/30; y++){
+            for(int x = (int) (0 + rect.getX()/30); x < 4 + rect.getX()/30; x++){
+                if(x >= 0 && x < tiles.length && y >= 0 && y < tiles[0].length){
+                    Tile temptile = tiles[x][y];
+                    if(temptile.isSolid() && temptile.getHitbox().intersects(rect)){
+                        //System.out.println(temptile.getTposX() +"  "+ temptile.getTposY());
+                        return true;
+                    }
+                    //System.out.println(temptile.getTposX()*30 + "   " + temptile.getTposY()*30+"   ");
+                }
+            }
+            //System.out.println();
+        }
+        return false;
+    }
+    public boolean checkEnemyCollision(Rectangle rect) {
+        for (Entity e : entityManager.getEnemies()) {
+            System.out.println("start");
+            System.out.println(rect);
+            System.out.println(((Enemy) e).getHitbox());
+            if (((Enemy) e).getHitbox() != null && ((Enemy) e).getHitbox().intersects(rect)) {
+                ((Enemy) e).die();
+                return true;
+            }
+        }
+        return false;
     }
 
     public void tick(){
         entityManager.tick();
-        particleManager.tick();
     }
 
     public void render(Graphics g){
@@ -42,7 +68,6 @@ public class World {
         //System.out.println((int)(0 - handler.getGameCamera().getxOffset())+"   "+(int)(0 - handler.getGameCamera().getyOffset()));
 
         //renderTiles(g);
-        particleManager.render(g);
         entityManager.render(g);
         //g.drawImage(Assets.Map1_walls, (int)(0 - handler.getGameCamera().getxOffset()), (int)(0 - handler.getGameCamera().getyOffset()), null);
     }
@@ -132,9 +157,6 @@ public class World {
         return entityManager;
     }
 
-    public ParticleManager getParticleManager() {
-        return particleManager;
-    }
     public Player getPlayer() {
         return player;
     }
