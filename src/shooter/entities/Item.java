@@ -248,4 +248,11 @@ public class Item extends Entity{
     public int getAmmo(){
         return ammo;
     }
+    public void setAmmo(int ammo){
+        this.ammo = ammo;
+    }
+
+    public String getData(){
+        return "";
+    }
 }

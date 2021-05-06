@@ -30,7 +30,6 @@ public class Game implements Runnable {
     private MouseManager mouseManager;
     private GameCamera gameCamera;
     private Writer writer;
-    private World world;
 
     private Sound sound;
 
@@ -53,7 +52,6 @@ public class Game implements Runnable {
         handler = new Handler(this);
 
         gameCamera = new GameCamera(handler,0,0);
-        world = new World(handler);
 
         gameState = new GameState(this,handler);
         menuState = new MenuState(this,handler);
@@ -71,6 +69,8 @@ public class Game implements Runnable {
         keyManager.tick();
         State.getState().tick();
         sound.tick();
+        if(keyManager.save)
+            writer.writeGameSave(((GameState)gameState).getWorld());
     }
     long now;
     public void render() {
@@ -135,7 +135,8 @@ public class Game implements Runnable {
             }
 
             if(timer >= 1000000000) {
-                System.out.println("TPS & FPS:" + ticks+"\t");
+                //TODO: FPS
+                //System.out.println("TPS & FPS:" + ticks+"\t");
                 ticks = 0;
                 timer = 0;
             }
@@ -161,6 +162,9 @@ public class Game implements Runnable {
     }
     public Writer getWriter() {
         return writer;
+    }
+    public State getGameState() {
+        return gameState;
     }
 
     public synchronized void start() {

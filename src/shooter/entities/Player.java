@@ -161,4 +161,12 @@ public class Player extends Entity{
         //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);
         //TODO render Player
     }
+
+    public Item getItem(){
+        return item;
+    }
+
+    public String getData(){
+        return ((int)posX+","+(int)posY+","+(int)dir+","+item.getAmmo());
+    }
 }

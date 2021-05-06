@@ -94,4 +94,6 @@ public abstract class Entity {
     public void setDir(float dir) {
         this.dir = dir;
     }
+
+    public abstract String getData();
 }

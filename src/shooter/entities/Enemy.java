@@ -329,4 +329,11 @@ public class Enemy extends Entity{
     public Rectangle getHitbox(){
         return hitbox;
     }
+    public Item getItem(){
+        return item;
+    }
+
+    public String getData(){
+        return ((int)posX+","+(int)posY+","+(int)dir+","+item.getType()+","+item.getAmmo());
+    }
 }

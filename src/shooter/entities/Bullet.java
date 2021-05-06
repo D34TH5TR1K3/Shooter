@@ -79,4 +79,8 @@ public class Bullet extends Entity {
         g2.setTransform(reset); //reset rotation
         //TODO implement rendering for the Bullet
     }
+
+    public String getData(){
+        return "";
+    }
 }

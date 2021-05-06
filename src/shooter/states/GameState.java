@@ -12,7 +12,7 @@ public class GameState extends State {
 
     public GameState(Game game, Handler handler) {
         super(game,handler);
-        world = new World(handler);
+        world = handler.getGame().getWriter().createGame(handler);
     }
 
     @Override
@@ -28,5 +28,8 @@ public class GameState extends State {
         //TODO add player and world
         //world.renderTiles(g);
         world.render(g);    //render world
+    }
+    public World getWorld(){
+        return world;
     }
 }

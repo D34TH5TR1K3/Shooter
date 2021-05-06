@@ -1,7 +1,9 @@
 package shooter;
 
 import shooter.gfx.GameCamera;
+import shooter.gfx.World;
 import shooter.input.*;
+import shooter.states.GameState;
 
 public class Handler {
     private Game game;

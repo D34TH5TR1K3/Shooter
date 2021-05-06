@@ -4,6 +4,7 @@ import shooter.entities.*;
 import shooter.Handler;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class World {
 
@@ -23,10 +24,20 @@ public class World {
         entityManager = new EntityManager(this);
         fillTiles();
         fillHalfSolidTiles();
+    }
+
+    public void fillWorld(){
         this.player = new Player(100, 100, 45, handler, this);
         //entityManager.addEntity(new Enemy(200,200,135,2, handler, this));
         entityManager.addEnemy(new Enemy(700,700,0,2, handler, this));
         entityManager.addEnemy(new Enemy(1200,1800,180,2, handler, this));
+    }
+
+    public void fillWorld(Player player, ArrayList<Entity> enemies){
+        this.player = player;
+        for(Entity e:enemies){
+            entityManager.addEnemy(e);
+        }
     }
 
     public boolean collisionCheck(Rectangle rect){

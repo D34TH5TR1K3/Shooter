@@ -226,7 +226,7 @@ public class Menu {
     }
 
     public void saveSettings(){
-        handler.getGame().getWriter().readFromFile(false);
+        handler.getGame().getWriter().readSettingsFromFile(false);
         for(Slider slider : sliders){
             handler.getGame().getWriter().changeSetting(slider.getFunc(), slider.getValue());
         }
@@ -235,7 +235,7 @@ public class Menu {
                 handler.getGame().getWriter().changeSetting(button.getFunc(), button.getValue());
             }
         }
-        handler.getGame().getWriter().writeToFile();
+        handler.getGame().getWriter().writeSettingsToFile();
     }
 
     public void toggleButton(String func){

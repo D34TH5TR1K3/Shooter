@@ -1,10 +1,18 @@
 package shooter.utils;
 
+import shooter.Handler;
+import shooter.entities.Enemy;
+import shooter.entities.Entity;
+import shooter.entities.Player;
+import shooter.gfx.World;
+import shooter.states.GameState;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Writer {
@@ -12,6 +20,7 @@ public class Writer {
     FileWriter writer;
     Scanner scanner;
     File settingFile = new File("res/settings/settings.txt");
+    File gameSaveFile = new File("res/gameSaves/gameSave.txt");
     ArrayList<Setting> settings = new ArrayList<Setting>();
 
     public Writer(){
@@ -36,7 +45,7 @@ public class Writer {
         }
     }
 
-    public void readFromFile(boolean print){
+    public void readSettingsFromFile(boolean print){
         try {
             settings.clear();
             scanner = new Scanner(settingFile);
@@ -94,7 +103,7 @@ public class Writer {
         return -1;
     }
 
-    public void writeToFile(){
+    public void writeSettingsToFile(){
         try {
             writer = new FileWriter(settingFile, false);
             for(Setting setting : settings){
@@ -133,6 +142,89 @@ public class Writer {
 
         public void setValue(float value) {
             this.value = value;
+        }
+    }
+
+    public World createGame(Handler handler){
+        try{
+            scanner = new Scanner(gameSaveFile);
+            int enemyCount = Integer.parseInt(scanner.nextLine());
+            World world = new World(handler);
+            if(enemyCount==-1){
+                world.fillWorld();
+            }else{
+                int[] pd = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
+                //pd = playerData
+                Player createdPlayer = new Player(pd[0],pd[1],(float)pd[2],handler,world);
+                createdPlayer.getItem().setAmmo(pd[3]);
+                ArrayList<Entity> createdEnemies = new ArrayList<Entity>();
+                for(int i=0;i<enemyCount;i++){
+                    int[] ed = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
+                    //ed = EnemyData
+                    Enemy createdEnemy = new Enemy(ed[0],ed[1],ed[2],ed[3],handler,world);
+                    createdEnemy.getItem().setAmmo(ed[4]);
+                    createdEnemies.add(createdEnemy);
+                }
+                world.fillWorld(createdPlayer,createdEnemies);
+            }
+            return world;
+        } catch(IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void wipeGame(){
+        try{
+            writer = new FileWriter(gameSaveFile,false);
+            writer.write("-1");
+            writer.flush();
+            writer.close();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void writeGameSave(World world){
+        GameSave gameSave = new GameSave(world);
+        try{
+            writer = new FileWriter(gameSaveFile,false);
+            writer.write(gameSave.enemies.size()+"\n");
+            writer.write(gameSave.getPlayer().getData()+"\n");
+            for(Entity e: gameSave.enemies){
+                writer.write(e.getData()+"\n");
+            }
+            writer.flush();
+            writer.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public class GameSave{
+        private World world;
+        private Player player;
+        private ArrayList<Entity> enemies;
+
+        public GameSave(World world){
+            this.world = world;
+            player = world.getPlayer();
+            enemies = world.getEntityManager().getEnemies();
+        }
+
+        public World getWorld(){
+            return world;
+        }
+        public void setWorld(World world){
+            this.world = world;
+            player = world.getPlayer();
+            enemies = world.getEntityManager().getEnemies();
+        }
+        public Player getPlayer(){
+            return player;
+        }
+        public ArrayList<Entity> getEnemies(){
+            return enemies;
         }
     }
 }
