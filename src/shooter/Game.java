@@ -1,6 +1,5 @@
 package shooter;
 
-import shooter.entities.EntityManager;
 import shooter.gfx.*;
 import shooter.input.*;
 import shooter.sound.Sound;
@@ -12,35 +11,32 @@ import java.lang.Runnable;
 import java.awt.image.BufferStrategy;
 
 public class Game implements Runnable {
-    private Display display;
-    private final int width = 1920, height = 1080;
+    private Display display;                    //Das Display stellt ein Fenster bereit, mit dem der Nutzer interagieren kann
+    private BufferStrategy bs;                  //Die Bufferstrategy speichert Frames zwischen, damit alles, was dem Nutzer gezeigt wird bereits vollständi berechnet ist
+    private Graphics g;                         //Das Graphics-objekt ermöglicht es Grafiken auf den Canvas zu malen, der dem Nutzer gezeigt wird
 
-    private BufferStrategy bs;
-    private Graphics g;
+    private Thread thread;                      //Der Thread kümmert sich darum, dass das Programm effizient ausgeführt wird
+    private boolean running;                    //running ist eine globale Variable, die genutzt wird um das starten und stoppen des Spiels zu organisieren
 
-    private Thread thread;
-    private boolean running;
+    public State gameState, menuState;          //GameState und MenuState sind die beiden Zustände des Spiels, die entscheiden, ob man gerade das Menü navigiert oder das Spiel spielt
 
-    public State gameState;
-    public State menuState;
+    private Handler handler;                    //Der Handler kümmert sich um das Verteilen von Objektinstanzen innerhalb der Klassen
 
-    private Handler handler;
+    private final KeyManager keyManager;        //Der KeyManager kümmert sich um den Input der Tastatur
+    private final MouseManager mouseManager;    //Der MouseManager kümmert sich um den Input der Maus
+    private GameCamera gameCamera;              //Die GameCamera sorgt dafür, dass der Spieler immer zentriert ist und dass sich die Welt um ihn herumbewegt
+    private final Writer writer;                //Der Writer kümmert sich um das Speichern und Auslesen von Einstellungen und Spielständen
 
-    private KeyManager keyManager;
-    private MouseManager mouseManager;
-    private GameCamera gameCamera;
-    private Writer writer;
+    private Sound sound;                        //Das Sound-objekt kümmert sich um die Wiedergabe von Geräuschen und Musik
 
-    private Sound sound;
-
-    public Game() {
+    public Game() {                             //im Konstruktor von Game werden KeyManager, MouseManager und der Writer initialisiert und das Spiel gestartet
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
         writer = new Writer();
         start();
     }
 
-    private void init(){    //init display & assets
+    private void init(){                        //in init werden alle für tick und render erforderlichen Objekte initialisiert
         display = new Display(writer);
         display.getFrame().addKeyListener(keyManager);
         display.getFrame().addMouseListener(mouseManager);
@@ -65,22 +61,22 @@ public class Game implements Runnable {
         sound.setBackgroundVolume(sound.getBackgroundMinVolume() + (sound.getBackgroundMaxVolume() - sound.getBackgroundMinVolume()) * volume / 100f);
     }
 
-    public void tick() {
+    public void tick() {                        //in tick werden die Physics und die logischen Teile des Spiels mit jedem Frame angepasst und neu berechnet
         keyManager.tick();
         State.getState().tick();
         sound.tick();
         if(keyManager.save)
             writer.writeGameSave(((GameState)gameState).getWorld());
     }
-    long now;
-    public void render() {
+
+    public void render() {                      //in render werden die grafischen Teile des Spiels mit jedem Frame angepasst und neu berechnet
         bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
         g = bs.getDrawGraphics();
-        g.clearRect(0,0, width, height); // Clear Screen
+        g.clearRect(0,0, 1920, 1080); // Clear Screen
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
         //map1.renderTiles(g);
 
@@ -88,14 +84,11 @@ public class Game implements Runnable {
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
         //world.renderTiles(g);
 
-        //now = System.nanoTime();
         bs.show();
-        //System.out.println((System.nanoTime() - now) / 1000000f);
         g.dispose();
-
     }
 
-    public void run() { // run game
+    public void run() {                         //run ist die mit dem Thread verbundene Methode, die tatsächlich das Spiel startet
         init();
 
         boolean debug = false;
@@ -109,7 +102,7 @@ public class Game implements Runnable {
         int ticks = 0;
         long frametime = 0;
 
-        while(running) {    //gameloop
+        while(running) {
             now = System.nanoTime();
             delta += (now - lastTime)  / timePerTick;
             timer += now - lastTime;
@@ -145,6 +138,7 @@ public class Game implements Runnable {
         stop();
     }
 
+    //Getters und Setters
     public Handler getHandler() {
         return handler;
     }
@@ -163,10 +157,8 @@ public class Game implements Runnable {
     public Writer getWriter() {
         return writer;
     }
-    public State getGameState() {
-        return gameState;
-    }
 
+    //start und stop sind logische Methoden aus der Thread Klasse um den Prozess zu steuern
     public synchronized void start() {
         if (running) { return; }
         running = true;

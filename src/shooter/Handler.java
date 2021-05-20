@@ -1,17 +1,16 @@
 package shooter;
 
 import shooter.gfx.GameCamera;
-import shooter.gfx.World;
 import shooter.input.*;
-import shooter.states.GameState;
 
 public class Handler {
-    private Game game;
+    private Game game;                          //game ist die Variable in der der Handler das Spiel speichert
 
-    public Handler(Game game) {
+    public Handler(Game game) {                 //in dem Konstruktor von Handler wird das Spiel übergeben und gespeichert
         this.game = game;
     }
 
+    //Getters und Setters
     public Game getGame() {
         return game;
     }
