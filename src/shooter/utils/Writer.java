@@ -17,17 +17,17 @@ import java.util.Scanner;
 
 public class Writer {
 
-    FileWriter writer;
-    Scanner scanner;
-    File settingFile = new File("res/settings/settings.txt");
-    File gameSaveFile = new File("res/gameSaves/gameSave.txt");
-    ArrayList<Setting> settings = new ArrayList<Setting>();
+    FileWriter writer;                                                      //die Instanz eines FileWriters, der es ermöglicht, Daten und Werte in eine Datei zu speichern
+    Scanner scanner;                                                        //die Instanz eines Scanners, der es ermöglicht, Daten und Werte aus einer Datei auszulesen
+    File settingFile = new File("res/settings/settings.txt");     //die Datei, in der Einstellungen gespeichert werden
+    File gameSaveFile = new File("res/gameSaves/gameSave.txt");   //die Datei, in der der Spielstand gespeichert wird
+    ArrayList<Setting> settings = new ArrayList<Setting>();                 //eine Arraylist, in der kurzfristig Die Einstellungen gespeichert werden
 
-    public Writer(){
+    public Writer(){                                                        //ein leerer Konstruktor für Writer
 
     }
 
-    public float getScale(){
+    public float getScale(){                                                //eine Methode um die Skalierung des Spiels auf die Auflösung von Moritz' Laptop anzupassen
         File scaleFile = new File("C://Users//morit//OneDrive//Documents//GitHub//scale.txt");
         if(scaleFile.exists()){
             return 1.33333333333333f;
@@ -36,7 +36,7 @@ public class Writer {
         }
     }
 
-    public void changeSetting(String name, float value){
+    public void changeSetting(String name, float value){                    //die Methode um eine Einstellung in der ArrayList zu verändern
         //readFromFile(false); //call readfromfile before changing settings to update settings ArrayList
         for(Setting setting : settings){
             if(name.equals(setting.getName())){
@@ -45,7 +45,7 @@ public class Writer {
         }
     }
 
-    public void readSettingsFromFile(boolean print){
+    public void readSettingsFromFile(boolean print){                        //die Methode um alle Einstellungen aus der Datei in die ArrayList einzulesen
         try {
             settings.clear();
             scanner = new Scanner(settingFile);
@@ -77,7 +77,7 @@ public class Writer {
         }
     }
 
-    public float GetSettingValue(String name){
+    public float GetSettingValue(String name){                              //die Methode um den Wert einer einzelnen Einstellung aus der Datei auszulesen
         try {
             scanner = new Scanner(settingFile);
             String fileRead = scanner.nextLine();   //read 1st line
@@ -103,7 +103,7 @@ public class Writer {
         return -1;
     }
 
-    public void writeSettingsToFile(){
+    public void writeSettingsToFile(){                                      //die Methode um alle Einstellungen aus der ArrayList in die Datei zu speichern
         try {
             writer = new FileWriter(settingFile, false);
             for(Setting setting : settings){
@@ -118,7 +118,7 @@ public class Writer {
         }
     }
 
-    public class Setting{
+    public class Setting{                                                   //eine Subklasse um Einstellungen leichter speichern zu können
 
         String name;
         float value;
@@ -145,7 +145,7 @@ public class Writer {
         }
     }
 
-    public World createGame(Handler handler){
+    public World createGame(Handler handler){                               //eine Methode um ein Spiel mithilfe der Datei mit dem Spielstand zu erstelle/laden
         try{
             scanner = new Scanner(gameSaveFile);
             int enemyCount = Integer.parseInt(scanner.nextLine());
@@ -174,7 +174,7 @@ public class Writer {
         }
     }
 
-    public void wipeGame(){
+    public void wipeGame(){                                                 //eine Methode um den Spielstand zu löschen (beim erneuten starten des Spiels wird eine neue Instanz erschaffen
         try{
             writer = new FileWriter(gameSaveFile,false);
             writer.write("-1");
@@ -185,7 +185,7 @@ public class Writer {
         }
     }
 
-    public void writeGameSave(World world){
+    public void writeGameSave(World world){                                 //eine Methode um den Spielstand in die Datei zu speichern
         GameSave gameSave = new GameSave(world);
         try{
             writer = new FileWriter(gameSaveFile,false);
@@ -201,7 +201,7 @@ public class Writer {
         }
     }
 
-    public class GameSave{
+    public class GameSave{                                                  //eine Subklasse um den Spielstand leichter speichern zu können
         private World world;
         private Player player;
         private ArrayList<Entity> enemies;
