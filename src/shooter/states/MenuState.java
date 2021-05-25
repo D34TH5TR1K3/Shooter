@@ -9,10 +9,10 @@ import java.awt.Graphics;
 
 public class MenuState extends State {
 
-    public Menu menu1, menu2;
-    private Menu activeMenu;
+    public Menu menu1, menu2;                       //hier werden die beiden Menüs gespeichert
+    private Menu activeMenu;                        //hier wird gespeichert, welchers Menü gerade aktiv ist
 
-    public MenuState(Game game, Handler handler){
+    public MenuState(Game game, Handler handler){   //hier wird der MenuState und mit ihm seine Menüs initialisiert
         super(game,handler);
         menu1 = new Menu(new String[]{"StartGame", "exit", "ToMenu2", ""}, new String[]{"", "", "", ""}, handler, Assets.menu1, Assets.menu_layout1);
         menu2 = new Menu(new String[]{"ToMainMenu", "VolumeToggle", "GodmodeToggle", "FriendlyFireToggle"}, new String[]{"Volume", "Difficulty", "BulletSpeed", ""}, handler, Assets.menu2, Assets.menu_layout2);
@@ -21,7 +21,7 @@ public class MenuState extends State {
     }
 
     @Override
-    public void tick() {
+    public void tick() {                            //hier wird die Logik des MenuState getickt und entschieden, ob der Nutzer mit dem Menü interagiert
         activeMenu.tick();  // tick active menu and check buttons
         if(activeMenu.funcActive("ToMainMenu")){
             menu2.saveSettings();
@@ -48,11 +48,13 @@ public class MenuState extends State {
             System.exit(0);
         }
     }
+
     @Override
-    public void render(Graphics g){
+    public void render(Graphics g){                 //hier wird das aktive Menü gerendert und angezeigt
         activeMenu.render(g);
     }
 
+    //Getters und Setters
     public Menu getActiveMenu() {
         return activeMenu;
     }
