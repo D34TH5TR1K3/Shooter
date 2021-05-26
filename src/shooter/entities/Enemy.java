@@ -39,8 +39,8 @@ public class Enemy extends Entity{
         item = new Item(posX, posY, gunType, 20, 20, handler, world);
         item.setInActive();
         world.getEntityManager().addItem(item);
-        walkAnimation = new Animation(100, Assets.enemy_walk);
-        walkAnimation_ak = new Animation(100, Assets.enemy_walk_ak);
+        walkAnimation = new Animation(Assets.enemy_walk,100);
+        walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100);
         activeAnimation = walkAnimation_ak;
     }
 

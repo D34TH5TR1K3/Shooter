@@ -10,12 +10,12 @@ import javax.swing.JFrame;
 
 public class Display {
 
-    private JFrame frame;
-    private Canvas canvas;
-    private Writer writer;
-    public static Font fraktur;
+    private JFrame frame;           //hier wird der JFrame gespeichert, der ein Fenster erzeugt
+    private Canvas canvas;          //hier wird der Canvas gespeichert, auf dem das Graphics-Objekt Dinge projezieren kann
+    private final Writer writer;    //hier wird der Writer gespeichert
+    public static Font fraktur;     //hier wird der Font gespeichert
 
-    public Display(Writer writer) {
+    public Display(Writer writer) { //im Konstruktor wird das Display erzeugt und der Font initialisiert
         this.writer = writer;
         createDisplay();
         try{
@@ -29,7 +29,7 @@ public class Display {
         }
     }
 
-    public void createDisplay() {
+    public void createDisplay() {   //hier wird das Fenster und der Canvas erzeugt und zusammengeführt
 
         //set window scaling independently from windows scaling
         //100% for 1080p; 150% for 1440p;
@@ -66,6 +66,7 @@ public class Display {
         frame.pack();
     }
 
+    //Getters
     public JFrame getFrame() { return frame; }
     public Canvas getCanvas() { return canvas; }
 }

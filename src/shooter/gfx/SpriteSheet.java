@@ -3,13 +3,13 @@ package shooter.gfx;
 import java.awt.image.BufferedImage;
 
 public class SpriteSheet {
-    private BufferedImage sheet;
+    private final BufferedImage sheet;                      //hier wird das Spritesheet als eigenes Bild gespeichert
 
-    public SpriteSheet(BufferedImage sheet) {
+    public SpriteSheet(BufferedImage sheet) {               //im Konstruktor wird das SpriteSheet initialisiert
         this.sheet = sheet;
     }
 
-    public BufferedImage crop(int x, int y, int width, int height) {
-        return sheet.getSubimage(x,y,width,height);
+    public BufferedImage crop(int x, int y, int w, int h) { //crop gibt ein aus dem SpriteSheet herausgeschnittenes Bild zurück
+        return sheet.getSubimage(x,y,w,h);
     }
 }

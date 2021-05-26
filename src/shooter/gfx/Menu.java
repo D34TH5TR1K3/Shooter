@@ -457,10 +457,12 @@ public class Menu {
 
     public class Point{ // stores color and coordinates of points
 
+        //hier werden die Werte für Farben und Position des Punktes gespeichert
         int red, green, blue;
         int X, Y;
         int color;
 
+        //im Konstruktor werden die Werte für Farben und Position gespeichert
         public Point(int red, int green, int blue, int X, int Y, int color){
             this.color = color;
             this.red = red;
@@ -470,6 +472,7 @@ public class Menu {
             this.Y = Y;
         }
 
+        //Getters
         public int getRed() {
             return red;
         }

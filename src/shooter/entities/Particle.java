@@ -30,7 +30,7 @@ public class Particle{
         this.frames = frames;
         this.handler = handler;
         this.world = world;
-        AnimParticle = new Animation(speed, frames);
+        AnimParticle = new Animation(frames,speed);
     }
     public Particle(int x, int y, int speed, float dir, BufferedImage frame, Handler handler, World world){
         this.x = x;
@@ -66,7 +66,7 @@ public class Particle{
         this.frames = frames;
         this.handler = handler;
         this.world = world;
-        AnimParticle = new Animation(speed, frames);
+        AnimParticle = new Animation(frames,speed);
     }
     public void tick(){
         timeLeftToLive--;

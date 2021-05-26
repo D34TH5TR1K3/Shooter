@@ -3,56 +3,40 @@ package shooter.gfx;
 import java.awt.image.BufferedImage;
 
 public class Animation {
-    private int speed, index;
-    private long lastTime, timer;
-    private BufferedImage[] frames;
-    private boolean active = true;
+    private int speed, index = 0;                           //hier wird die Geschwindigkeit der Animation gespeichert und bei welchem Bild der Animation wir uns befinden
+    private long lastTime;                                  //hier wird gespeichert, wann sich die Animation das letzte Mal bewegt hat
+    private final BufferedImage[] frames;                   //hier werden die Bilder der Animation gespeichert
+    private boolean active = true;                          //hier wird gespeichert, ob sich die Animation gaerade bewegt
 
-    public Animation(int speed, BufferedImage[] frames) {
+    public Animation(BufferedImage[] frames, int speed) {   //im Konstruktor werden speed, frames und lastTime initialisiert
         this.speed = speed;
         this.frames = frames;
-        index = 0;
-        timer = 0;
-        lastTime = System.currentTimeMillis();
-    }
-    public Animation(BufferedImage[] frames, int rpm) {
-        this.speed = speed;
-        this.frames = frames;
-        index = 0;
-        timer = 0;
         lastTime = System.currentTimeMillis();
     }
 
-    public void stop() {
+    public void stop() {                                    //in stop wird die Animation angehalten
         active = false;
     }
 
-    public void start() {
+    public void start() {                                   //in start wird die Animation gestartet
         if(!active)
             index = 0;
         active = true;
     }
 
-    public void tick() {
-        if(System.currentTimeMillis()	- lastTime > speed) {
+    public void tick() {                                    //in tick wird, wenn nötig das nächste Bild der Animation angezeigt
+        if(System.currentTimeMillis() - lastTime > speed) {
             index++;
             lastTime = System.currentTimeMillis();
-            if(index >= frames.length)
-                index = 0;
+            if(index >= frames.length) index = 0;
         }
     }
 
-    public boolean lastFrame() {
-        if(index == frames.length-1)
-            return true;
-        else
-            return false;
+    public boolean lastFrame() {                            //hier wird zurückgegeben ob die Animation den letzten Frame erreicht hat
+        return index == frames.length - 1;
     }
 
-    public BufferedImage getCurrentFrame() {
-        if(active)
-            return frames[index];
-        else
-            return frames[0];
+    public BufferedImage getCurrentFrame() {                //hier wird der derzeitige Frame ausgegeben
+        return (active) ? frames[index] : frames[0];
     }
 }

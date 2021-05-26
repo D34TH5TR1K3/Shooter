@@ -35,8 +35,8 @@ public class Player extends Entity{
         }
         //TODO automatically create hitbox by looking at player image and scanning for pixels not transparent
         // every anmiation has to be initialized here
-        walkAnimation = new Animation(100, Assets.enemy_walk);
-        walkAnimation_ak = new Animation(100, Assets.enemy_walk_ak);
+        walkAnimation = new Animation(Assets.enemy_walk,100);
+        walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100);
         activeAnimation = walkAnimation;
     }
 
