@@ -1,7 +1,6 @@
 package shooter.gfx;
 
 import shooter.Handler;
-import shooter.states.MenuState;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,15 +10,16 @@ import static shooter.gfx.Display.fraktur;
 
 public class Menu {
 
-    private ArrayList<Point> points; //Point for rectangle that makes a Button
-    private ArrayList<Button> buttons; //store rectangles
-    private ArrayList<Slider> sliders;
-    private ArrayList<Rectangle> renderRects;
-    Handler handler;
-    BufferedImage menu, menu_layout;
-    String[] actionButtons, actionSliders;
-    private boolean debug = false;
+    private ArrayList<Point> points;            //eine ArrayList mit allen Punkten
+    private ArrayList<Button> buttons;          //eine ArrayList mit allen Knöpfen
+    private ArrayList<Slider> sliders;          //eine ArrayList mit allen Sliders
+    private ArrayList<Rectangle> renderRects;   //eine ArrayList mit allen Rechtecken, die gerendert werden müssen
+    Handler handler;                            //hier wird der Handler zwischengespeichert
+    BufferedImage menu, menu_layout;            //hier wird die Struktur des Menüs gespeichert, die dann später vom Programm ausgelesen wird
+    String[] actionButtons, actionSliders;      //hier werden die Funktionen für die Knöpfe gespeichert
+    private final boolean debug = false;        //ob man sich im Debug-Modus befindet oder nicht
 
+    //im Konstruktor wird das Menü und mit ihm seine Variablen initialisiert
     public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
         this.actionButtons = actionButtons;
         this.actionSliders = actionSliders;
@@ -33,6 +33,7 @@ public class Menu {
         readMenu();
     }
 
+    //Getters
     public float getSliderValue(String func){
         for(Slider slider : sliders){
             if(slider.getFunc() == func){
@@ -51,7 +52,7 @@ public class Menu {
         return -1;
     }
 
-    public void readMenu(){ // reads the menu and places rectangles on the buttons
+    public void readMenu(){                 //hier wird das Menü eingelesen und die Rechtecke platziert
         int indexButton = 0;
         int indexSlider = 0;
         //TODO: read slider min and max etc from txt file since we know in which order they are read in
@@ -104,7 +105,7 @@ public class Menu {
         //System.out.println(buttons.size());
     }
 
-    public boolean funcActive(String func){
+    public boolean funcActive(String func){ //hier wird geprüft, ob ein Knopf mit der übergebenen Funktion aktiv ist
         for(Button button : buttons){
             if(button.getFunc() == func && button.isActive()){
                 return true;
@@ -118,7 +119,7 @@ public class Menu {
         return false;
     }
 
-    public void tick(){
+    public void tick(){                     //in tick wird die Logik der Knöpfe und Slider getickt
         Rectangle rect = new Rectangle(handler.getMouseManager().getMouseX(), handler.getMouseManager().getMouseY(), 1, 1);
         //System.out.print(handler.getMouseManager().getMouseX()+"    ");
         //System.out.println(handler.getMouseManager().getMouseY());
@@ -158,7 +159,7 @@ public class Menu {
         }
     }
 
-    public void render(Graphics g){
+    public void render(Graphics g){         //in render werden die Knöpfe, die Slider und das Hintergrundbild gerendert
         g.drawImage(menu, 0, 0, 1920, 1080, null);
 
         Color color = new Color(100, 100, 100, 180);
@@ -225,7 +226,7 @@ public class Menu {
         //}
     }
 
-    public void saveSettings(){
+    public void saveSettings(){             //hier werden die Änderungen an den Einstellungen gespeichert, die mit den Knöpfen und Slidern festgelegt werden
         handler.getGame().getWriter().readSettingsFromFile(false);
         for(Slider slider : sliders){
             handler.getGame().getWriter().changeSetting(slider.getFunc(), slider.getValue());
@@ -238,7 +239,7 @@ public class Menu {
         handler.getGame().getWriter().writeSettingsToFile();
     }
 
-    public void toggleButton(String func){
+    public void toggleButton(String func){  //hier wird der Wert des Knopfes invertiert
         for(Button button : buttons){
             if(button.getFunc() == func){
                 button.toggle();
@@ -246,24 +247,22 @@ public class Menu {
         }
     }
 
-    public class Slider{  //stores sliders of menu
-        boolean active = false;
-        String func;
-        int index;
-        float xc, yc;
-        float  value, min, max, def;
-        int color;
-        int x, y, width, height;
-        int xo, yo, xu, yu; //x unten y unten x oben y oben
-        Rectangle rect;
-        public Slider(int index, int x1, int y1, int x2, int y2, int color){
+    public class Slider{
+        boolean active = false;                                                 //ob der Knopf gerendert und getickt werden muss
+        String func;                                                            //die Funktion, die der Knopf erfüllt
+        int index;                                                              //der Index, die Nummer des Knopfes
+        float value, min, max, def;                                             //hier werdend er Wert des Sliders, die Grenzen des Wertes und der Standard gespeichert
+        int color;                                                              //hier wird die Farbe des Sliders gespeichert
+        int xo, yo, xu, yu;                                                     //die Poistionen der oberen linken und unteren rechten Ecke
+        Rectangle rect;                                                         //ein Rechteck mit den Maßen des Sliders
+        public Slider(int index, int x1, int y1, int x2, int y2, int color){    //im Konstruktor wird der Slider erstellt und die Werte initialisiert
             this.index = index;
             this.color = color;
             createSlider(x1, y1, x2, y2);
         }
 
         public void setValuePixel(int pixel){
-            int tempvalue = (int)((float)(pixel - xo*10) / (float)(xu*10 - xo*10) * max);
+            int tempvalue = (int)((float)(pixel - xo*10) / (xu - xo) * max * 10);
             if(tempvalue >= min && tempvalue <= max){
                 value = tempvalue;
             }
@@ -276,7 +275,7 @@ public class Menu {
             this.value = def;
         }
 
-        public void createSlider(int x1, int y1, int x2, int y2){
+        public void createSlider(int x1, int y1, int x2, int y2){               //erstellt einen neuen Slider mit den übergebenen Koordinaten
             if(x1 < x2){
                 xo = x1;
                 xu = x2;
@@ -295,6 +294,7 @@ public class Menu {
             rect = new Rectangle(xo*10, yo*10, xu*10 - xo*10, yu*10 - yo*10);
         }
 
+        //Getters und Setters
         public Rectangle getRect() {
             return rect;
         }
@@ -311,12 +311,20 @@ public class Menu {
             return yo;
         }
 
+        public int getXu() {
+            return xu;
+        }
+
+        public int getYu() {
+            return yu;
+        }
+
         public float getXc() {
-            return ((float)(value) / (float)(max)) * (xu*10 - xo*10) + xo*10; // get center of slider
+            return value / max * (xu - xo) * 10 + xo*10;
         }
 
         public float getYc() {
-            return ((yu*10 - yo*10) / 2) + yo*10;
+            return yu * 5 - yo * 5 + yo * 10;
         }
 
         public boolean isActive() {
@@ -338,41 +346,32 @@ public class Menu {
         public void setFunc(String func) {
             this.func = func;
         }
-
-        public int getXu() {
-            return xu;
-        }
-
-        public int getYu() {
-            return yu;
-        }
     }
 
-    public class Button{ // Stores rectangle of every button
+    public class Button{
         float value = -1.0f;//  default value -1.0f if button isn't used to toggle stuff (i.e. change menu)
                             //  Button value will only be written to settings.txt if value != -1.0f
-        boolean highlighted = false;
-        boolean active = false;
-        String func;
-        int color;
-        int index;
-        int x, y, width, height;
-        int xo, yo, xu, yu; //x unten y unten x oben y oben
-        Rectangle rect;
-        public Button(int index, int x1, int y1, int x2, int y2, int color){
+        boolean highlighted = false;                                            //hier wird gespeichert, ob der Knopf anders gerendert werden muss
+        boolean active = false;                                                 //hier wird gespeichert, ob der Knopf gerendert und getickt werden muss
+        String func;                                                            //hier wird gespeichert, was für eine Funktion der Knopf erfüllt
+        int color;                                                              //die Farbe des Knopfes
+        int index;                                                              //der Index, die Nummer des Knopfes
+        int xo, yo, xu, yu;                                                     //die Poistionen der oberen linken und unteren rechten Ecke
+        Rectangle rect;                                                         //ein Rechteck mit den Maßen des Knopfes
+        public Button(int index, int x1, int y1, int x2, int y2, int color){    //im Konstruktor wird ein Knopf erstellt und die Werte initialisiert
             this.index = index;
             this.color = color;
             createButton(x1, y1, x2, y2);
         }
 
-        public void toggle(){
+        public void toggle(){                                                   //eine Funktion um den Wert eines Knopfes zu invertieren
             if(value == 1f)
                 value = 0f;
             else if(value == 0f)
                 value = 1f;
         }
 
-        public void createButton(int x1, int y1, int x2, int y2){
+        public void createButton(int x1, int y1, int x2, int y2){               //erstellt einen neuen Knopf mit den übergebenen Koordinaten
             if(x1 < x2){
                 xo = x1;
                 xu = x2;
@@ -390,20 +389,13 @@ public class Menu {
             rect = new Rectangle(xo + 1, yo + 1, xu - xo - 1, yu - yo - 1);
         }
 
+        //Getters und Setters
         public Rectangle getRect() {
             return rect;
         }
 
         public int getIndex() {
             return index;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
         }
 
         public int getXo() {
@@ -455,7 +447,7 @@ public class Menu {
         }
     }
 
-    public class Point{ // stores color and coordinates of points
+    public class Point{
 
         //hier werden die Werte für Farben und Position des Punktes gespeichert
         int red, green, blue;
