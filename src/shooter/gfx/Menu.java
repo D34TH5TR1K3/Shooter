@@ -262,7 +262,7 @@ public class Menu {
         }
 
         public void setValuePixel(int pixel){
-            int tempvalue = (int)((float)(pixel - xo*10) / (xu - xo) * max * 10);
+            int tempvalue = (int)((float)(pixel - xo*10) / ((xu - xo) * 10) * max);
             if(tempvalue >= min && tempvalue <= max){
                 value = tempvalue;
             }
@@ -320,7 +320,7 @@ public class Menu {
         }
 
         public float getXc() {
-            return value / max * (xu - xo) * 10 + xo*10;
+            return value / max * (xu - xo) * 10 + xo * 10;
         }
 
         public float getYc() {
