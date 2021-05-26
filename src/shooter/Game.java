@@ -58,7 +58,7 @@ public class Game implements Runnable {
             sound.playBackgroundMusic();
         }
         float volume = writer.GetSettingValue("Volume");
-        sound.setBackgroundVolume(sound.getBackgroundMinVolume() + (sound.getBackgroundMaxVolume() - sound.getBackgroundMinVolume()) * volume / 100f);
+        sound.setBgVol(sound.getBgVolMin() + (sound.getBgVolMax() - sound.getBgVolMin()) * volume / 100f);
     }
 
     public void tick() {                        //in tick werden die Physics und die logischen Teile des Spiels mit jedem Frame angepasst und neu berechnet

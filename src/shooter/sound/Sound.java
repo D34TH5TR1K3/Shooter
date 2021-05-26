@@ -3,157 +3,101 @@ package shooter.sound;
 import java.io.File;
 import java.io.IOException;
 
-
-
 import javax.sound.sampled.*;
 
-public class Sound {
-    static File soundResult;
-    private Clip Bclip; //Backgroundclip
-    private int LengthBClip;
-    private float BackgroundMaxVolume = -15f, BackgroundMinVolume = -35f, currentBackgroundVolume = -40f;
-    private boolean BackgroundActive = false;
-    static File url;
+import java.util.Map;
 
+public class Sound {
+    private Clip BgClip;
+    private int BgClipLen;
+    private float BgVolMax = -15f, BgVolMin = -35f, BgVol = -40f;
+    private boolean BgActive = false;
+    private static final Map<String,File> sounds = Map.of(
+            "Shotgun", new File("res/sound/Shotgun.wav"),
+            "RocketExplode", new File("res/sound/RocketExplode.wav"),
+            "RocketLaunch", new File("res/sound/RocketLaunch.wav"),
+            "Uzi", new File("res/sound/Uzi.wav"),
+            "Ak", new File("res/sound/AK.wav")
+    );
+    private static final File[] songs = {
+            new File("res/sound/110.wav"),
+            new File("res/sound/Abyss.wav"),
+            new File("res/sound/HotlineTheme.wav"),
+            new File("res/sound/Reihe.wav"),
+            new File("res/sound/sxtn.wav"),
+            new File("res/sound/Vermissen.wav")
+    };
     public Sound() {
 
     }
     public static void play(String Name){       //Method to play using a name, selection via switch case
-        switch (Name){
-            case "Shotgun":
-                soundResult = new File("res/sound/Shotgun.wav");  //TODO add path
-                break;
-            case "RocketExplode":
-                soundResult = new File("res/sound/RocketExplode.wav");  //TODO add path
-                break;
-            case "RocketLaunch":
-                soundResult = new File("res/sound/RocketLaunch.wav");  //TODO add path
-                break;
-            case "Uzi":
-                soundResult = new File("res/sound/sndUzi.wav");
-                break;
-            case "Ak":
-                soundResult = new File("res/sound/AK.wav");
-                break;
-            default:
-                soundResult = new File("res/sound/sxtn.wav"); //TODO add default file path
-                break;
-        }
-
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundResult);
-
             Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
+            clip.open(AudioSystem.getAudioInputStream(sounds.get(Name)));
 
-            FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(-20f);
+            ((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(-20f);
 
             clip.start();
 
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void playBackgroundMusic(){              //Method to play backgroundmusic
-        //System.out.println("playing background muisc");
-        BackgroundActive = true;
-        int number = (int)(Math.random()*4.0f);
-        switch (number){
-            case 0:
-                soundResult = new File("res/sound/Abyss.wav");
-                break;
-            case 1:
-                soundResult = new File("res/sound/Abyss.wav");
-                break;
-            case 2:
-                soundResult = new File("res/sound/Abyss.wav");
-                break;
-            case 3:
-                soundResult = new File("res/sound/HotlineTheme.wav");
-                break;
-            default:
-                soundResult = new File("res/sound/HotlineTheme.wav");
-                break;
-        }
+    public void playBackgroundMusic(){
+        if(BgClip!=null) BgClip.stop();
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundResult);
+            BgClip = AudioSystem.getClip();
+            BgClip.open(AudioSystem.getAudioInputStream(songs[(int)(Math.random()*songs.length)]));
 
-             Bclip = AudioSystem.getClip();
-            Bclip.open(audioInputStream);
+            ((FloatControl) BgClip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(BgVol);
 
-            FloatControl volume = (FloatControl) Bclip.getControl(FloatControl.Type.MASTER_GAIN);
-            volume.setValue(currentBackgroundVolume);
+            BgClip.start();
+            BgActive = true;
+            BgClipLen = BgClip.getFrameLength();
 
-            Bclip.start();
-            LengthBClip = Bclip.getFrameLength();
-
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();
         }
     }
 
     public void tick(){
-        checkPlaying();
+        if ((float) BgClip.getFramePosition()/ BgClipLen > 0.99f) playBackgroundMusic();
     }
 
-    public void toggleSound(float value){
-        if(value == 1 && BackgroundActive == false && Bclip == null){
+    public void toggleSound(boolean val){
+        if(val && BgClip == null) {
             playBackgroundMusic();
-        }else if(value == 1 && BackgroundActive == false)
-            Bclip.start();
-            BackgroundActive = true;
-        if(value == 0 && BackgroundActive == true && Bclip != null)
-            Bclip.stop();
-            BackgroundActive = false;
-    }
-
-    public void setBackgroundVolume(Float value) {        //Set Background Volume
-        if(Bclip != null) {
-            if (value <= BackgroundMaxVolume) {
-                FloatControl volume = (FloatControl) Bclip.getControl(FloatControl.Type.MASTER_GAIN);
-                volume.setValue(value);
-                currentBackgroundVolume = value;
-            } else {
-                System.out.println("VOLUME EXCEEDS MAX_VOLUME");
-            }
-        }else{
-            currentBackgroundVolume = value;
+            return;
         }
+        if(val && !BgActive) BgClip.start();
+        if(!val && BgActive) BgClip.stop();
+        BgActive ^= true;
     }
 
-    public void checkPlaying(){                                             //Check if Backgroundmusic is playing TODO:Smoother?!
-        if(Bclip != null) {
-            if ((float) (Bclip.getFramePosition()) / (float) (LengthBClip) > 0.99f) {
-                Bclip.stop();
-                BackgroundActive = false;
-                playBackgroundMusic();
-            }
+    //Getters und Setters
+    public void setBgVol(Float value) {
+        if(value > BgVolMax) {
+            System.out.println("VOLUME EXCEEDS MAX_VOLUME");
+            return;
         }
+        else if(BgClip != null) ((FloatControl) BgClip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(value);
+        BgVol = value;
     }
 
-    public float getBackgroundMaxVolume() {
-        return BackgroundMaxVolume;
+    public float getBgVolMax() {
+        return BgVolMax;
     }
 
-    public void setBackgroundMaxVolume(float backgroundMaxVolume) {
-        BackgroundMaxVolume = backgroundMaxVolume;
+    public void setBgVolMax(float bgVolMax) {
+        BgVolMax = bgVolMax;
     }
 
-    public float getBackgroundMinVolume() {
-        return BackgroundMinVolume;
+    public float getBgVolMin() {
+        return BgVolMin;
     }
 
-    public void setBackgroundMinVolume(float backgroundMinVolume) {
-        BackgroundMinVolume = backgroundMinVolume;
+    public void setBgVolMin(float bgVolMin) {
+        BgVolMin = bgVolMin;
     }
 }

@@ -33,7 +33,7 @@ public class MenuState extends State {
 
         }else if(activeMenu.funcActive("VolumeToggle")){
            menu2.toggleButton("VolumeToggle");
-           game.getSound().toggleSound(menu2.getButtonValue("VolumeToggle"));
+           game.getSound().toggleSound(menu2.getButtonValue("VolumeToggle")>0);
         }else if(activeMenu.funcActive("GodmodeToggle")){
             menu2.toggleButton("GodmodeToggle");
 
@@ -43,7 +43,7 @@ public class MenuState extends State {
         }else if(activeMenu.funcActive("Volume")){
             float volume = menu2.getSliderValue("Volume");
             //System.out.println(game.getSound().getBackgroundMinVolume() + (game.getSound().getBackgroundMaxVolume() - game.getSound().getBackgroundMinVolume()) * volume / 100f);
-            game.getSound().setBackgroundVolume(game.getSound().getBackgroundMinVolume() + (game.getSound().getBackgroundMaxVolume() - game.getSound().getBackgroundMinVolume()) * volume / 100f);
+            game.getSound().setBgVol(game.getSound().getBgVolMin() + (game.getSound().getBgVolMax() - game.getSound().getBgVolMin()) * volume / 100f);
         }else if(activeMenu.funcActive("exit")){
             System.exit(0);
         }
