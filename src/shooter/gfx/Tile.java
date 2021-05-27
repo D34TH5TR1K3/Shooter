@@ -3,6 +3,7 @@ package shooter.gfx;
 import java.awt.*;
 
 public class Tile {
+    //hier werden Variablen gespeichert, die für den A*-Algorithmus gebraucht werden
     private Tile parent;
     private int hCost = 0;
     private int gCost = 0;
@@ -10,20 +11,21 @@ public class Tile {
     private boolean visited = false;
     private boolean closed = false;
 
-    private boolean isSolid = false;
-    private boolean isHalfSolid = false;
-    private int width = 30, height = 30;
-    private int TposX, TposY; // T... means tile coordinate; T... * tilesize (30) = normal coordinate
-    private Rectangle hitbox;
-    private Color color = Color.green;
+    private boolean isSolid;                    //hier wird egspeichert, ob das Tile solide ist
+    private boolean isHalfSolid = false;        //hier wird gespeichert, ob das Tile halbsolide ist (hilfreich für KI-Bewegung)
+    private int width = 30, height = 30;        //hier wird die Größe des Tiles gespeichert
+    private int TposX, TposY;                   //hier wird in Tile-Größen gespeichert, an welcher Position sich das Tile befindet
+    private Rectangle hitbox;                   //hier wird die Hitbox gespeichert, mit der später überprüft wird, ob eine Kollision stattgefunden hat
+    private Color color = Color.green;          //hier wird die Farbe gespeichert, die das Tile später haben soll
 
-    public Tile(int x, int y, boolean isSolid){
+    public Tile(int x, int y, boolean isSolid){ //im Konstruktor wird festgelegt, wo das Tile liegt und ob es Solid ist
         this.TposX = x;
         this.TposY = y;
         this.isSolid = isSolid;
         hitbox = new Rectangle(TposX * 30, TposY * 30, width, height);
     }
 
+    //Getters und Setters
     public boolean isSolid() {
         return isSolid;
     }

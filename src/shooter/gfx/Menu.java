@@ -57,21 +57,20 @@ public class Menu {
         int indexSlider = 0;
         //TODO: read slider min and max etc from txt file since we know in which order they are read in
 
-        for(int y = 0; y < 108; y++){ // iterates through every pixel
+        for(int y = 0; y < 108; y++){
             for(int x = 0; x < 192; x++){
-                Color color = new Color(menu_layout.getRGB(x, y)); // gets color of every pixel
+                Color color = new Color(menu_layout.getRGB(x, y));
                 int red = color.getRed();
                 int green = color.getGreen();
                 int blue = color.getBlue();
                 int colorint = color.getRGB();
-                if(red > 1 || green > 1 || blue > 1){ // if color != black -> create new point with color and coordinates
+                if(red > 1 || green > 1 || blue > 1){
                     Point point = new Point(red, green, blue, x, y, colorint);
                     points.add(point);
-                    //System.out.println(red+"\t"+green+"\t"+blue+"\t"+x+"\t"+y+"\t"+colorint);
                 }
             }
         }
-        while(points.size() > 0){   //Creates rectangles from points of same color
+        while(points.size() > 0){
             Point point1 = points.get(0);
             points.remove(point1);
             for(Point point2 : points){
@@ -87,7 +86,6 @@ public class Menu {
                     }else{
                         Slider slider1 = new Slider(indexSlider, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
                         slider1.setFunc(actionSliders[indexSlider]);
-                        //  get current slider value from settings.txt
                         float deftemp = handler.getGame().getWriter().GetSettingValue(actionSliders[indexSlider]);
 
                         indexSlider++;
@@ -96,13 +94,10 @@ public class Menu {
                     }
 
                     points.remove(point2);
-                    //System.out.println(points.size());
                     break;
                 }
             }
         }
-
-        //System.out.println(buttons.size());
     }
 
     public boolean funcActive(String func){ //hier wird geprüft, ob ein Knopf mit der übergebenen Funktion aktiv ist
@@ -121,8 +116,6 @@ public class Menu {
 
     public void tick(){                     //in tick wird die Logik der Knöpfe und Slider getickt
         Rectangle rect = new Rectangle(handler.getMouseManager().getMouseX(), handler.getMouseManager().getMouseY(), 1, 1);
-        //System.out.print(handler.getMouseManager().getMouseX()+"    ");
-        //System.out.println(handler.getMouseManager().getMouseY());
 
         renderRects.clear();
         for(Button button : buttons){
@@ -138,7 +131,6 @@ public class Menu {
             }if(uprect.intersects(rect) && !handler.getMouseManager().isLeftPressed() && button.isHighlighted()){
                 button.setHighlighted(false);
                 button.setActive(true);
-                //System.out.println("set active menu2");
             }
         }
         for(Slider slider : sliders){
@@ -148,13 +140,7 @@ public class Menu {
             if(slider.isActive() || (Math.sqrt(Math.pow(slider.getXc() - handler.getMouseManager().getMouseX(), 2) +
                     Math.pow(slider.getYc() - handler.getMouseManager().getMouseY(), 2)) < 20 || slider.getRect().intersects(rect)) && handler.getMouseManager().isLeftPressed()){
                 slider.setActive(true);
-                //System.out.println(slider.getValue());
                 slider.setValuePixel(handler.getMouseManager().getMouseX());
-                //slider.setValuePixel(800);
-                //System.out.print(handler.getMouseManager().getMouseX()+"    ");
-                //System.out.println(handler.getMouseManager().getMouseY());
-                //System.out.println(slider.getValue());
-                //System.out.println("intersect");
             }
         }
     }
@@ -180,7 +166,6 @@ public class Menu {
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);   //antialiasing for font
                 g2d.setFont(fraktur);
                 g2d.setColor(Color.black);
-                //g.setFont(new Font("Monospaced", Font.PLAIN, 36));
                 g2d.drawString(String.valueOf(button.getIndex()), button.getXo() * 10 + 5, button.getYo() * 10 + 5);
                 g2d.setColor(Color.green);
                 g2d.drawString(String.valueOf(button.getIndex()), button.getXo() * 10, button.getYo() * 10);
@@ -192,38 +177,19 @@ public class Menu {
                 g.setColor(Color.black);
                 g.drawString(String.valueOf(slider.getIndex()), slider.getXo() * 10 + 5, slider.getYo() * 10 + 5);
                 g.setColor(Color.green);
-                //g.setFont(new Font("Monospaced", Font.PLAIN, 36));
                 g.drawString(String.valueOf(slider.getIndex()), slider.getXo() * 10, slider.getYo() * 10);
             }
-            //System.out.println(slider.getXo()+"   "+slider.getXu()+"   "+slider.getYo()+"   "+slider.getYu()+"   "+slider.getValue()+"   "+slider.getMax()+"   "+slider.getMin());
             float xc = slider.getXc();
             float yc = slider.getYc();
-
-            //System.out.println(xc);
-            //System.out.println(yc);
-
-            //  draw rectangle over slider
-            //g.setColor(color);
-            //Rectangle rect = slider.getRect();
-            //g.fillRect((int)(rect.getX()), (int)(rect.getY()), (int)(rect.getWidth()), (int)(rect.getHeight()));
-
             g.drawImage(Assets.sliderKnob, (int)(xc-30), (int)(yc-30), null);
-            //g.setColor(Color.white);
-            //g.fillOval((int)(xc) - 22, (int)(yc) - 22, 44, 44);
-            //g.setColor(Color.cyan);
-            //g.fillOval((int)(xc) - 20, (int)(yc) - 20, 40, 40);
             Graphics2D g2d = (Graphics2D)g;
             g2d.setFont(fraktur);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setColor(Color.black);
             g.drawString(String.valueOf(slider.getValue()), slider.getXu()*10 + 5, slider.getYu()*10 - 10);
             g.setColor(Color.cyan);
-            //g.setFont(new Font("Monospaced", Font.PLAIN, 36));
             g.drawString(String.valueOf(slider.getValue()), slider.getXu()*10, slider.getYu()*10 - 15);
         }
-        //for(Button button : buttons){
-        //    g.fillRect((int)(10* button.getRect().getX()), (int)(10* button.getRect().getY()), (int)(10* button.getRect().getWidth()), (int)(10* button.getRect().getHeight()));
-        //}
     }
 
     public void saveSettings(){             //hier werden die Änderungen an den Einstellungen gespeichert, die mit den Knöpfen und Slidern festgelegt werden
