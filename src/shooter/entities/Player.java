@@ -11,16 +11,18 @@ import shooter.gfx.World;
 import static shooter.gfx.Display.fraktur;
 
 public class Player extends Entity{
-    private Rectangle hitbox;
-    private int velX = 0, velY = 0;   //velocity in x and y direction
-    private int velXmax = 10, velYmax = 10;   //maximum velocity
-    private int imageWidth = 50, imageHeight = 50;
-    private Item item;
-    private Animation walkAnimation, walkAnimation_ak;
-    private boolean ableToPickup = true;   //Prevents loop of picking up and dropping items when button held down. Will reset if button is released
+    private Rectangle hitbox;                                                       //hier wird die Hitbox gespeichert, mit der wir Kollisionen berechnen können
+    //velocities wurden implementiert um angenehme Bewegung zu ermöglichen
+    private int velX = 0, velY = 0;
+    private int velXmax = 10, velYmax = 10;
+    private int imageWidth = 50, imageHeight = 50;                                  //die Größe des Bildes, das gerendert werden soll
+    private Item item;                                                              //das derzeit ausgerüstete Item
+    private Animation walkAnimation, walkAnimation_ak;                              //die Animationen des Spielers mit und ohne verschiedenen Waffen
+    //nötig um den Spieler daran zu hindern Waffen mit jedem Tick aufzuheben und fallenzulassen, wenn er die rechte Maustaste gedrpckt hält
+    private boolean ableToPickup = true;
     private boolean ableToDrop = true;
 
-    public Player(int posX, int posY, float dir, Handler handler, World world) {
+    public Player(int posX, int posY, float dir, Handler handler, World world) {    //im Konstruktor wird der Spieler inklusive Hitbox, Animation, etc. initialisiert
         super(posX, posY, 4,dir, handler, world);
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         item = new Item(posX, posY, 3, 20, 20, handler, world); //temporary
@@ -41,8 +43,7 @@ public class Player extends Entity{
     }
 
     @Override
-    public void tick() {
-        //System.out.println(posX+"  "+posY);
+    public void tick() {                                                            //in tick wird die Animation, Spielerinput und andere Logik getickt
         if(item != null) {
             switch (item.getType()) {
                 case 1:
@@ -140,7 +141,7 @@ public class Player extends Entity{
         handler.getGameCamera().centerOnEntity(this);
     }
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics g) {                                                //in render werden der Spieler und der Munitionszähler gerendert
         //System.out.println("Position"+posX+"\t"+posY);
         //System.out.println("Offset"+handler.getxOffset()+"\t"+ handler.getyOffset());
 
@@ -162,6 +163,7 @@ public class Player extends Entity{
         //TODO render Player
     }
 
+    //Getters und Setters
     public Item getItem(){
         return item;
     }

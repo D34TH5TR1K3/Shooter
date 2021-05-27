@@ -32,7 +32,7 @@ public class Enemy extends Entity{
     private Item item;
     private Animation walkAnimation, walkAnimation_ak;
 
-    public Enemy(int posX, int posY, int dir, int gunType, Handler handler, World world) {
+    public Enemy(int posX, int posY, int dir, int gunType, Handler handler, World world) {  //im Konstruktor werden die Position und die Animation des Gegners initialisiert
         super(posX, posY, 4, dir, handler, world);
         this.setActive();
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
@@ -326,6 +326,8 @@ public class Enemy extends Entity{
 
         //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE);
     }
+
+    //Getters
     public Rectangle getHitbox(){
         return hitbox;
     }

@@ -2,9 +2,7 @@ package shooter.entities;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.RoundRectangle2D;
 
-import org.w3c.dom.css.Rect;
 import shooter.Handler;
 import shooter.gfx.Animation;
 import shooter.gfx.Assets;
@@ -12,11 +10,11 @@ import shooter.gfx.World;
 import shooter.sound.Sound;
 
 public class Bullet extends Entity {
-    private float speed = 25;
-    private int type = 1;
-    Animation animation;
+    private float speed = 25;                                                                               //hier wird die Geschwindigkeit der Bullet gespeichert
+    private int type = 1;                                                                                   //hier wird die Position der Bullet gespeichert
+    Animation animation;                                                                                    //hier wird die Animation der Bullet gespeichert
 
-    public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, World world) {
+    public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, World world) {   //im Konstruktor werden die Position, Geschwindigkeit, etc. initialisiert
         super(posX, posY,3, dir, handler, world);
         this.type = type;
         this.dir = dir;
@@ -35,7 +33,7 @@ public class Bullet extends Entity {
     }
     
     @Override
-    public void tick() {
+    public void tick() {                                                                                    //in tick wird die Animation, die Bewegung und die Kollision getickt
         if(animation != null)
             animation.tick();
 
@@ -55,7 +53,7 @@ public class Bullet extends Entity {
         }
     }
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics g) {                                                                        //in render wird die Bullet gerendert
         // for debugging
         //g.fillOval((int)(posX - handler.getxOffset()), (int)(posY - handler.getyOffset()), 10, 10);
         AffineTransform reset = new AffineTransform();
@@ -75,11 +73,11 @@ public class Bullet extends Entity {
                 break;
         }
 
-
         g2.setTransform(reset); //reset rotation
         //TODO implement rendering for the Bullet
     }
 
+    //Getters
     public String getData(){
         return "";
     }
