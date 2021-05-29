@@ -11,47 +11,32 @@ import java.awt.image.BufferedImage;
 
 public class Particle{
 
-    private int x, y, speed, yNew, xNew;
-    private int timeLeftToLive = 1000;
-    private BufferedImage[] frames;
-    private BufferedImage frame;
-    private Animation AnimParticle;
-    private Handler handler;
-    private World world;
-    private int width = 0, height = 0;
-    private float dir;
-    private int type = 0;
-    private int speedFactor = 10;
+    private int x, y, yNew, xNew;       //die Postition des Particles
+    private int timeLeftToLive = 1000;  //die Zeit, die das Particle noch lebt
+    private BufferedImage texture;      //die Textur des Particles
+    private Animation AnimParticle;     //die Animation des Particles
+    private final Handler handler;      //Zwischenspeicher des Handlers
+    private final World world;          //Zwischenspeicher der Welt
+    private int width = 0, height = 0;  //Groesse des Particles
+    private float dir;                  //Ausrichtung des Particles
+    private int type = 0;               //Typ des Particles
+    private int speedFactor = 10;       //Geschwindigkeitsfaktor des Particles
 
+    //drei Konstruktoren, um festzuelegen, ob das Particle animiert ist oder ob es eine bestimmte Groesse hat
     public Particle(int x, int y, int speed, BufferedImage[] frames, Handler handler, World world){
         this.x = x;
         this.y = y;
-        this.speed = speed;
-        this.frames = frames;
         this.handler = handler;
         this.world = world;
         AnimParticle = new Animation(frames,speed);
     }
-    public Particle(int x, int y, int speed, float dir, BufferedImage frame, Handler handler, World world){
+    public Particle(int x, int y, float dir, BufferedImage texture, Handler handler, World world, int timeLeftToLive){
         this.x = x;
         this.y = y;
         this.xNew = x;
         this.yNew = y;
         this.dir = dir;
-        this.speed = speed;
-        this.frame = frame;
-        this.handler = handler;
-        this.world = world;
-        type = 1;
-    }
-    public Particle(int x, int y, int speed, float dir, BufferedImage frame, Handler handler, World world, int timeLeftToLive){
-        this.x = x;
-        this.y = y;
-        this.xNew = x;
-        this.yNew = y;
-        this.dir = dir;
-        this.speed = speed;
-        this.frame = frame;
+        this.texture = texture;
         this.handler = handler;
         this.world = world;
         this.timeLeftToLive = timeLeftToLive;
@@ -62,13 +47,12 @@ public class Particle{
         this.height = height;
         this.x = x;
         this.y = y;
-        this.speed = speed;
-        this.frames = frames;
         this.handler = handler;
         this.world = world;
         AnimParticle = new Animation(frames,speed);
     }
-    public void tick(){
+
+    public void tick(){                 //in tick wird Kollision aber auch Animation getickt
         timeLeftToLive--;
         if(type == 0) {
             AnimParticle.tick();
@@ -79,7 +63,7 @@ public class Particle{
                 speedFactor--;
         }
     }
-    public void render(Graphics g){
+    public void render(Graphics g){     //in render wird entweder die Animation oder das einzelne BufferedImage des Particles gerendert
         if(type == 0) {
             if (width == 0)
                 g.drawImage(AnimParticle.getCurrentFrame(), ((int) (x - handler.getxOffset())), ((int) (y - handler.getyOffset())), null);
@@ -91,12 +75,13 @@ public class Particle{
             Graphics2D g2 = (Graphics2D)g;  // cast Graphics to Graphics 2d
 
             g2.rotate(Math.toRadians(dir), (int) (x - handler.getGameCamera().getxOffset()), (int) (y -handler.getGameCamera().getyOffset()));   //rotate graphics object
-            g2.drawImage(frame, ((int) (xNew +27- handler.getxOffset())), ((int) (yNew +9- handler.getyOffset())), null);
+            g2.drawImage(texture, ((int) (xNew +27- handler.getxOffset())), ((int) (yNew +9- handler.getyOffset())), null);
 
             g2.setTransform(reset); //reset rotation
         }
     }
 
+    //Getters und Setters
     public Animation getAnimParticle() {
         return AnimParticle;
     }

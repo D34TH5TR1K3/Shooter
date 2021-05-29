@@ -32,3 +32,5 @@ public class Handler {
         return game.getGameCamera().getyOffset();
     }
 }
+
+//TODO: world in Handler

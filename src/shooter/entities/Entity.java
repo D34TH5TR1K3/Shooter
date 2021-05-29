@@ -9,11 +9,10 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 
 public abstract class Entity {
-    protected float posX;
+    protected float posX;                       //die Position der Entitaet
     protected float posY;
-    private int posZ = 0;
-    private int width, height;
-    public static final int CREATURESIZE = 180;
+    private int posZ = 0;                       //die Position auf der Z-Achse (relevant zum rendern)
+    public static final int CREATURESIZE = 180; //ein Wert in Pixeln, wie gross eine Creature default ist
     /*
     posZ in Form von Integern
     posZ 0: Level
@@ -23,35 +22,31 @@ public abstract class Entity {
     posZ 4: Player/Enemies
     posZ 5: Interactables
     */
-    protected float dir = 0;
-    private boolean solid = false;
-    protected boolean active = false;
-    protected World world;
-    protected Handler handler;
-    protected Animation activeAnimation;
+    protected float dir = 0;                    //die Blickrichtung der Entitaet in Grad
+    private boolean solid = false;              //ob die Entitaet solide ist oder nicht
+    protected boolean active = false;           //ob die Entitaet ueberhaupt aktiv ist
+    protected World world;                      //Zwischenspeicher der Welt, in der die Entitaet existiert
+    protected Handler handler;                  //Zwischenspeicher des Handlers
+    protected Animation activeAnimation;        //hier wird die Animation der Entitaet gespeichert, die dargestellt wird, solange die Entitaet aktiv ist
 
-    public Entity(float posX, float posY, int posZ, Handler handler, World world) {
+    public Entity(float posX, float posY, int posZ, Handler handler, World world) {             //im Konstruktor werden die Position und die Groesse der Entitaet initialisiert
         this.world = world;
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
-        this.width = width;
-        this.height = height;
         this.handler = handler;
     }
-    public Entity(float posX, float posY, int posZ, float dir, Handler handler, World world) {
+    public Entity(float posX, float posY, int posZ, float dir, Handler handler, World world) {  //im Konstruktor werden die Position und die Groesse der Entitaet initialisiert
         this.world = world;
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
         this.dir = dir;
-        this.width = width;
-        this.height = height;
         this.handler = handler;
     }
 
 
-    public boolean checkLineOfSight(Line2D.Float line){
+    public boolean checkLineOfSight(Line2D.Float line){                                         //eine Methode, die errechnet, ob der Gegner eine freie Schusslinie zum Spieler hat
         for(int x=0;x<64*world.getMapsize();x++){
             for(int y=0;y<36*world.getMapsize();y++){
                 Tile temptile = world.getTiles(x,y);
@@ -62,23 +57,25 @@ public abstract class Entity {
         return false;
     }
 
+    //abstrakte tick und renders zum erben
     public abstract void tick();
     public abstract void render(Graphics g);
 
-    public void move(float amtX, float amtY) {
+    public void move(float amtX, float amtY) {                                                  //eine Methode um die Entitaet einen Schritt zu bewegen
         //System.out.println(amtX +"   "+amtY);
         posX += amtX;
         posY += amtY;
     }
-    public void moveAbs(float amtX, float amtY) {
+    public void moveAbs(float amtX, float amtY) {                                               //eine Methode um die Entitaet auf eine absolute Position zu setzen
         //System.out.println(amtX +"   "+amtY);
         posX = amtX;
         posY = amtY;
     }
-    public void face(float amt) {
+    public void face(float amt) {                                                               //eine Methode um die Blickrichtung der Entitaet auf einen bestimmten Wert zu setzen
         dir = amt;
     }
 
+    //Getters und Setters
     public void setInActive() { active = false; }
     public void setActive() { active = true; }
     public boolean isSolid() { return solid; }

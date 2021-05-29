@@ -32,7 +32,7 @@ public class Item extends Entity{
     private long lastTime = 0;
     private int offset;
 
-    public Item(float posX, float posY, int type, int width, int height, Handler handler, World world) {
+    public Item(float posX, float posY, int type, Handler handler, World world) {   //im Konstruktor wird die Position und der Typ des Items initialisiert
         super(posX,posY,2, handler, world);
         this.type = type;
         this.world = world;
@@ -77,7 +77,7 @@ public class Item extends Entity{
         //bulletDelay = 1000;
     }
 
-    public void reload() {
+    public void reload() {                                                          //hier wird die Logik implementiert, die es den Gegnern ermoeglicht nachzuladen (Verwenden in einer tick-Methode erforderlich)
         switch(type) {
             case 1:
                 reloadTime--;
@@ -119,19 +119,19 @@ public class Item extends Entity{
         }
     }
 
-    public void drop(Entity activator){
+    public void drop(Entity activator){                                             //diese Methode ermoeglicht das Fallenlassen von Items
         active = true;
         posX = activator.getX();
         posY = activator.getY();
     }
 
-    public void pick_up(Entity activator){
+    public void pick_up(Entity activator){                                          //diese Methode ermoeglicht das Aufheben von Items
         active = false;
         posX = activator.getX();
         posY = activator.getY();
     }
 
-    public void activate(Entity activator) {
+    public void activate(Entity activator) {                                        //diese Methode ermoeglicht einer Entitaet das Item zu benutzen
         float buX, buY;
         //System.out.println(activator.getX()+CREATURESIZE/2+"   "+ activator.getY()+CREATURESIZE/2);
         //System.out.println("activated");
@@ -159,7 +159,7 @@ public class Item extends Entity{
                     Sound.play("Ak");
 
 
-                    world.getEntityManager().addParticle(new Particle(((int) (activator.getX() + CREATURESIZE / 2)), ((int) (activator.getY() + CREATURESIZE / 2)), 5, activator.getDir(), Assets.shell, handler, world,600));
+                    world.getEntityManager().addParticle(new Particle(((int) (activator.getX() + CREATURESIZE / 2)), ((int) (activator.getY() + CREATURESIZE / 2)), activator.getDir(), Assets.shell, handler, world,600));
 
 
                     //System.out.println("shooting");
@@ -208,9 +208,9 @@ public class Item extends Entity{
     }
 
     @Override
-    public void tick() { }
+    public void tick() { }                                                          //diese tick-Methode ist leer, weil alle Logik vom Aktivator aufgerufen und beutzt wird
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics g) {                                                //die render-Methode rendert die Items, aber nur, wenn diese tatsaechlich aktiv sind
         if(active){
             switch(type) {
                 case 1:
@@ -242,6 +242,7 @@ public class Item extends Entity{
         //TODO render Item, render for each bullet
     }
 
+    //Getters und Setters
     public int getType() {
         return type;
     }

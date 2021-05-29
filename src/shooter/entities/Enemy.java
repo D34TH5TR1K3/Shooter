@@ -36,7 +36,7 @@ public class Enemy extends Entity{
         super(posX, posY, 4, dir, handler, world);
         this.setActive();
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
-        item = new Item(posX, posY, gunType, 20, 20, handler, world);
+        item = new Item(posX, posY, gunType, handler, world);
         item.setInActive();
         world.getEntityManager().addItem(item);
         walkAnimation = new Animation(Assets.enemy_walk,100);

@@ -7,43 +7,30 @@ import java.util.ArrayList;
 //test
 public class EntityManager {
 
-    private ArrayList<Entity> enemies;
-    private ArrayList<Entity> tempEnemies;
-    private ArrayList<Entity> removeEnemies;
+    //verschiedene Arraylists fuer einfaches Managen von verschiedenen Objektklassen
+    private final ArrayList<Entity> enemies = new ArrayList<Entity>();
+    private final ArrayList<Entity> tempEnemies = new ArrayList<Entity>();
+    private final ArrayList<Entity> removeEnemies = new ArrayList<Entity>();
 
-    private ArrayList<Entity> items;
-    private ArrayList<Entity> tempItems;
-    private ArrayList<Entity> removeItems;
+    private final ArrayList<Entity> items = new ArrayList<Entity>();
+    private final ArrayList<Entity> tempItems = new ArrayList<Entity>();
+    private final ArrayList<Entity> removeItems = new ArrayList<Entity>();
 
-    private ArrayList<Entity> bullets;
-    private ArrayList<Entity> tempBullets;
-    private ArrayList<Entity> removeBullets;
+    private final ArrayList<Entity> bullets = new ArrayList<Entity>();
+    private final ArrayList<Entity> tempBullets = new ArrayList<Entity>();
+    private final ArrayList<Entity> removeBullets = new ArrayList<Entity>();
 
-    private ArrayList<Particle> particles;
-    private ArrayList<Particle> tempParticles;
-    private ArrayList<Particle> removeParticles;
+    private final ArrayList<Particle> particles = new ArrayList<Particle>();
+    private final ArrayList<Particle> tempParticles = new ArrayList<Particle>();
+    private final ArrayList<Particle> removeParticles = new ArrayList<Particle>();
 
-    private World world;
+    private final World world;
 
-    public EntityManager(World world) {
+    public EntityManager(World world) {                 //im Konstruktor wird die Welt initialisiert
         this.world = world;
-        enemies = new ArrayList<Entity>();
-        tempEnemies = new ArrayList<Entity>();
-        removeEnemies = new ArrayList<Entity>();
-
-        items = new ArrayList<Entity>();
-        tempItems = new ArrayList<Entity>();
-        removeItems = new ArrayList<Entity>();
-
-        bullets = new ArrayList<Entity>();
-        tempBullets = new ArrayList<Entity>();
-        removeBullets = new ArrayList<Entity>();
-
-        particles = new ArrayList<Particle>();
-        tempParticles = new ArrayList<Particle>();
-        removeParticles = new ArrayList<Particle>();
     }
 
+    //Adds und Removes
     public void addEnemy(Entity entity) {
         tempEnemies.add(entity);
     }
@@ -76,7 +63,7 @@ public class EntityManager {
         removeParticles.add(particle);
     }
 
-    public Entity getClosestItem(float x, float y) {
+    public Entity getClosestItem(float x, float y) {    //eine Methode um zu berechenen, welches Item am neahsten zum Spieler liegt
         float lowestDistance = 0;
         Entity closestEntity = null;
         for(Entity item : items){
@@ -97,7 +84,7 @@ public class EntityManager {
         }
     }
 
-    public void tick(){
+    public void tick(){                                 //im tick wird die Logik der Entitymanagerklasse getickt und alle tick-Methoden der Entitaeten und Particles
         world.getPlayer().tick();
 
         enemies.addAll(tempEnemies);
@@ -113,9 +100,6 @@ public class EntityManager {
         tempItems.clear();
         items.removeAll(removeItems);
         removeItems.clear();
-        for(Entity i : items) {
-            i.tick();
-        }
         bullets.addAll(tempBullets);
         tempBullets.clear();
         bullets.removeAll(removeBullets);
@@ -136,7 +120,7 @@ public class EntityManager {
             p.tick();
         }
     }
-    public void render(Graphics g){
+    public void render(Graphics g){                     //im render werden alle Entitaeten und Particles gerendert
         //TODO add render order (sort entities by Z level and render on after another)
 
 
@@ -154,6 +138,8 @@ public class EntityManager {
         }
         world.getPlayer().render(g);
     }
+
+    //Getter fuer die "enemies"-Arraylist
     public ArrayList<Entity> getEnemies(){
         return enemies;
     }
