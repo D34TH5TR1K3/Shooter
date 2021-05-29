@@ -10,8 +10,8 @@ import shooter.gfx.World;
 import shooter.sound.Sound;
 
 public class Bullet extends Entity {
-    private float speed = 25;                                                                               //hier wird die Geschwindigkeit der Bullet gespeichert
-    private int type = 1;                                                                                   //hier wird die Position der Bullet gespeichert
+    private final float speed;                                                                              //hier wird die Geschwindigkeit der Bullet gespeichert
+    private final int type;                                                                                 //hier wird die Position der Bullet gespeichert
     Animation animation;                                                                                    //hier wird die Animation der Bullet gespeichert
 
     public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, World world) {   //im Konstruktor werden die Position, Geschwindigkeit, etc. initialisiert

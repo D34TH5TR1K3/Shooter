@@ -9,8 +9,8 @@ import shooter.gfx.World;
 import shooter.sound.Sound;
 
 public class Item extends Entity{
-    private boolean visible = true;
-    private int type;
+    private boolean visible = true;                                                 //ob das Item sichtbar ist oder nicht
+    private final int type;                                                         //der Typ der Waffe in Integern
     /*
     type in Form von Integern
     type 1: Handgun
@@ -21,21 +21,17 @@ public class Item extends Entity{
     type 6:
     */
     //TODO add gun types
-    private int ammo = 0;
-    private ArrayList<Bullet> bullets;
-    private World world;
-    private int bulletSpeed;
-    private float rpm;
-    private int reloadTime;
-    private float bulletDelay;
-    private long now = 0;
-    private long lastTime = 0;
-    private int offset;
+    private int ammo = 0;                                                           //die Munitionszahl
+    private int bulletSpeed;                                                        //die Geschwindigkeit der Kugeln
+    private float rpm;                                                              //die Feuerrate des Items
+    private int reloadTime;                                                         //die Zeit, die das Item braucht um Munition zu erhoehen
+    private final float bulletDelay;                                                //die Zeit, die das Item warten muss um erneut feuern zu koennen
+    private long lastTime = 0;                                                      //logischer Wert
+    private int offset;                                                             //offset, damit die Kugel an einem logischen Ort spawnt, nicht immer oben links
 
     public Item(float posX, float posY, int type, Handler handler, World world) {   //im Konstruktor wird die Position und der Typ des Items initialisiert
         super(posX,posY,2, handler, world);
         this.type = type;
-        this.world = world;
         active = true;
         switch(type) {
             case 1:
@@ -136,7 +132,7 @@ public class Item extends Entity{
         //System.out.println(activator.getX()+CREATURESIZE/2+"   "+ activator.getY()+CREATURESIZE/2);
         //System.out.println("activated");
         //System.out.println(type);
-        now = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
         //now = System.nanoTime() * 1000000;
         switch(type) {
             case 1:
@@ -146,8 +142,8 @@ public class Item extends Entity{
                     ammo--;
                     Sound.play("Uzi");
                     //System.out.println("shooting");
-                    buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
-                    buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
+                    buX = activator.getX() + (float)CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
+                    buY = activator.getY() + (float)CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
                     world.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
                 }
                 break;
@@ -163,8 +159,8 @@ public class Item extends Entity{
 
 
                     //System.out.println("shooting");
-                    buX = activator.getX() + CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
-                    buY = activator.getY() + CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
+                    buX = activator.getX() + (float)CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
+                    buY = activator.getY() + (float)CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
                     world.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
                 }
                 break;
@@ -176,7 +172,7 @@ public class Item extends Entity{
                     ammo--;
                     Sound.play("Uzi");
                     float dirOffset = (float)(Math.random() * 8);
-                    world.getEntityManager().addBullet(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180f-4f+dirOffset, bulletSpeed, 0, handler, world));
+                    world.getEntityManager().addBullet(new Bullet(activator.getX() + (float)CREATURESIZE/2, activator.getY() + (float)CREATURESIZE/2, activator.getDir() + 180f-4f+dirOffset, bulletSpeed, 0, handler, world));
                 }
                 break;
             case 4:
@@ -187,7 +183,7 @@ public class Item extends Entity{
                     Sound.play("Shotgun");
                     for(int i = 0; i < 6; i++) {
                         float dirOffset = (float)(Math.random() * 20);
-                        world.getEntityManager().addBullet(new Bullet(activator.getX() + CREATURESIZE / 2, activator.getY() + CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset, bulletSpeed, 0, handler, world));
+                        world.getEntityManager().addBullet(new Bullet(activator.getX() + (float)CREATURESIZE / 2, activator.getY() + (float)CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset, bulletSpeed, 0, handler, world));
                     }
                 }
                 break;
@@ -198,7 +194,7 @@ public class Item extends Entity{
                     lastTime = System.currentTimeMillis();
                     ammo--;
                     Sound.play("RocketLaunch");
-                    world.getEntityManager().addBullet(new Bullet(activator.getX() + CREATURESIZE/2, activator.getY() + CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, 1, handler, world));
+                    world.getEntityManager().addBullet(new Bullet(activator.getX() + (float)CREATURESIZE/2, activator.getY() + (float)CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, 1, handler, world));
                 }
                 break;
             default:

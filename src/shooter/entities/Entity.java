@@ -11,7 +11,7 @@ import java.awt.geom.Line2D;
 public abstract class Entity {
     protected float posX;                       //die Position der Entitaet
     protected float posY;
-    private int posZ = 0;                       //die Position auf der Z-Achse (relevant zum rendern)
+    private final int posZ;                     //die Position auf der Z-Achse (relevant zum rendern)
     public static final int CREATURESIZE = 180; //ein Wert in Pixeln, wie gross eine Creature default ist
     /*
     posZ in Form von Integern
@@ -23,7 +23,7 @@ public abstract class Entity {
     posZ 5: Interactables
     */
     protected float dir = 0;                    //die Blickrichtung der Entitaet in Grad
-    private boolean solid = false;              //ob die Entitaet solide ist oder nicht
+    protected boolean solid = false;            //ob die Entitaet solide ist oder nicht
     protected boolean active = false;           //ob die Entitaet ueberhaupt aktiv ist
     protected World world;                      //Zwischenspeicher der Welt, in der die Entitaet existiert
     protected Handler handler;                  //Zwischenspeicher des Handlers

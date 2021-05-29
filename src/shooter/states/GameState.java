@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class GameState extends State {
 
-    private World world;                            //hier wird die Welt (Level) gespeichert, in der das tatsächliche Spiel stattfindet
+    private final World world;                            //hier wird die Welt (Level) gespeichert, in der das tatsächliche Spiel stattfindet
 
     public GameState(Game game, Handler handler) {  //hier wird der GameState und die Welt initialisiert
         super(game,handler);

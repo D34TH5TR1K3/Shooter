@@ -11,20 +11,18 @@ import shooter.gfx.World;
 import static shooter.gfx.Display.fraktur;
 
 public class Player extends Entity{
-    private Rectangle hitbox;                                                       //hier wird die Hitbox gespeichert, mit der wir Kollisionen berechnen können
+    private final Rectangle hitbox;                                                 //hier wird die Hitbox gespeichert, mit der wir Kollisionen berechnen können
     //velocities wurden implementiert um angenehme Bewegung zu ermöglichen
     private int velX = 0, velY = 0;
-    private int velXmax = 10, velYmax = 10;
-    private int imageWidth = 50, imageHeight = 50;                                  //die Größe des Bildes, das gerendert werden soll
     private Item item;                                                              //das derzeit ausgerüstete Item
-    private Animation walkAnimation, walkAnimation_ak;                              //die Animationen des Spielers mit und ohne verschiedenen Waffen
+    private final Animation walkAnimation, walkAnimation_ak;                        //die Animationen des Spielers mit und ohne verschiedenen Waffen
     //nötig um den Spieler daran zu hindern Waffen mit jedem Tick aufzuheben und fallenzulassen, wenn er die rechte Maustaste gedrpckt hält
     private boolean ableToPickup = true;
     private boolean ableToDrop = true;
 
     public Player(int posX, int posY, float dir, Handler handler, World world) {    //im Konstruktor wird der Spieler inklusive Hitbox, Animation, etc. initialisiert
         super(posX, posY, 4,dir, handler, world);
-        hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
+        hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, 50, 50);
         item = new Item(posX, posY, 3, handler, world); //temporary
         item.setInActive();
         world.getEntityManager().addItem(item);
@@ -89,8 +87,9 @@ public class Player extends Entity{
         //System.out.println(posX + "   "+posY+"   "+velX);
         //System.out.println(hitbox.getBounds());
         //hitbox.setLocation(((int) posX + CREATURESIZE/2 - 15), ((int) posY + CREATURESIZE/2 - 25));
-        dir = (float) (180 + Math.toDegrees(Math.atan2(posY - handler.getMouseManager().getMouseY() - handler.getGameCamera().getyOffset() + CREATURESIZE/2, posX - handler.getMouseManager().getMouseX() - handler.getGameCamera().getxOffset() + CREATURESIZE/2)));
+        dir = (float) (180 + Math.toDegrees(Math.atan2(posY - handler.getMouseManager().getMouseY() - handler.getGameCamera().getyOffset() + (float)CREATURESIZE/2, posX - handler.getMouseManager().getMouseX() - handler.getGameCamera().getxOffset() + (float)CREATURESIZE/2)));
         //setDir(dirPlayer);
+        int velXmax = 10;
         if(handler.getKeyManager().left && velX > -velXmax){
             velX -= 1;
         }else if(!handler.getKeyManager().right && !handler.getKeyManager().left){
@@ -101,6 +100,7 @@ public class Player extends Entity{
         }else if(!handler.getKeyManager().right && !handler.getKeyManager().left){
             velX = 0;
         }
+        int velYmax = 10;
         if(handler.getKeyManager().up && velY > -velYmax){
             velY -= 1;
         }else if(!handler.getKeyManager().down && !handler.getKeyManager().up){
@@ -148,7 +148,7 @@ public class Player extends Entity{
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform reset = g2d.getTransform();
         //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.rotate(Math.toRadians(dir), posX+CREATURESIZE/2-handler.getxOffset(), posY+CREATURESIZE/2-handler.getyOffset());
+        g2d.rotate(Math.toRadians(dir), posX+(float)CREATURESIZE/2-handler.getxOffset(), posY+(float)CREATURESIZE/2-handler.getyOffset());
 
         g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
 

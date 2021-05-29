@@ -4,7 +4,7 @@ import shooter.gfx.GameCamera;
 import shooter.input.*;
 
 public class Handler {
-    private Game game;                          //game ist die Variable in der der Handler das Spiel speichert
+    private final Game game;                    //game ist die Variable in der der Handler das Spiel speichert
 
     public Handler(Game game) {                 //in dem Konstruktor von Handler wird das Spiel übergeben und gespeichert
         this.game = game;

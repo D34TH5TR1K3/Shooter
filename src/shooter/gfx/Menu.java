@@ -10,14 +10,13 @@ import static shooter.gfx.Display.fraktur;
 
 public class Menu {
 
-    private ArrayList<Point> points;            //eine ArrayList mit allen Punkten
-    private ArrayList<Button> buttons;          //eine ArrayList mit allen Knöpfen
-    private ArrayList<Slider> sliders;          //eine ArrayList mit allen Sliders
-    private ArrayList<Rectangle> renderRects;   //eine ArrayList mit allen Rechtecken, die gerendert werden müssen
-    Handler handler;                            //hier wird der Handler zwischengespeichert
-    BufferedImage menu, menu_layout;            //hier wird die Struktur des Menüs gespeichert, die dann später vom Programm ausgelesen wird
-    String[] actionButtons, actionSliders;      //hier werden die Funktionen für die Knöpfe gespeichert
-    private final boolean debug = false;        //ob man sich im Debug-Modus befindet oder nicht
+    private final ArrayList<Point> points = new ArrayList<>();          //eine ArrayList mit allen Punkten
+    private final ArrayList<Button> buttons = new ArrayList<>();        //eine ArrayList mit allen Knöpfen
+    private final ArrayList<Slider> sliders = new ArrayList<>();        //eine ArrayList mit allen Sliders
+    private final ArrayList<Rectangle> renderRects = new ArrayList<>(); //eine ArrayList mit allen Rechtecken, die gerendert werden müssen
+    Handler handler;                                                    //hier wird der Handler zwischengespeichert
+    BufferedImage menu, menu_layout;                                    //hier wird die Struktur des Menüs gespeichert, die dann später vom Programm ausgelesen wird
+    String[] actionButtons, actionSliders;                              //hier werden die Funktionen für die Knöpfe gespeichert
 
     //im Konstruktor wird das Menü und mit ihm seine Variablen initialisiert
     public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
@@ -26,17 +25,13 @@ public class Menu {
         this.menu_layout = menu_layout;
         this.menu = menu;
         this.handler = handler;
-        points = new ArrayList<Point>();
-        buttons = new ArrayList<Button>();
-        sliders = new ArrayList<Slider>();
-        renderRects = new ArrayList<Rectangle>();
         readMenu();
     }
 
     //Getters
     public float getSliderValue(String func){
         for(Slider slider : sliders){
-            if(slider.getFunc() == func){
+            if(slider.getFunc().equals(func)){
                 return slider.getValue();
             }
         }
@@ -45,7 +40,7 @@ public class Menu {
 
     public float getButtonValue(String func){
         for(Button button : buttons){
-            if(button.getFunc() == func){
+            if(button.getFunc().equals(func)){
                 return button.getValue();
             }
         }
@@ -102,12 +97,12 @@ public class Menu {
 
     public boolean funcActive(String func){ //hier wird geprüft, ob ein Knopf mit der übergebenen Funktion aktiv ist
         for(Button button : buttons){
-            if(button.getFunc() == func && button.isActive()){
+            if(button.getFunc().equals(func) && button.isActive()){
                 return true;
             }
         }
         for(Slider slider : sliders){
-            if(slider.getFunc() == func && slider.isActive()){
+            if(slider.getFunc().equals(func) && slider.isActive()){
                 return true;
             }
         }
@@ -153,6 +148,8 @@ public class Menu {
         for(Rectangle rect : renderRects){
             g.fillRect((int)(rect.getX()), (int)(rect.getY()), (int)(rect.getWidth()), (int)(rect.getHeight()));
         }
+        //ob man sich im Debug-Modus befindet oder nicht
+        boolean debug = false;
         for(Button button : buttons){
             if(button.getValue() != -1){
                 if(button.getValue() == 1)
@@ -207,13 +204,13 @@ public class Menu {
 
     public void toggleButton(String func){  //hier wird der Wert des Knopfes invertiert
         for(Button button : buttons){
-            if(button.getFunc() == func){
+            if(button.getFunc().equals(func)){
                 button.toggle();
             }
         }
     }
 
-    public class Slider{
+    public static class Slider{
         boolean active = false;                                                 //ob der Knopf gerendert und getickt werden muss
         String func;                                                            //die Funktion, die der Knopf erfüllt
         int index;                                                              //der Index, die Nummer des Knopfes
@@ -314,7 +311,7 @@ public class Menu {
         }
     }
 
-    public class Button{
+    public static class Button{
         float value = -1.0f;//  default value -1.0f if button isn't used to toggle stuff (i.e. change menu)
                             //  Button value will only be written to settings.txt if value != -1.0f
         boolean highlighted = false;                                            //hier wird gespeichert, ob der Knopf anders gerendert werden muss
@@ -413,7 +410,7 @@ public class Menu {
         }
     }
 
-    public class Point{
+    public static class Point{
 
         //hier werden die Werte für Farben und Position des Punktes gespeichert
         int red, green, blue;

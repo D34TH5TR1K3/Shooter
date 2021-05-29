@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyManager implements KeyListener {
-    private boolean[] keys;                             //hier werden alle Tasten gespeichert
+    private final boolean[] keys;                             //hier werden alle Tasten gespeichert
     public boolean up, left, down, right, esc, save;    //hier werden die Werte (gedrückt/nicht gedrückt) der Tasten gespeichert, mit denen wir das Spiel steuern
 
     public KeyManager() { keys = new boolean[256]; }    //im Konstruktor wird das Array mit den keys initialisiert, auf die der KeyListener hört

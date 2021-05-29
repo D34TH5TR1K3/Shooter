@@ -11,7 +11,9 @@ import java.awt.image.BufferedImage;
 
 public class Particle{
 
-    private int x, y, yNew, xNew;       //die Postition des Particles
+    private final int x, y;
+    private int yNew;
+    private int xNew;       //die Postition des Particles
     private int timeLeftToLive = 1000;  //die Zeit, die das Particle noch lebt
     private BufferedImage texture;      //die Textur des Particles
     private Animation AnimParticle;     //die Animation des Particles

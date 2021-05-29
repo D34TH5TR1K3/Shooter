@@ -3,7 +3,8 @@ package shooter.gfx;
 import java.awt.image.BufferedImage;
 
 public class Animation {
-    private int speed, index = 0;                           //hier wird die Geschwindigkeit der Animation gespeichert und bei welchem Bild der Animation wir uns befinden
+    private final int speed;                                //hier wird die Geschwindigkeit der Animation gespeichert
+    private int index = 0;                                  //hier wird gespeichert bei welchem Bild der Animation wir uns befinden
     private long lastTime;                                  //hier wird gespeichert, wann sich die Animation das letzte Mal bewegt hat
     private final BufferedImage[] frames;                   //hier werden die Bilder der Animation gespeichert
     private boolean active = true;                          //hier wird gespeichert, ob sich die Animation gaerade bewegt

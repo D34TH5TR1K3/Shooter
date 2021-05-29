@@ -8,16 +8,14 @@ import java.util.ArrayList;
 
 public class World {
 
-    private Tile[][] tiles;                                             //hier werden alle Tiles gespeichert, in die die Karte unterteilt wird
-    private int mapsize = 2;                                            //hier wird gespeichert, wie groß die Karte sein soll
-    //TODO set size of map
-    private int tilesize = 30;                                          //hier wird gespeichert, wie groß ein Tile sein soll
+    private final Tile[][] tiles;                                       //hier werden alle Tiles gespeichert, in die die Karte unterteilt wird
+    private final int mapsize = 2;                                      //hier wird gespeichert, wie groß die Karte sein soll
     private Player player;                                              //hier wird der Spieler gespeichert
 
     private Color tileColor;                                            //hier wird die Farbe für die Tiles gespeichert
 
-    private Handler handler;                                            //hier wird der Handler gespeichert
-    private EntityManager entityManager;                                //hier werden alle Entitäten der Welt gespeichert und kontrolliert
+    private final Handler handler;                                      //hier wird der Handler gespeichert
+    private final EntityManager entityManager;                          //hier werden alle Entitäten der Welt gespeichert und kontrolliert
 
     public World(Handler handler) {                                     //im Konstruktor wird die Welt mitsamt Tiles und Entitäten initialisiert
         tiles = new Tile[64 * mapsize][36 * mapsize];
@@ -95,7 +93,10 @@ public class World {
 //                }
                 
                 //g.setColor(tiles[x][y].getTileColor());
-                g.fillRect(((int) (tilesize * x - handler.getxOffset())), ((int) (tilesize * y - handler.getyOffset())), tilesize*x+tilesize, tilesize*y+tilesize);
+                //TODO set size of map
+                //hier wird gespeichert, wie groß ein Tile sein soll
+                int tilesize = 30;
+                g.fillRect(((int) (tilesize * x - handler.getxOffset())), ((int) (tilesize * y - handler.getyOffset())), tilesize *x+ tilesize, tilesize *y+ tilesize);
             }
         }
     }

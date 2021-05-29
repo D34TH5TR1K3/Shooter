@@ -5,7 +5,6 @@ import shooter.entities.Enemy;
 import shooter.entities.Entity;
 import shooter.entities.Player;
 import shooter.gfx.World;
-import shooter.states.GameState;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,7 +20,7 @@ public class Writer {
     Scanner scanner;                                                        //die Instanz eines Scanners, der es ermöglicht, Daten und Werte aus einer Datei auszulesen
     File settingFile = new File("res/settings/settings.txt");     //die Datei, in der Einstellungen gespeichert werden
     File gameSaveFile = new File("res/gameSaves/gameSave.txt");   //die Datei, in der der Spielstand gespeichert wird
-    ArrayList<Setting> settings = new ArrayList<Setting>();                 //eine Arraylist, in der kurzfristig Die Einstellungen gespeichert werden
+    ArrayList<Setting> settings = new ArrayList<>();                        //eine Arraylist, in der kurzfristig Die Einstellungen gespeichert werden
 
     public Writer(){                                                        //ein leerer Konstruktor für Writer
 
@@ -118,7 +117,7 @@ public class Writer {
         }
     }
 
-    public class Setting{                                                   //eine Subklasse um Einstellungen leichter speichern zu können
+    public static class Setting{                                                   //eine Subklasse um Einstellungen leichter speichern zu können
 
         String name;
         float value;
@@ -132,9 +131,11 @@ public class Writer {
             return name;
         }
 
+        /*
         public void setName(String name) {
             this.name = name;
         }
+        */
 
         public float getValue() {
             return value;
@@ -157,7 +158,7 @@ public class Writer {
                 //pd = playerData
                 Player createdPlayer = new Player(pd[0],pd[1],(float)pd[2],handler,world);
                 createdPlayer.getItem().setAmmo(pd[3]);
-                ArrayList<Entity> createdEnemies = new ArrayList<Entity>();
+                ArrayList<Entity> createdEnemies = new ArrayList<>();
                 for(int i=0;i<enemyCount;i++){
                     int[] ed = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
                     //ed = EnemyData
@@ -201,7 +202,7 @@ public class Writer {
         }
     }
 
-    public class GameSave{                                                  //eine Subklasse um den Spielstand leichter speichern zu können
+    public static class GameSave{                                                  //eine Subklasse um den Spielstand leichter speichern zu können
         private World world;
         private Player player;
         private ArrayList<Entity> enemies;

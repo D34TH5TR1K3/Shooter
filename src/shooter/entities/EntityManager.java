@@ -8,21 +8,21 @@ import java.util.ArrayList;
 public class EntityManager {
 
     //verschiedene Arraylists fuer einfaches Managen von verschiedenen Objektklassen
-    private final ArrayList<Entity> enemies = new ArrayList<Entity>();
-    private final ArrayList<Entity> tempEnemies = new ArrayList<Entity>();
-    private final ArrayList<Entity> removeEnemies = new ArrayList<Entity>();
+    private final ArrayList<Entity> enemies = new ArrayList<>();
+    private final ArrayList<Entity> tempEnemies = new ArrayList<>();
+    private final ArrayList<Entity> removeEnemies = new ArrayList<>();
 
-    private final ArrayList<Entity> items = new ArrayList<Entity>();
-    private final ArrayList<Entity> tempItems = new ArrayList<Entity>();
-    private final ArrayList<Entity> removeItems = new ArrayList<Entity>();
+    private final ArrayList<Entity> items = new ArrayList<>();
+    private final ArrayList<Entity> tempItems = new ArrayList<>();
+    private final ArrayList<Entity> removeItems = new ArrayList<>();
 
-    private final ArrayList<Entity> bullets = new ArrayList<Entity>();
-    private final ArrayList<Entity> tempBullets = new ArrayList<Entity>();
-    private final ArrayList<Entity> removeBullets = new ArrayList<Entity>();
+    private final ArrayList<Entity> bullets = new ArrayList<>();
+    private final ArrayList<Entity> tempBullets = new ArrayList<>();
+    private final ArrayList<Entity> removeBullets = new ArrayList<>();
 
-    private final ArrayList<Particle> particles = new ArrayList<Particle>();
-    private final ArrayList<Particle> tempParticles = new ArrayList<Particle>();
-    private final ArrayList<Particle> removeParticles = new ArrayList<Particle>();
+    private final ArrayList<Particle> particles = new ArrayList<>();
+    private final ArrayList<Particle> tempParticles = new ArrayList<>();
+    private final ArrayList<Particle> removeParticles = new ArrayList<>();
 
     private final World world;
 

@@ -15,11 +15,11 @@ import static java.lang.Math.abs;
 
 public class Enemy extends Entity{
     //PATHFINDING
-    private ArrayList<Tile> openlist = new ArrayList<>();
-    private ArrayList<Tile> closedlist = new ArrayList<>();
-    private ArrayList<Tile> neighbors = new ArrayList<>();
+    private final ArrayList<Tile> openlist = new ArrayList<>();
+    private final ArrayList<Tile> closedlist = new ArrayList<>();
+    private final ArrayList<Tile> neighbors = new ArrayList<>();
     private int iterations = 0;
-    private int pathlenght = 0;
+    private int pathlength = 0;
     private int addGCost, dx, dy;
     private int tempHCost, tempGCost;
     public ArrayList<Tile> trace = new ArrayList<>();
@@ -72,7 +72,7 @@ public class Enemy extends Entity{
         if(end != start) {
             trace.add(end.getParent());
             end.getParent().setColor(Color.orange); //Uncomment to mark path
-            pathlenght++;
+            pathlength++;
             drawtrace(end.getParent(), start);
         }
 
@@ -134,7 +134,7 @@ public class Enemy extends Entity{
                 //System.out.println("Target found!");
                 //current.setColor(Color.green);
                 trace.clear();
-                pathlenght = 0;
+                pathlength = 0;
                 drawtrace(current, start);
                 //start();
                 break;

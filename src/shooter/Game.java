@@ -12,8 +12,6 @@ import java.awt.image.BufferStrategy;
 
 public class Game implements Runnable {
     private Display display;                    //Das Display stellt ein Fenster bereit, mit dem der Nutzer interagieren kann
-    private BufferStrategy bs;                  //Die Bufferstrategy speichert Frames zwischen, damit alles, was dem Nutzer gezeigt wird bereits vollständi berechnet ist
-    private Graphics g;                         //Das Graphics-objekt ermöglicht es Grafiken auf den Canvas zu malen, der dem Nutzer gezeigt wird
 
     private Thread thread;                      //Der Thread kümmert sich darum, dass das Programm effizient ausgeführt wird
     private boolean running;                    //running ist eine globale Variable, die genutzt wird um das starten und stoppen des Spiels zu organisieren
@@ -70,12 +68,12 @@ public class Game implements Runnable {
     }
 
     public void render() {                      //in render werden die grafischen Teile des Spiels mit jedem Frame angepasst und neu berechnet
-        bs = display.getCanvas().getBufferStrategy();
+        BufferStrategy bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        g = bs.getDrawGraphics();
+        Graphics g = bs.getDrawGraphics();
         g.clearRect(0,0, 1920, 1080); // Clear Screen
         //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
         //map1.renderTiles(g);
@@ -94,13 +92,12 @@ public class Game implements Runnable {
         boolean debug = false;
 
         int fps = 60; //TODO: Change for performance?
-        double timePerTick = 1000000000 / fps;
+        double timePerTick = 1000000000f / fps;
         double delta = 0;
         long now;
         long lastTime = System.nanoTime();
         long timer = 0;
         int ticks = 0;
-        long frametime = 0;
 
         while(running) {
             now = System.nanoTime();
