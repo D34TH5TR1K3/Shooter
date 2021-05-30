@@ -12,6 +12,7 @@ public class MenuState extends State {
     public Menu menu1, menu2;                       //hier werden die beiden Menüs gespeichert
     private Menu activeMenu;                        //hier wird gespeichert, welchers Menü gerade aktiv ist
 
+    //this constructor initializes the values
     public MenuState(Game game, Handler handler){   //hier wird der MenuState und mit ihm seine Menüs initialisiert
         super(game,handler);
         menu1 = new Menu(new String[]{"StartGame", "exit", "ToMenu2", ""}, new String[]{"", "", "", ""}, handler, Assets.menu1, Assets.menu_layout1);

@@ -29,6 +29,7 @@ public abstract class Entity {
     protected Handler handler;                  //Zwischenspeicher des Handlers
     protected Animation activeAnimation;        //hier wird die Animation der Entitaet gespeichert, die dargestellt wird, solange die Entitaet aktiv ist
 
+    //these constructors initialize the values
     public Entity(float posX, float posY, int posZ, Handler handler, World world) {             //im Konstruktor werden die Position und die Groesse der Entitaet initialisiert
         this.world = world;
         this.posX = posX;

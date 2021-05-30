@@ -17,6 +17,7 @@ public class World {
     private final Handler handler;                                      //hier wird der Handler gespeichert
     private final EntityManager entityManager;                          //hier werden alle Entitäten der Welt gespeichert und kontrolliert
 
+    //this constructor initializes the values
     public World(Handler handler) {                                     //im Konstruktor wird die Welt mitsamt Tiles und Entitäten initialisiert
         tiles = new Tile[64 * mapsize][36 * mapsize];
         this.handler = handler;

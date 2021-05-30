@@ -5,6 +5,7 @@ import shooter.entities.Entity;
 public class GameCamera {
     private float xOffset, yOffset;                     //hier wird gespeichert, wie weit die Welt verschoben ist
 
+    //this constructor initializes the values
     public GameCamera(float xOffset, float yOffset){    //im Konstruktor werden die Offsets initialisiert
         this.xOffset = xOffset;
         this.yOffset = yOffset;

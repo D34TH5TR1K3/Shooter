@@ -26,6 +26,7 @@ public class EntityManager {
 
     private final World world;
 
+    //this constructor initializes the values
     public EntityManager(World world) {                 //im Konstruktor wird die Welt initialisiert
         this.world = world;
     }

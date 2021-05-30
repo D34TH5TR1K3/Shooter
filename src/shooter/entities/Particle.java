@@ -25,6 +25,7 @@ public class Particle{
     private int speedFactor = 10;       //Geschwindigkeitsfaktor des Particles
 
     //drei Konstruktoren, um festzuelegen, ob das Particle animiert ist oder ob es eine bestimmte Groesse hat
+    //these constructors initialize the values
     public Particle(int x, int y, int speed, BufferedImage[] frames, Handler handler, World world){
         this.x = x;
         this.y = y;

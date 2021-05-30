@@ -18,6 +18,7 @@ public class Tile {
     private Rectangle hitbox;                   //hier wird die Hitbox gespeichert, mit der später überprüft wird, ob eine Kollision stattgefunden hat
     private Color color = Color.green;          //hier wird die Farbe gespeichert, die das Tile später haben soll
 
+    //this constructor initializes the values
     public Tile(int x, int y, boolean isSolid){ //im Konstruktor wird festgelegt, wo das Tile liegt und ob es Solid ist
         this.TposX = x;
         this.TposY = y;

@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 public class SpriteSheet {
     private final BufferedImage sheet;                      //hier wird das Spritesheet als eigenes Bild gespeichert
 
+    //this constructor initializes the values
     public SpriteSheet(BufferedImage sheet) {               //im Konstruktor wird das SpriteSheet initialisiert
         this.sheet = sheet;
     }

@@ -15,6 +15,7 @@ public class Display {
     private final Writer writer;    //hier wird der Writer gespeichert
     public static Font fraktur;     //hier wird der Font gespeichert
 
+    //this constructor initializes the values
     public Display(Writer writer) { //im Konstruktor wird das Display erzeugt und der Font initialisiert
         this.writer = writer;
         createDisplay();

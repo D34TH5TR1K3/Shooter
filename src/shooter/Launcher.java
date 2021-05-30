@@ -1,7 +1,8 @@
 package shooter;
 
 public class Launcher {
+    //in the main method we create and start the game
     public static void main(String[] args){
-        Game game = new Game ();                //hier wird in der main-methode ein neues Spiel erstellt und initialisiert (somit gestartet)
+        Game game = new Game ();
     }
 }

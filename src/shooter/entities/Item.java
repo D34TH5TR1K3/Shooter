@@ -29,6 +29,7 @@ public class Item extends Entity{
     private long lastTime = 0;                                                      //logischer Wert
     private int offset;                                                             //offset, damit die Kugel an einem logischen Ort spawnt, nicht immer oben links
 
+    //this constructor initializes the values
     public Item(float posX, float posY, int type, Handler handler, World world) {   //im Konstruktor wird die Position und der Typ des Items initialisiert
         super(posX,posY,2, handler, world);
         this.type = type;

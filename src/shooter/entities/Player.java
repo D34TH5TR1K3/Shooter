@@ -20,6 +20,7 @@ public class Player extends Entity{
     private boolean ableToPickup = true;
     private boolean ableToDrop = true;
 
+    //this constructor initializes the values
     public Player(int posX, int posY, float dir, Handler handler, World world) {    //im Konstruktor wird der Spieler inklusive Hitbox, Animation, etc. initialisiert
         super(posX, posY, 4,dir, handler, world);
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, 50, 50);

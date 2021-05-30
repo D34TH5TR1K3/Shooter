@@ -19,6 +19,7 @@ public class Menu {
     String[] actionButtons, actionSliders;                              //hier werden die Funktionen für die Knöpfe gespeichert
 
     //im Konstruktor wird das Menü und mit ihm seine Variablen initialisiert
+    //this constructor initializes the values
     public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
         this.actionButtons = actionButtons;
         this.actionSliders = actionSliders;
@@ -218,6 +219,8 @@ public class Menu {
         int color;                                                              //hier wird die Farbe des Sliders gespeichert
         int xo, yo, xu, yu;                                                     //die Poistionen der oberen linken und unteren rechten Ecke
         Rectangle rect;                                                         //ein Rechteck mit den Maßen des Sliders
+
+        //this constructor initializes the values
         public Slider(int index, int x1, int y1, int x2, int y2, int color){    //im Konstruktor wird der Slider erstellt und die Werte initialisiert
             this.index = index;
             this.color = color;
@@ -321,6 +324,8 @@ public class Menu {
         int index;                                                              //der Index, die Nummer des Knopfes
         int xo, yo, xu, yu;                                                     //die Poistionen der oberen linken und unteren rechten Ecke
         Rectangle rect;                                                         //ein Rechteck mit den Maßen des Knopfes
+
+        //this constructor initializes the values
         public Button(int index, int x1, int y1, int x2, int y2, int color){    //im Konstruktor wird ein Knopf erstellt und die Werte initialisiert
             this.index = index;
             this.color = color;
@@ -418,6 +423,7 @@ public class Menu {
         int color;
 
         //im Konstruktor werden die Werte für Farben und Position gespeichert
+        //this constructor initializes the values
         public Point(int red, int green, int blue, int X, int Y, int color){
             this.color = color;
             this.red = red;

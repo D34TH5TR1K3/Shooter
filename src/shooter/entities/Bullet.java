@@ -14,6 +14,7 @@ public class Bullet extends Entity {
     private final int type;                                                                                 //hier wird die Position der Bullet gespeichert
     Animation animation;                                                                                    //hier wird die Animation der Bullet gespeichert
 
+    //this constructor initializes the values
     public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, World world) {   //im Konstruktor werden die Position, Geschwindigkeit, etc. initialisiert
         super(posX, posY,3, dir, handler, world);
         this.type = type;

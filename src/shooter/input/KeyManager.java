@@ -7,6 +7,7 @@ public class KeyManager implements KeyListener {
     private final boolean[] keys;                             //hier werden alle Tasten gespeichert
     public boolean up, left, down, right, esc, save;    //hier werden die Werte (gedrückt/nicht gedrückt) der Tasten gespeichert, mit denen wir das Spiel steuern
 
+    //this constructor initializes the values
     public KeyManager() { keys = new boolean[256]; }    //im Konstruktor wird das Array mit den keys initialisiert, auf die der KeyListener hört
 
     public void tick() {                                //in der tick-Methode wird in unseren Funktionstasten gespeichert, ob sie gedrückt sind oder nicht

@@ -32,6 +32,7 @@ public class Enemy extends Entity{
     private Item item;
     private Animation walkAnimation, walkAnimation_ak;
 
+    //this constructor initializes the values
     public Enemy(int posX, int posY, int dir, int gunType, Handler handler, World world) {  //im Konstruktor werden die Position und die Animation des Gegners initialisiert
         super(posX, posY, 4, dir, handler, world);
         this.setActive();

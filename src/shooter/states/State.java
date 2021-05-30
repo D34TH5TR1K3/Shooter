@@ -10,6 +10,7 @@ public abstract class State {
     protected Game game;                        //hier wird das Spiel gespeichert
     protected Handler handler;                  //hier wird der Handler gespeichert, der Variablen verteilt
 
+    //this constructor initializes the values
     public State(Game game,Handler handler) {   //hier werden der Spiel- und der Handlervariable ihre Werte zugeschrieben
         this.game = game;
         this.handler = handler;

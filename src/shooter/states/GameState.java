@@ -10,6 +10,7 @@ public class GameState extends State {
 
     private final World world;                            //hier wird die Welt (Level) gespeichert, in der das tatsächliche Spiel stattfindet
 
+    //this constructor initializes the values
     public GameState(Game game, Handler handler) {  //hier wird der GameState und die Welt initialisiert
         super(game,handler);
         world = handler.getGame().getWriter().createGame(handler);

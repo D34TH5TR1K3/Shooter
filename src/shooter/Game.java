@@ -26,15 +26,19 @@ public class Game implements Runnable {
     private final Writer writer;                //Der Writer kümmert sich um das Speichern und Auslesen von Einstellungen und Spielständen
 
     private Sound sound;                        //Das Sound-objekt kümmert sich um die Wiedergabe von Geräuschen und Musik
+    private BufferStrategy bs;
+    private Graphics g;
 
-    public Game() {                             //im Konstruktor von Game werden KeyManager, MouseManager und der Writer initialisiert und das Spiel gestartet
+    //this constructor initializes the values
+    public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
         writer = new Writer();
         start();
     }
 
-    private void init(){                        //in init werden alle für tick und render erforderlichen Objekte initialisiert
+    //init is responsible for the initialization of variables. all init methods get called here
+    private void init(){
         display = new Display(writer);
         display.getFrame().addKeyListener(keyManager);
         display.getFrame().addMouseListener(mouseManager);
@@ -58,40 +62,42 @@ public class Game implements Runnable {
         float volume = writer.GetSettingValue("Volume");
         sound.setBgVol(sound.getBgVolMin() + (sound.getBgVolMax() - sound.getBgVolMin()) * volume / 100f);
     }
-
-    public void tick() {                        //in tick werden die Physics und die logischen Teile des Spiels mit jedem Frame angepasst und neu berechnet
+    //tick is responsible for the logic of the game. all tick methods get called here
+    public void tick() {
         keyManager.tick();
         State.getState().tick();
         sound.tick();
         if(keyManager.save)
             writer.writeGameSave(((GameState)gameState).getWorld());
     }
-
-    public void render() {                      //in render werden die grafischen Teile des Spiels mit jedem Frame angepasst und neu berechnet
-        BufferStrategy bs = display.getCanvas().getBufferStrategy();
+    //render is responsible for the graphics of the game. all render methods get called here
+    public void render() {
+        bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        Graphics g = bs.getDrawGraphics();
-        g.clearRect(0,0, 1920, 1080); // Clear Screen
-        //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
-        //map1.renderTiles(g);
-
+        g = bs.getDrawGraphics();
         State.getState().render(g);
-        //g.drawImage(Assets.map_temp,0,0,1920,1080,null);
-        //world.renderTiles(g);
-
         bs.show();
         g.dispose();
     }
 
-    public void run() {                         //run ist die mit dem Thread verbundene Methode, die tatsächlich das Spiel startet
+    //getters and setters
+    public Handler getHandler() { return handler; }
+    public GameCamera getGameCamera() { return gameCamera; }
+    public KeyManager getKeyManager() { return keyManager; }
+    public MouseManager getMouseManager() { return mouseManager; }
+    public Sound getSound() { return sound; }
+    public Writer getWriter() { return writer; }
+
+    //methods required for the Thread logic to work properly
+    public void run() {
         init();
 
         boolean debug = false;
 
-        int fps = 60; //TODO: Change for performance?
+        int fps = 60;
         double timePerTick = 1000000000f / fps;
         double delta = 0;
         long now;
@@ -125,8 +131,6 @@ public class Game implements Runnable {
             }
 
             if(timer >= 1000000000) {
-                //TODO: FPS
-                //System.out.println("TPS & FPS:" + ticks+"\t");
                 ticks = 0;
                 timer = 0;
             }
@@ -134,37 +138,16 @@ public class Game implements Runnable {
 
         stop();
     }
-
-    //Getters und Setters
-    public Handler getHandler() {
-        return handler;
-    }
-    public GameCamera getGameCamera() {
-        return gameCamera;
-    }
-    public KeyManager getKeyManager() {
-        return keyManager;
-    }
-    public MouseManager getMouseManager() {
-        return mouseManager;
-    }
-    public Sound getSound() {
-        return sound;
-    }
-    public Writer getWriter() {
-        return writer;
-    }
-
-    //start und stop sind logische Methoden aus der Thread Klasse um den Prozess zu steuern
     public synchronized void start() {
-        if (running) { return; }
+        if (running)
+            return;
         running = true;
         thread = new Thread(this);
         thread.start();
     }
-
     public synchronized void stop() {
-        if (!running) { return; }
+        if (!running)
+            return;
         running = false;
         try { thread.join(); }
         catch (InterruptedException e) { e.printStackTrace(); }

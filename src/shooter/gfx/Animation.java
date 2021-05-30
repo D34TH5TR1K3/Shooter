@@ -9,6 +9,7 @@ public class Animation {
     private final BufferedImage[] frames;                   //hier werden die Bilder der Animation gespeichert
     private boolean active = true;                          //hier wird gespeichert, ob sich die Animation gaerade bewegt
 
+    //this constructor initializes the values
     public Animation(BufferedImage[] frames, int speed) {   //im Konstruktor werden speed, frames und lastTime initialisiert
         this.speed = speed;
         this.frames = frames;
