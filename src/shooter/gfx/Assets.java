@@ -3,20 +3,19 @@ package shooter.gfx;
 import java.awt.image.BufferedImage;
 
 public class Assets {
-    //hier werden alle Texturen deklariert
+    //saves the textures
     public static BufferedImage Map1_walls, shell, item_pistol, item_uzi, item_shotgun_empty, item_shotgun_full, item_ak_empty, item_ak_full, enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet, item_rpg_empty, item_rpg_full;
-    //hier werden die Frames aller Animationen deklariert
+    //saves the animations
     public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1;
 
+    //initializes the games textures
     public static void init() {
-        //hier werden die verschiedenen Spritesheets initialisiert, auf denen alle Texturen sind
         SpriteSheet sprite1 = new SpriteSheet(ImageLoader.loadImage("/textures/sprite1.png"));
         SpriteSheet sheetRocket = new SpriteSheet(ImageLoader.loadImage("/textures/Rocket_80_10.png"));
         SpriteSheet sheet_explosion = new SpriteSheet(ImageLoader.loadImage("/textures/explosion_sprite.png"));
         SpriteSheet sprite_rpg = new SpriteSheet(ImageLoader.loadImage("/textures/200xSprite.png"));
         SpriteSheet sprite_particles1 = new SpriteSheet(ImageLoader.loadImage("/textures/particles1.png"));
 
-        //hier werden die Texturen mithilfe von ImageLoader initialisiert
         Map1_walls = ImageLoader.loadImage("/textures/Map1_walls.png");
         item_ak_empty = sprite1.crop(8*60, 0, 60, 60);
         item_ak_full = sprite1.crop(9*60, 0, 60, 60);
@@ -35,7 +34,6 @@ public class Assets {
         sliderKnob = ImageLoader.loadImage("/textures/slider.png");
         player = ImageLoader.loadImage("/textures/player_1.png");
         Bullet = ImageLoader.loadImage("/textures/bullet_4px.png");
-        //levelMap = sheet.crop(0,0,1920,1080);
 
         item_rpg_empty = sprite_rpg.crop(0, 0, 200, 200);
         item_rpg_full = sprite_rpg.crop(200, 0, 200, 200);

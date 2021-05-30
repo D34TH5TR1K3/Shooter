@@ -8,17 +8,22 @@ import javax.sound.sampled.*;
 import java.util.Map;
 
 public class Sound {
-    private Clip BgClip;                                            //hier wird der Clip gespeichert, der gerade im Hintergrund spielt
-    private int BgClipLen;                                          //hier wird die Zahl der Frames im Clip als Länge gespeichert
-    private float BgVolMax = -15f, BgVolMin = -35f, BgVol = -40f;   //hier sind die Presets und die Variablen für den Wert und Min und Max der Lautstärke der Hnitergrundmusik
-    private boolean BgActive = false;                               //hier wird gespeichert, ob gerade Hintergrundmusik spielt
+    //saves the currently playing Clip and its length
+    private Clip BgClip;
+    private int BgClipLen;
+    //indicates the Max, Min and actual Volume
+    private float BgVolMax = -15f, BgVolMin = -35f, BgVol = -40f;
+    //indicates whether Background music is active
+    private boolean BgActive = false;
+    //sounds distributes the Files with SFX
     private static final Map<String,File> sounds = Map.of(
             "Shotgun", new File("res/sound/Shotgun.wav"),
             "RocketExplode", new File("res/sound/RocketExplode.wav"),
             "RocketLaunch", new File("res/sound/RocketLaunch.wav"),
             "Uzi", new File("res/sound/Uzi.wav"),
             "Ak", new File("res/sound/AK.wav")
-    );                                                              //hier werden die Sfx-Files gespeichert
+    );
+    //songs distributes the Files with Background music
     private static final File[] songs = {
             new File("res/sound/110.wav"),
             new File("res/sound/Abyss.wav"),
@@ -26,11 +31,20 @@ public class Sound {
             new File("res/sound/Reihe.wav"),
             new File("res/sound/sxtn.wav"),
             new File("res/sound/Vermissen.wav")
-    };                                                              //hier werden die Dateien mit der Hintergrundmusik gespeichert
-    public Sound() {                                                // ein leerer Konstruktor
+    };
+
+    //empty constructor
+    public Sound() {
 
     }
-    public static void play(String Name){                           //eine statische Methode um das Abspielen von Sfx zu ermöglichen
+
+    //ticks whether a new Clip needs to be played
+    public void tick(){
+        if (BgClip!=null && (float) BgClip.getFramePosition()/ BgClipLen > 0.99f) playBackgroundMusic();
+    }
+
+    //static method to play SFX
+    public static void play(String Name){
         try {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(sounds.get(Name)));
@@ -43,8 +57,8 @@ public class Sound {
             e.printStackTrace();
         }
     }
-
-    public void playBackgroundMusic(){                              //eine Methode um das Abspielen von Hintergrundmusik zu ermöglichen
+    //method to play Background music
+    public void playBackgroundMusic(){
         if(BgClip!=null) BgClip.stop();
         try {
             BgClip = AudioSystem.getClip();
@@ -60,12 +74,8 @@ public class Sound {
             e.printStackTrace();
         }
     }
-
-    public void tick(){                                             //in dieser tick-Methode wird geprüft, ob das Ende eines Liedes erreicht wurde und ggf. ein neues gestartet wird
-        if (BgClip!=null && (float) BgClip.getFramePosition()/ BgClipLen > 0.99f) playBackgroundMusic();
-    }
-
-    public void toggleSound(boolean val){                           //eine Methode, die ermöglicht den Ton mithilfe eines Knopfes im Menü aus- und einzuschalten
+    //method to toggle Sound
+    public void toggleSound(boolean val){
         if(val && BgClip == null) {
             playBackgroundMusic();
             return;
@@ -75,7 +85,7 @@ public class Sound {
         BgActive ^= true;
     }
 
-    //Getters und Setters
+    //getters and setters
     public void setBgVol(Float value) {
         if(value > BgVolMax) {
             System.out.println("VOLUME EXCEEDS MAX_VOLUME");

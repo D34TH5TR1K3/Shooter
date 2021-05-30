@@ -9,16 +9,18 @@ import java.util.ArrayList;
 import static shooter.gfx.Display.fraktur;
 
 public class Menu {
+    //saves the points, buttons, sliders and Rectangles to be rendered
+    private final ArrayList<Point> points = new ArrayList<>();
+    private final ArrayList<Button> buttons = new ArrayList<>();
+    private final ArrayList<Slider> sliders = new ArrayList<>();
+    private final ArrayList<Rectangle> renderRects = new ArrayList<>();
+    //handler distributes variables
+    Handler handler;
+    //saves the image and the layout of the menu
+    BufferedImage menu, menu_layout;
+    //saves the functions of the Buttons and Sliders
+    String[] actionButtons, actionSliders;
 
-    private final ArrayList<Point> points = new ArrayList<>();          //eine ArrayList mit allen Punkten
-    private final ArrayList<Button> buttons = new ArrayList<>();        //eine ArrayList mit allen Knöpfen
-    private final ArrayList<Slider> sliders = new ArrayList<>();        //eine ArrayList mit allen Sliders
-    private final ArrayList<Rectangle> renderRects = new ArrayList<>(); //eine ArrayList mit allen Rechtecken, die gerendert werden müssen
-    Handler handler;                                                    //hier wird der Handler zwischengespeichert
-    BufferedImage menu, menu_layout;                                    //hier wird die Struktur des Menüs gespeichert, die dann später vom Programm ausgelesen wird
-    String[] actionButtons, actionSliders;                              //hier werden die Funktionen für die Knöpfe gespeichert
-
-    //im Konstruktor wird das Menü und mit ihm seine Variablen initialisiert
     //this constructor initializes the values
     public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
         this.actionButtons = actionButtons;
@@ -29,88 +31,8 @@ public class Menu {
         readMenu();
     }
 
-    //Getters
-    public float getSliderValue(String func){
-        for(Slider slider : sliders){
-            if(slider.getFunc().equals(func)){
-                return slider.getValue();
-            }
-        }
-        return -1;
-    }
-
-    public float getButtonValue(String func){
-        for(Button button : buttons){
-            if(button.getFunc().equals(func)){
-                return button.getValue();
-            }
-        }
-        return -1;
-    }
-
-    public void readMenu(){                 //hier wird das Menü eingelesen und die Rechtecke platziert
-        int indexButton = 0;
-        int indexSlider = 0;
-        //TODO: read slider min and max etc from txt file since we know in which order they are read in
-
-        for(int y = 0; y < 108; y++){
-            for(int x = 0; x < 192; x++){
-                Color color = new Color(menu_layout.getRGB(x, y));
-                int red = color.getRed();
-                int green = color.getGreen();
-                int blue = color.getBlue();
-                int colorint = color.getRGB();
-                if(red > 1 || green > 1 || blue > 1){
-                    Point point = new Point(red, green, blue, x, y, colorint);
-                    points.add(point);
-                }
-            }
-        }
-        while(points.size() > 0){
-            Point point1 = points.get(0);
-            points.remove(point1);
-            for(Point point2 : points){
-                if(point1.getRed() == point2.getRed() &&
-                   point1.getGreen() == point2.getGreen() &&
-                   point1.getBlue() == point2.getBlue()){
-                    if(Math.abs(point1.getY() - point2.getY()) > 5){
-                        Button button1 = new Button(indexButton, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
-                        button1.setFunc(actionButtons[indexButton]);
-                        button1.setValue(handler.getGame().getWriter().GetSettingValue(actionButtons[indexButton]));
-                        indexButton++;
-                        buttons.add(button1);
-                    }else{
-                        Slider slider1 = new Slider(indexSlider, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
-                        slider1.setFunc(actionSliders[indexSlider]);
-                        float deftemp = handler.getGame().getWriter().GetSettingValue(actionSliders[indexSlider]);
-
-                        indexSlider++;
-                        slider1.minMaxDef(0f, 100f, deftemp);
-                        sliders.add(slider1);
-                    }
-
-                    points.remove(point2);
-                    break;
-                }
-            }
-        }
-    }
-
-    public boolean funcActive(String func){ //hier wird geprüft, ob ein Knopf mit der übergebenen Funktion aktiv ist
-        for(Button button : buttons){
-            if(button.getFunc().equals(func) && button.isActive()){
-                return true;
-            }
-        }
-        for(Slider slider : sliders){
-            if(slider.getFunc().equals(func) && slider.isActive()){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void tick(){                     //in tick wird die Logik der Knöpfe und Slider getickt
+    //ticks the menus logic
+    public void tick(){
         Rectangle rect = new Rectangle(handler.getMouseManager().getMouseX(), handler.getMouseManager().getMouseY(), 1, 1);
 
         renderRects.clear();
@@ -140,8 +62,8 @@ public class Menu {
             }
         }
     }
-
-    public void render(Graphics g){         //in render werden die Knöpfe, die Slider und das Hintergrundbild gerendert
+    //renders the menu
+    public void render(Graphics g){
         g.drawImage(menu, 0, 0, 1920, 1080, null);
 
         Color color = new Color(100, 100, 100, 180);
@@ -190,7 +112,70 @@ public class Menu {
         }
     }
 
-    public void saveSettings(){             //hier werden die Änderungen an den Einstellungen gespeichert, die mit den Knöpfen und Slidern festgelegt werden
+    //method to read the menu from the layout and place the according objects
+    public void readMenu(){
+        int indexButton = 0;
+        int indexSlider = 0;
+        //TODO: read slider min and max etc from txt file since we know in which order they are read in
+
+        for(int y = 0; y < 108; y++){
+            for(int x = 0; x < 192; x++){
+                Color color = new Color(menu_layout.getRGB(x, y));
+                int red = color.getRed();
+                int green = color.getGreen();
+                int blue = color.getBlue();
+                int colorint = color.getRGB();
+                if(red > 1 || green > 1 || blue > 1){
+                    Point point = new Point(red, green, blue, x, y, colorint);
+                    points.add(point);
+                }
+            }
+        }
+        while(points.size() > 0){
+            Point point1 = points.get(0);
+            points.remove(point1);
+            for(Point point2 : points){
+                if(point1.getRed() == point2.getRed() &&
+                        point1.getGreen() == point2.getGreen() &&
+                        point1.getBlue() == point2.getBlue()){
+                    if(Math.abs(point1.getY() - point2.getY()) > 5){
+                        Button button1 = new Button(indexButton, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
+                        button1.setFunc(actionButtons[indexButton]);
+                        button1.setValue(handler.getGame().getWriter().GetSettingValue(actionButtons[indexButton]));
+                        indexButton++;
+                        buttons.add(button1);
+                    }else{
+                        Slider slider1 = new Slider(indexSlider, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
+                        slider1.setFunc(actionSliders[indexSlider]);
+                        float deftemp = handler.getGame().getWriter().GetSettingValue(actionSliders[indexSlider]);
+
+                        indexSlider++;
+                        slider1.minMaxDef(0f, 100f, deftemp);
+                        sliders.add(slider1);
+                    }
+
+                    points.remove(point2);
+                    break;
+                }
+            }
+        }
+    }
+    //method to check whether a function exists on the current menu
+    public boolean funcActive(String func){
+        for(Button button : buttons){
+            if(button.getFunc().equals(func) && button.isActive()){
+                return true;
+            }
+        }
+        for(Slider slider : sliders){
+            if(slider.getFunc().equals(func) && slider.isActive()){
+                return true;
+            }
+        }
+        return false;
+    }
+    //method to save changed Settings
+    public void saveSettings(){
         handler.getGame().getWriter().readSettingsFromFile(false);
         for(Slider slider : sliders){
             handler.getGame().getWriter().changeSetting(slider.getFunc(), slider.getValue());
@@ -202,8 +187,8 @@ public class Menu {
         }
         handler.getGame().getWriter().writeSettingsToFile();
     }
-
-    public void toggleButton(String func){  //hier wird der Wert des Knopfes invertiert
+    //method to toggle a buttons value
+    public void toggleButton(String func){
         for(Button button : buttons){
             if(button.getFunc().equals(func)){
                 button.toggle();
@@ -211,17 +196,35 @@ public class Menu {
         }
     }
 
-    public static class Slider{
-        boolean active = false;                                                 //ob der Knopf gerendert und getickt werden muss
-        String func;                                                            //die Funktion, die der Knopf erfüllt
-        int index;                                                              //der Index, die Nummer des Knopfes
-        float value, min, max, def;                                             //hier werdend er Wert des Sliders, die Grenzen des Wertes und der Standard gespeichert
-        int color;                                                              //hier wird die Farbe des Sliders gespeichert
-        int xo, yo, xu, yu;                                                     //die Poistionen der oberen linken und unteren rechten Ecke
-        Rectangle rect;                                                         //ein Rechteck mit den Maßen des Sliders
+    //getters
+    public float getSliderValue(String func){
+        for(Slider slider : sliders){
+            if(slider.getFunc().equals(func)){
+                return slider.getValue();
+            }
+        }
+        return -1;
+    }
+    public float getButtonValue(String func){
+        for(Button button : buttons){
+            if(button.getFunc().equals(func)){
+                return button.getValue();
+            }
+        }
+        return -1;
+    }
 
-        //this constructor initializes the values
-        public Slider(int index, int x1, int y1, int x2, int y2, int color){    //im Konstruktor wird der Slider erstellt und die Werte initialisiert
+    //subclass for sliders
+    public static class Slider{
+        boolean active = false;
+        String func;
+        int index;
+        float value, min, max, def;
+        int color;
+        int xo, yo, xu, yu;
+        Rectangle rect;
+
+        public Slider(int index, int x1, int y1, int x2, int y2, int color){
             this.index = index;
             this.color = color;
             createSlider(x1, y1, x2, y2);
@@ -260,7 +263,6 @@ public class Menu {
             rect = new Rectangle(xo*10, yo*10, xu*10 - xo*10, yu*10 - yo*10);
         }
 
-        //Getters und Setters
         public Rectangle getRect() {
             return rect;
         }
@@ -313,33 +315,32 @@ public class Menu {
             this.func = func;
         }
     }
-
+    //subclass for buttons
     public static class Button{
         float value = -1.0f;//  default value -1.0f if button isn't used to toggle stuff (i.e. change menu)
                             //  Button value will only be written to settings.txt if value != -1.0f
-        boolean highlighted = false;                                            //hier wird gespeichert, ob der Knopf anders gerendert werden muss
-        boolean active = false;                                                 //hier wird gespeichert, ob der Knopf gerendert und getickt werden muss
-        String func;                                                            //hier wird gespeichert, was für eine Funktion der Knopf erfüllt
-        int color;                                                              //die Farbe des Knopfes
-        int index;                                                              //der Index, die Nummer des Knopfes
-        int xo, yo, xu, yu;                                                     //die Poistionen der oberen linken und unteren rechten Ecke
-        Rectangle rect;                                                         //ein Rechteck mit den Maßen des Knopfes
+        boolean highlighted = false;
+        boolean active = false;
+        String func;
+        int color;
+        int index;
+        int xo, yo, xu, yu;
+        Rectangle rect;
 
-        //this constructor initializes the values
-        public Button(int index, int x1, int y1, int x2, int y2, int color){    //im Konstruktor wird ein Knopf erstellt und die Werte initialisiert
+        public Button(int index, int x1, int y1, int x2, int y2, int color){
             this.index = index;
             this.color = color;
             createButton(x1, y1, x2, y2);
         }
 
-        public void toggle(){                                                   //eine Funktion um den Wert eines Knopfes zu invertieren
+        public void toggle(){
             if(value == 1f)
                 value = 0f;
             else if(value == 0f)
                 value = 1f;
         }
 
-        public void createButton(int x1, int y1, int x2, int y2){               //erstellt einen neuen Knopf mit den übergebenen Koordinaten
+        public void createButton(int x1, int y1, int x2, int y2){
             if(x1 < x2){
                 xo = x1;
                 xu = x2;
@@ -357,7 +358,6 @@ public class Menu {
             rect = new Rectangle(xo + 1, yo + 1, xu - xo - 1, yu - yo - 1);
         }
 
-        //Getters und Setters
         public Rectangle getRect() {
             return rect;
         }
@@ -413,17 +413,15 @@ public class Menu {
         public void setValue(float value) {
             this.value = value;
         }
-    }
 
+    }
+    //subclass for points on the layout
     public static class Point{
 
-        //hier werden die Werte für Farben und Position des Punktes gespeichert
         int red, green, blue;
         int X, Y;
         int color;
 
-        //im Konstruktor werden die Werte für Farben und Position gespeichert
-        //this constructor initializes the values
         public Point(int red, int green, int blue, int X, int Y, int color){
             this.color = color;
             this.red = red;
@@ -433,7 +431,6 @@ public class Menu {
             this.Y = Y;
         }
 
-        //Getters
         public int getRed() {
             return red;
         }

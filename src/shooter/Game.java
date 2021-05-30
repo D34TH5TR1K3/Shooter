@@ -11,23 +11,25 @@ import java.lang.Runnable;
 import java.awt.image.BufferStrategy;
 
 public class Game implements Runnable {
-    private Display display;                    //Das Display stellt ein Fenster bereit, mit dem der Nutzer interagieren kann
-
-    private Thread thread;                      //Der Thread kümmert sich darum, dass das Programm effizient ausgeführt wird
-    private boolean running;                    //running ist eine globale Variable, die genutzt wird um das starten und stoppen des Spiels zu organisieren
-
-    public State gameState, menuState;          //GameState und MenuState sind die beiden Zustände des Spiels, die entscheiden, ob man gerade das Menü navigiert oder das Spiel spielt
-
-    private Handler handler;                    //Der Handler kümmert sich um das Verteilen von Objektinstanzen innerhalb der Klassen
-
-    private final KeyManager keyManager;        //Der KeyManager kümmert sich um den Input der Tastatur
-    private final MouseManager mouseManager;    //Der MouseManager kümmert sich um den Input der Maus
-    private GameCamera gameCamera;              //Die GameCamera sorgt dafür, dass der Spieler immer zentriert ist und dass sich die Welt um ihn herumbewegt
-    private final Writer writer;                //Der Writer kümmert sich um das Speichern und Auslesen von Einstellungen und Spielständen
-
-    private Sound sound;                        //Das Sound-objekt kümmert sich um die Wiedergabe von Geräuschen und Musik
-    private BufferStrategy bs;
-    private Graphics g;
+    //display is responsible for displaying the game to the user
+    private Display display;
+    //thread is responsible for running the game efficiently
+    private Thread thread;
+    //running indicates whether the game is running
+    private boolean running;
+    //game and menuState are States of the game with different functions
+    public State gameState, menuState;
+    //handler is responsible for variable distribution
+    private Handler handler;
+    //key and mouseManagers are responsible for user input
+    private final KeyManager keyManager;
+    private final MouseManager mouseManager;
+    //gameCamera is responsible for the users viewport
+    private GameCamera gameCamera;
+    //writer is responsible for writing to and reading from files
+    private final Writer writer;
+    //sound is responsible for playing sound
+    private Sound sound;
 
     //this constructor initializes the values
     public Game() {
@@ -72,12 +74,13 @@ public class Game implements Runnable {
     }
     //render is responsible for the graphics of the game. all render methods get called here
     public void render() {
-        bs = display.getCanvas().getBufferStrategy();
+        BufferStrategy bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        g = bs.getDrawGraphics();
+        Graphics g = bs.getDrawGraphics();
+        g.clearRect(0,0, 1920, 1080);
         State.getState().render(g);
         bs.show();
         g.dispose();

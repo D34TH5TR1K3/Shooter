@@ -4,13 +4,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyManager implements KeyListener {
-    private final boolean[] keys;                             //hier werden alle Tasten gespeichert
-    public boolean up, left, down, right, esc, save;    //hier werden die Werte (gedrückt/nicht gedrückt) der Tasten gespeichert, mit denen wir das Spiel steuern
+    //saves all keys
+    private final boolean[] keys;
+    //saves all functional keys
+    public boolean up, left, down, right, esc, save;
 
     //this constructor initializes the values
-    public KeyManager() { keys = new boolean[256]; }    //im Konstruktor wird das Array mit den keys initialisiert, auf die der KeyListener hört
+    public KeyManager() { keys = new boolean[256]; }
 
-    public void tick() {                                //in der tick-Methode wird in unseren Funktionstasten gespeichert, ob sie gedrückt sind oder nicht
+    //ticks the values of the functional keys
+    public void tick() {
         up = keys[KeyEvent.VK_W];
         left = keys[KeyEvent.VK_A];
         down = keys[KeyEvent.VK_S];
@@ -19,16 +22,17 @@ public class KeyManager implements KeyListener {
         save = keys[KeyEvent.VK_COMMA];
     }
 
+    //methods required for the KeyListener logic to work properly
     @Override
-    public void keyPressed(KeyEvent e) {                //hier wird darauf reagiert, dass eine Taste gedrückt wird
+    public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() >= 0 && e.getKeyCode() <=255)
             keys[e.getKeyCode()] = true;
     }
     @Override
-    public void keyReleased(KeyEvent e) {               //hier wird darauf reagiert, dass eine Taste losgelassen wird
+    public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() >= 0 && e.getKeyCode() <=255)
             keys[e.getKeyCode()] = false;
     }
     @Override
-    public void keyTyped(KeyEvent e) { }                //die keyTyped Methode wird, weil erforderlich überschrieben aber erhält keine Funktion
+    public void keyTyped(KeyEvent e) { }
 }

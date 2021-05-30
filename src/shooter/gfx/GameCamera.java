@@ -3,25 +3,27 @@ package shooter.gfx;
 import shooter.entities.Entity;
 
 public class GameCamera {
-    private float xOffset, yOffset;                     //hier wird gespeichert, wie weit die Welt verschoben ist
+    //saves the offset of the world
+    private float xOffset, yOffset;
 
     //this constructor initializes the values
-    public GameCamera(float xOffset, float yOffset){    //im Konstruktor werden die Offsets initialisiert
+    public GameCamera(float xOffset, float yOffset){
         this.xOffset = xOffset;
         this.yOffset = yOffset;
     }
 
-    public void centerOnEntity(Entity e){               //hier wird die Welt soweit verschoben, dass es aussieht als würde sich der Viewport bewegen und nicht die Welt um den Spieler herum
+    //method to center the viewport on a given entity
+    public void centerOnEntity(Entity e){
         xOffset = e.getX() - 960 + (float)Entity.CREATURESIZE / 2;
         yOffset = e.getY() - 540 + (float)Entity.CREATURESIZE / 2;
     }
-
-    public void move(float xAmt, float yAmt){           //mit move könnte man die Kamera bewegen, ohne dass sich der Spieler in der Mitte befindet
+    //method to move a certain amount
+    public void move(float xAmt, float yAmt){
         xOffset += xAmt;
         yOffset += yAmt;
     }
 
-    //Getters
+    //getters
     public float getxOffset(){ return xOffset; }
     public float getyOffset(){ return yOffset; }
 }

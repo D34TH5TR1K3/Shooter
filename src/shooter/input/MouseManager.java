@@ -5,46 +5,45 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class MouseManager implements MouseListener, MouseMotionListener {
-    private boolean leftPressed, rightPressed;                  //hier wird gespeichert, ob die linke oder die rechte Maustaste gerade gedrückt sind
-    private int mouseX, mouseY;                                 //hier wird die Position des Mauszeigers gespeichert
-    
-    public MouseManager() { }                                   //ein leerer Konstruktor
+    //saves the pressed buttons of the mouse
+    private boolean leftPressed, rightPressed;
+    //saves the position of the mouse
+    private int mouseX, mouseY;
 
-    //Getters und Setters
+    //empty constructor
+    public MouseManager() { }
+
+    //getters and setters
     public boolean isLeftPressed() { return leftPressed; }
     public boolean isRightPressed() { return rightPressed; }
     public int getMouseX() { return mouseX; }
     public int getMouseY() { return mouseY; }
 
+    //methods required for the MouseListener and MouseMotionListener logic to work properly
     @Override
-    public void mousePressed(MouseEvent e) {                    //hier wird geprüft ob die Linke oder Rechte Maustaste gerade gedrückt werden
+    public void mousePressed(MouseEvent e) {
         if(e.getButton() == MouseEvent.BUTTON1)
             leftPressed = true;
         else if(e.getButton() == MouseEvent.BUTTON3)
             rightPressed = true;
     }
-
     @Override
-    public void mouseReleased(MouseEvent e) {                   //hier wird geprüft ob die Linke oder Rechte Maustaste losgelassen wurden
+    public void mouseReleased(MouseEvent e) {
         if(e.getButton() == MouseEvent.BUTTON1)
             leftPressed = false;
         else if(e.getButton() == MouseEvent.BUTTON3)
             rightPressed = false;
     }
-
     @Override
-    public void mouseMoved(MouseEvent e) {                      //hier wird ausgelesen, wo der Mauszeiger sich gerade befindet
+    public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
     }
-
     @Override
-    public void mouseDragged(MouseEvent e) {                    //hier wird ausgelesen, wohin sich die Maus bewegt hat, während eine der Maustasten gedrückt war
+    public void mouseDragged(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
     }
-
-    //Methoden, die, weil erforderlich überschrieben werden aber die hier keine Funktion haben
     @Override
     public void mouseClicked(MouseEvent e) { }
     @Override

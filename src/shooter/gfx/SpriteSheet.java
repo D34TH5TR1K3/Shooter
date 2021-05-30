@@ -3,7 +3,8 @@ package shooter.gfx;
 import java.awt.image.BufferedImage;
 
 public class SpriteSheet {
-    private final BufferedImage sheet;                      //hier wird das Spritesheet als eigenes Bild gespeichert
+    //saves the SpriteSheet
+    private final BufferedImage sheet;
 
     //this constructor initializes the values
     public SpriteSheet(BufferedImage sheet) {               //im Konstruktor wird das SpriteSheet initialisiert

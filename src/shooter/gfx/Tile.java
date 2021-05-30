@@ -3,30 +3,32 @@ package shooter.gfx;
 import java.awt.*;
 
 public class Tile {
-    //hier werden Variablen gespeichert, die für den A*-Algorithmus gebraucht werden
+    //logical variables belonging to pathfinding
     private Tile parent;
     private int hCost = 0;
     private int gCost = 0;
     private int fCost = hCost + gCost;
     private boolean visited = false;
     private boolean closed = false;
-
-    private boolean isSolid;                    //hier wird egspeichert, ob das Tile solide ist
-    private boolean isHalfSolid = false;        //hier wird gespeichert, ob das Tile halbsolide ist (hilfreich für KI-Bewegung)
-    private int width = 30, height = 30;        //hier wird die Größe des Tiles gespeichert
-    private int TposX, TposY;                   //hier wird in Tile-Größen gespeichert, an welcher Position sich das Tile befindet
-    private Rectangle hitbox;                   //hier wird die Hitbox gespeichert, mit der später überprüft wird, ob eine Kollision stattgefunden hat
-    private Color color = Color.green;          //hier wird die Farbe gespeichert, die das Tile später haben soll
+    //saves the solidity of the Tile
+    private final boolean isSolid;
+    private boolean isHalfSolid = false;
+    //saves the size and the position of the Tile
+    private final int TposX, TposY;
+    //saves the hitbox of the Tile
+    private Rectangle hitbox;
+    //saves the color of the Tile
+    private Color color = Color.green;
 
     //this constructor initializes the values
-    public Tile(int x, int y, boolean isSolid){ //im Konstruktor wird festgelegt, wo das Tile liegt und ob es Solid ist
+    public Tile(int x, int y, boolean isSolid){
         this.TposX = x;
         this.TposY = y;
         this.isSolid = isSolid;
-        hitbox = new Rectangle(TposX * 30, TposY * 30, width, height);
+        hitbox = new Rectangle(TposX * 30, TposY * 30,30,30);
     }
 
-    //Getters und Setters
+    //getters and setters
     public boolean isSolid() {
         return isSolid;
     }
@@ -37,14 +39,6 @@ public class Tile {
 
     public void setHalfSolid(boolean halfSolid) {
         isHalfSolid = halfSolid;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     public int getTposX() {

@@ -15,18 +15,21 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Writer {
+    //the Utils required to read from and write to files
+    FileWriter writer;
+    Scanner scanner;
+    //the Files for reading and writing Settings and GameSaves
+    File settingFile = new File("res/settings/settings.txt");
+    File gameSaveFile = new File("res/gameSaves/gameSave.txt");
+    //settings saves all Settings in the program
+    ArrayList<Setting> settings = new ArrayList<>();
 
-    FileWriter writer;                                                      //die Instanz eines FileWriters, der es ermöglicht, Daten und Werte in eine Datei zu speichern
-    Scanner scanner;                                                        //die Instanz eines Scanners, der es ermöglicht, Daten und Werte aus einer Datei auszulesen
-    File settingFile = new File("res/settings/settings.txt");     //die Datei, in der Einstellungen gespeichert werden
-    File gameSaveFile = new File("res/gameSaves/gameSave.txt");   //die Datei, in der der Spielstand gespeichert wird
-    ArrayList<Setting> settings = new ArrayList<>();                        //eine Arraylist, in der kurzfristig Die Einstellungen gespeichert werden
-
-    public Writer(){                                                        //ein leerer Konstruktor für Writer
+    //empty constructor
+    public Writer(){
 
     }
-
-    public float getScale(){                                                //eine Methode um die Skalierung des Spiels auf die Auflösung von Moritz' Laptop anzupassen
+    //method to get the scale of the game
+    public float getScale(){
         File scaleFile = new File("C://Users//morit//OneDrive//Documents//GitHub//scale.txt");
         if(scaleFile.exists()){
             return 1.33333333333333f;
@@ -34,8 +37,8 @@ public class Writer {
             return 1f;
         }
     }
-
-    public void changeSetting(String name, float value){                    //die Methode um eine Einstellung in der ArrayList zu verändern
+    //method to change a Setting
+    public void changeSetting(String name, float value){
         //readFromFile(false); //call readfromfile before changing settings to update settings ArrayList
         for(Setting setting : settings){
             if(name.equals(setting.getName())){
@@ -43,8 +46,8 @@ public class Writer {
             }
         }
     }
-
-    public void readSettingsFromFile(boolean print){                        //die Methode um alle Einstellungen aus der Datei in die ArrayList einzulesen
+    //method to read Settings from a file
+    public void readSettingsFromFile(boolean print){
         try {
             settings.clear();
             scanner = new Scanner(settingFile);
@@ -75,8 +78,8 @@ public class Writer {
             e.printStackTrace();
         }
     }
-
-    public float GetSettingValue(String name){                              //die Methode um den Wert einer einzelnen Einstellung aus der Datei auszulesen
+    //method to get the value of a Setting
+    public float GetSettingValue(String name){
         try {
             scanner = new Scanner(settingFile);
             String fileRead = scanner.nextLine();   //read 1st line
@@ -101,8 +104,8 @@ public class Writer {
         }
         return -1;
     }
-
-    public void writeSettingsToFile(){                                      //die Methode um alle Einstellungen aus der ArrayList in die Datei zu speichern
+    //method to write Settings to a file
+    public void writeSettingsToFile(){
         try {
             writer = new FileWriter(settingFile, false);
             for(Setting setting : settings){
@@ -116,37 +119,8 @@ public class Writer {
             e.printStackTrace();
         }
     }
-
-    public static class Setting{                                                   //eine Subklasse um Einstellungen leichter speichern zu können
-
-        String name;
-        float value;
-
-        public Setting(String name, float value){
-            this.name = name;
-            this.value = value;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        /*
-        public void setName(String name) {
-            this.name = name;
-        }
-        */
-
-        public float getValue() {
-            return value;
-        }
-
-        public void setValue(float value) {
-            this.value = value;
-        }
-    }
-
-    public World createGame(Handler handler){                               //eine Methode um ein Spiel mithilfe der Datei mit dem Spielstand zu erstelle/laden
+    //method to create a game from a file
+    public World createGame(Handler handler){
         try{
             scanner = new Scanner(gameSaveFile);
             int enemyCount = Integer.parseInt(scanner.nextLine());
@@ -174,8 +148,8 @@ public class Writer {
             return null;
         }
     }
-
-    public void wipeGame(){                                                 //eine Methode um den Spielstand zu löschen (beim erneuten starten des Spiels wird eine neue Instanz erschaffen
+    //method for wiping the gameSave from a file
+    public void wipeGame() {
         try{
             writer = new FileWriter(gameSaveFile,false);
             writer.write("-1");
@@ -185,8 +159,8 @@ public class Writer {
             e.printStackTrace();
         }
     }
-
-    public void writeGameSave(World world){                                 //eine Methode um den Spielstand in die Datei zu speichern
+    //method to save the game to a file
+    public void writeGameSave(World world) {
         GameSave gameSave = new GameSave(world);
         try{
             writer = new FileWriter(gameSaveFile,false);
@@ -202,7 +176,37 @@ public class Writer {
         }
     }
 
-    public static class GameSave{                                                  //eine Subklasse um den Spielstand leichter speichern zu können
+    //subclass for easier saving of settings
+    public static class Setting {
+
+        String name;
+        float value;
+
+        public Setting(String name, float value){
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        /*
+        public void setName(String name) {
+            this.name = name;
+        }
+        */
+
+        public float getValue() {
+            return value;
+        }
+
+        public void setValue(float value) {
+            this.value = value;
+        }
+    }
+    //subclass for easier saving of the game
+    public static class GameSave {
         private World world;
         private Player player;
         private ArrayList<Entity> enemies;

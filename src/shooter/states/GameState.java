@@ -7,32 +7,30 @@ import shooter.gfx.World;
 import java.awt.*;
 
 public class GameState extends State {
-
-    private final World world;                            //hier wird die Welt (Level) gespeichert, in der das tatsächliche Spiel stattfindet
+    //world saves the world to distribute variables
+    private final World world;
 
     //this constructor initializes the values
-    public GameState(Game game, Handler handler) {  //hier wird der GameState und die Welt initialisiert
+    public GameState(Game game, Handler handler) {
         super(game,handler);
         world = handler.getGame().getWriter().createGame(handler);
     }
 
+    //ticks the world
     @Override
-    public void tick() {                            //hier wird der GameState getickt und somit die tick-methode der Speilwelt aufgerufen
-        //TODO add player and world
+    public void tick() {
         if(handler.getKeyManager().esc){
             State.setState(handler.getGame().menuState);
         }
-        world.tick(); // tick world
+        world.tick();
     }
-
+    //renders the world
     @Override
-    public void render(Graphics g) {                //hier wird die Welt gerendert und dargestellt
-        //TODO add player and world
-        //world.renderTiles(g);
-        world.render(g);    //render world
+    public void render(Graphics g) {
+        world.render(g);
     }
 
-    //Getters und Setters
+    //getters and setters
     public World getWorld(){
         return world;
     }

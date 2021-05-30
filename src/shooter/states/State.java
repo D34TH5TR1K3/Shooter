@@ -6,20 +6,24 @@ import shooter.Handler;
 import java.awt.Graphics;
 
 public abstract class State {
-    private static State currentState = null;   //hier wird gespeichert, ob gerade der Zustand mit dem Menü oder der mit dem Spiel aktiv ist
-    protected Game game;                        //hier wird das Spiel gespeichert
-    protected Handler handler;                  //hier wird der Handler gespeichert, der Variablen verteilt
+    //currentState organizes which State gets ticked and rendered
+    private static State currentState = null;
+    //game and handler distribute variables
+    protected Game game;
+    protected Handler handler;
 
     //this constructor initializes the values
-    public State(Game game,Handler handler) {   //hier werden der Spiel- und der Handlervariable ihre Werte zugeschrieben
+    public State(Game game,Handler handler) {
         this.game = game;
         this.handler = handler;
     }
 
-    public abstract void tick();                //eine tick-methode ohne Körper, die von den states angepasst wird
-    public abstract void render (Graphics g);   //eine render-methode ohne Körper, die von den states angepasst wird
+    //abstract tick without a body
+    public abstract void tick();
+    //abstract render without a body
+    public abstract void render (Graphics g);
 
-    //Getters and Setters
+    //getters and setters
     public static void setState(State state) { currentState = state; }
     public static State getState() { return currentState; }
 }
