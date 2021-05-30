@@ -9,10 +9,11 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 
 public abstract class Entity {
-    protected float posX;                       //die Position der Entitaet
+    //saves the entities position and default size
+    protected float posX;
     protected float posY;
-    private final int posZ;                     //die Position auf der Z-Achse (relevant zum rendern)
-    public static final int CREATURESIZE = 180; //ein Wert in Pixeln, wie gross eine Creature default ist
+    private final int posZ;
+    public static final int CREATURESIZE = 180;
     /*
     posZ in Form von Integern
     posZ 0: Level
@@ -22,22 +23,26 @@ public abstract class Entity {
     posZ 4: Player/Enemies
     posZ 5: Interactables
     */
-    protected float dir = 0;                    //die Blickrichtung der Entitaet in Grad
-    protected boolean solid = false;            //ob die Entitaet solide ist oder nicht
-    protected boolean active = false;           //ob die Entitaet ueberhaupt aktiv ist
-    protected World world;                      //Zwischenspeicher der Welt, in der die Entitaet existiert
-    protected Handler handler;                  //Zwischenspeicher des Handlers
-    protected Animation activeAnimation;        //hier wird die Animation der Entitaet gespeichert, die dargestellt wird, solange die Entitaet aktiv ist
+    //saves the direction the entity faces towards
+    protected float dir = 0;
+    //indicates whether the entity is solid or active
+    protected boolean solid = false;
+    protected boolean active = false;
+    //world and handler distribute variables
+    protected World world;
+    protected Handler handler;
+    //saves the Animation to render
+    protected Animation activeAnimation;
 
     //these constructors initialize the values
-    public Entity(float posX, float posY, int posZ, Handler handler, World world) {             //im Konstruktor werden die Position und die Groesse der Entitaet initialisiert
+    public Entity(float posX, float posY, int posZ, Handler handler, World world) {
         this.world = world;
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
         this.handler = handler;
     }
-    public Entity(float posX, float posY, int posZ, float dir, Handler handler, World world) {  //im Konstruktor werden die Position und die Groesse der Entitaet initialisiert
+    public Entity(float posX, float posY, int posZ, float dir, Handler handler, World world) {
         this.world = world;
         this.posX = posX;
         this.posY = posY;
@@ -46,8 +51,12 @@ public abstract class Entity {
         this.handler = handler;
     }
 
+    //abstract tick and render without bodies
+    public abstract void tick();
+    public abstract void render(Graphics g);
 
-    public boolean checkLineOfSight(Line2D.Float line){                                         //eine Methode, die errechnet, ob der Gegner eine freie Schusslinie zum Spieler hat
+    //method to check if a line of sight is clear
+    public boolean checkLineOfSight(Line2D.Float line){
         for(int x=0;x<64*world.getMapsize();x++){
             for(int y=0;y<36*world.getMapsize();y++){
                 Tile temptile = world.getTiles(x,y);
@@ -57,26 +66,22 @@ public abstract class Entity {
         }
         return false;
     }
-
-    //abstrakte tick und renders zum erben
-    public abstract void tick();
-    public abstract void render(Graphics g);
-
-    public void move(float amtX, float amtY) {                                                  //eine Methode um die Entitaet einen Schritt zu bewegen
-        //System.out.println(amtX +"   "+amtY);
+    //method to move a certain amount
+    public void move(float amtX, float amtY) {
         posX += amtX;
         posY += amtY;
     }
-    public void moveAbs(float amtX, float amtY) {                                               //eine Methode um die Entitaet auf eine absolute Position zu setzen
-        //System.out.println(amtX +"   "+amtY);
+    //method to move to a certain position
+    public void moveAbs(float amtX, float amtY) {
         posX = amtX;
         posY = amtY;
     }
+    //method to face a certain direction
     public void face(float amt) {                                                               //eine Methode um die Blickrichtung der Entitaet auf einen bestimmten Wert zu setzen
         dir = amt;
     }
 
-    //Getters und Setters
+    //getters and setters
     public void setInActive() { active = false; }
     public void setActive() { active = true; }
     public boolean isSolid() { return solid; }

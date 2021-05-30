@@ -10,21 +10,24 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class Particle{
-
+    //saves the particles remaining time
+    private int timeLeftToLive = 1000;
+    //saves the particles animation or texture
+    private BufferedImage texture;
+    private Animation AnimParticle;
+    //handler and world distribute variables
+    private final Handler handler;
+    private final World world;
+    //saves the size and direction
+    private int width = 0, height = 0;
     private final int x, y;
-    private int yNew;
-    private int xNew;       //die Postition des Particles
-    private int timeLeftToLive = 1000;  //die Zeit, die das Particle noch lebt
-    private BufferedImage texture;      //die Textur des Particles
-    private Animation AnimParticle;     //die Animation des Particles
-    private final Handler handler;      //Zwischenspeicher des Handlers
-    private final World world;          //Zwischenspeicher der Welt
-    private int width = 0, height = 0;  //Groesse des Particles
-    private float dir;                  //Ausrichtung des Particles
-    private int type = 0;               //Typ des Particles
-    private int speedFactor = 10;       //Geschwindigkeitsfaktor des Particles
+    private int xNew, yNew;
+    private float dir;
+    //saves the particles type
+    private int type = 0;
+    //saves the particles speed
+    private int speedFactor = 10;
 
-    //drei Konstruktoren, um festzuelegen, ob das Particle animiert ist oder ob es eine bestimmte Groesse hat
     //these constructors initialize the values
     public Particle(int x, int y, int speed, BufferedImage[] frames, Handler handler, World world){
         this.x = x;
@@ -55,18 +58,20 @@ public class Particle{
         AnimParticle = new Animation(frames,speed);
     }
 
-    public void tick(){                 //in tick wird Kollision aber auch Animation getickt
+    //ticks a particles collision and animation
+    public void tick(){
         timeLeftToLive--;
-        if(type == 0) {
+        if(type == 0)
             AnimParticle.tick();
-        }else if(type == 1){
+        else if(type == 1){
             if(!world.collisionCheck(new Rectangle(x+27, y+21+speedFactor, 3, 3)))
-                yNew += speedFactor;  //TODO: random shells
+                yNew += speedFactor;
             if(speedFactor > 0)
                 speedFactor--;
         }
     }
-    public void render(Graphics g){     //in render wird entweder die Animation oder das einzelne BufferedImage des Particles gerendert
+    //renders animations or singular textures
+    public void render(Graphics g){
         if(type == 0) {
             if (width == 0)
                 g.drawImage(AnimParticle.getCurrentFrame(), ((int) (x - handler.getxOffset())), ((int) (y - handler.getyOffset())), null);
@@ -74,17 +79,17 @@ public class Particle{
                 g.drawImage(AnimParticle.getCurrentFrame(), ((int) (x - handler.getxOffset())), ((int) (y - handler.getyOffset())), width, height, null);
         }else if(type == 1) {
             AffineTransform reset = new AffineTransform();
-            reset.rotate(0, 0, 0);  //save before rotation
-            Graphics2D g2 = (Graphics2D)g;  // cast Graphics to Graphics 2d
+            reset.rotate(0, 0, 0);
+            Graphics2D g2 = (Graphics2D)g;
 
             g2.rotate(Math.toRadians(dir), (int) (x - handler.getGameCamera().getxOffset()), (int) (y -handler.getGameCamera().getyOffset()));   //rotate graphics object
             g2.drawImage(texture, ((int) (xNew +27- handler.getxOffset())), ((int) (yNew +9- handler.getyOffset())), null);
 
-            g2.setTransform(reset); //reset rotation
+            g2.setTransform(reset);
         }
     }
 
-    //Getters und Setters
+    //getters and setters
     public Animation getAnimParticle() {
         return AnimParticle;
     }

@@ -9,8 +9,10 @@ import shooter.gfx.World;
 import shooter.sound.Sound;
 
 public class Item extends Entity{
-    private boolean visible = true;                                                 //ob das Item sichtbar ist oder nicht
-    private final int type;                                                         //der Typ der Waffe in Integern
+    //indicates whether an item is visible
+    private boolean visible = true;
+    //saves the type of the item
+    private final int type;
     /*
     type in Form von Integern
     type 1: Handgun
@@ -20,17 +22,21 @@ public class Item extends Entity{
     type 5: rpg
     type 6:
     */
-    //TODO add gun types
-    private int ammo = 0;                                                           //die Munitionszahl
-    private int bulletSpeed;                                                        //die Geschwindigkeit der Kugeln
-    private float rpm;                                                              //die Feuerrate des Items
-    private int reloadTime;                                                         //die Zeit, die das Item braucht um Munition zu erhoehen
-    private final float bulletDelay;                                                //die Zeit, die das Item warten muss um erneut feuern zu koennen
-    private long lastTime = 0;                                                      //logischer Wert
-    private int offset;                                                             //offset, damit die Kugel an einem logischen Ort spawnt, nicht immer oben links
+    //saves the ammo count
+    private int ammo = 0;
+    //saves the speed of a bullet and the rate of fire
+    private int bulletSpeed;
+    private float rpm;
+    //saves the time it takes to reload or use an item
+    private int reloadTime;
+    private final float bulletDelay;
+    //logical variable
+    private long lastTime = 0;
+    //saves the value of the offset between an item and a fired bullet
+    private int offset;
 
     //this constructor initializes the values
-    public Item(float posX, float posY, int type, Handler handler, World world) {   //im Konstruktor wird die Position und der Typ des Items initialisiert
+    public Item(float posX, float posY, int type, Handler handler, World world) {
         super(posX,posY,2, handler, world);
         this.type = type;
         active = true;
@@ -71,10 +77,46 @@ public class Item extends Entity{
                 break;
         }
         bulletDelay = 60 / rpm * 1000;
-        //bulletDelay = 1000;
     }
 
-    public void reload() {                                                          //hier wird die Logik implementiert, die es den Gegnern ermoeglicht nachzuladen (Verwenden in einer tick-Methode erforderlich)
+    //ticks nothing
+    @Override
+    public void tick() { }
+    //renders the item if it is active
+    @Override
+    public void render(Graphics g) {
+        if(active){
+            switch(type) {
+                case 1:
+                    g.drawImage(Assets.item_pistol, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 30, 30, null);
+                    break;
+                case 2:
+                    if(ammo > 0)
+                        g.drawImage(Assets.item_ak_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    else if(ammo == 0)
+                        g.drawImage(Assets.item_ak_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    //System.out.println(posX+"  "+posY);
+                    break;
+                case 3:
+                    g.drawImage(Assets.item_uzi, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    break;
+                case 4:
+                    g.drawImage(Assets.item_shotgun_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    break;
+                case 5:
+                    if(ammo > 0)
+                        g.drawImage(Assets.item_rpg_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    if(ammo == 0)
+                        g.drawImage(Assets.item_rpg_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    //method to reload ammo (usage in a tick method required)
+    public void reload() {
         switch(type) {
             case 1:
                 reloadTime--;
@@ -115,131 +157,64 @@ public class Item extends Entity{
                 break;
         }
     }
-
-    public void drop(Entity activator){                                             //diese Methode ermoeglicht das Fallenlassen von Items
+    //method to drop an item
+    public void drop(Entity activator){
         active = true;
         posX = activator.getX();
         posY = activator.getY();
     }
-
-    public void pick_up(Entity activator){                                          //diese Methode ermoeglicht das Aufheben von Items
+    //method to pick an item up
+    public void pick_up(Entity activator){
         active = false;
         posX = activator.getX();
         posY = activator.getY();
     }
-
-    public void activate(Entity activator) {                                        //diese Methode ermoeglicht einer Entitaet das Item zu benutzen
+    //method to use an item
+    public void activate(Entity activator) {
         float buX, buY;
-        //System.out.println(activator.getX()+CREATURESIZE/2+"   "+ activator.getY()+CREATURESIZE/2);
-        //System.out.println("activated");
-        //System.out.println(type);
         long now = System.currentTimeMillis();
-        //now = System.nanoTime() * 1000000;
-        switch(type) {
-            case 1:
-                //System.out.println(ammo);
-                if(ammo!=0 && now - lastTime > bulletDelay) {
-                    lastTime = now;
-                    ammo--;
-                    Sound.play("Uzi");
-                    //System.out.println("shooting");
-                    buX = activator.getX() + (float)CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
-                    buY = activator.getY() + (float)CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
-                    world.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
-                }
-                break;
-            case 2:
-                //System.out.println(ammo);
-                if(ammo!=0 && now - lastTime > bulletDelay) {
-                    lastTime = now;
-                    ammo--;
-                    Sound.play("Ak");
-
-
-                    world.getEntityManager().addParticle(new Particle(((int) (activator.getX() + CREATURESIZE / 2)), ((int) (activator.getY() + CREATURESIZE / 2)), activator.getDir(), Assets.shell, handler, world,600));
-
-
-                    //System.out.println("shooting");
-                    buX = activator.getX() + (float)CREATURESIZE/2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI+0)) * offset);
-                    buY = activator.getY() + (float)CREATURESIZE/2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI+0)) * offset);
-                    world.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
-                }
-                break;
-            case 3:
-                //System.out.println(now - lastTime);
-                if(ammo!=0 && now - lastTime > bulletDelay) {
-                    //System.out.println(now - lastTime +"   "+bulletDelay);
-                    lastTime = System.currentTimeMillis();
-                    ammo--;
-                    Sound.play("Uzi");
-                    float dirOffset = (float)(Math.random() * 8);
-                    world.getEntityManager().addBullet(new Bullet(activator.getX() + (float)CREATURESIZE/2, activator.getY() + (float)CREATURESIZE/2, activator.getDir() + 180f-4f+dirOffset, bulletSpeed, 0, handler, world));
-                }
-                break;
-            case 4:
-                //System.out.println(now);
-                if(ammo!=0 && now - lastTime > bulletDelay) {
-                    lastTime = System.currentTimeMillis();
-                    ammo--;
-                    Sound.play("Shotgun");
-                    for(int i = 0; i < 6; i++) {
-                        float dirOffset = (float)(Math.random() * 20);
-                        world.getEntityManager().addBullet(new Bullet(activator.getX() + (float)CREATURESIZE / 2, activator.getY() + (float)CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset, bulletSpeed, 0, handler, world));
-                    }
-                }
-                break;
-            case 5:
-                //System.out.println(now - lastTime);
-                if(ammo!=0 && now - lastTime > bulletDelay) {
-                    //System.out.println(now - lastTime +"   "+bulletDelay);
-                    lastTime = System.currentTimeMillis();
-                    ammo--;
-                    Sound.play("RocketLaunch");
-                    world.getEntityManager().addBullet(new Bullet(activator.getX() + (float)CREATURESIZE/2, activator.getY() + (float)CREATURESIZE/2, activator.getDir() + 180, bulletSpeed, 1, handler, world));
-                }
-                break;
-            default:
-                break;
-        }
-        //TODO implement different ammotypes
-    }
-
-    @Override
-    public void tick() { }                                                          //diese tick-Methode ist leer, weil alle Logik vom Aktivator aufgerufen und beutzt wird
-    @Override
-    public void render(Graphics g) {                                                //die render-Methode rendert die Items, aber nur, wenn diese tatsaechlich aktiv sind
-        if(active){
+        if(ammo!=0&&now-lastTime>bulletDelay) {
+            lastTime = now;
+            ammo--;
             switch(type) {
                 case 1:
-                    g.drawImage(Assets.item_pistol, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 30, 30, null);
+                    Sound.play("Uzi");
+                    buX = activator.getX() + (float) CREATURESIZE / 2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
+                    buY = activator.getY() + (float) CREATURESIZE / 2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
+                    world.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
                     break;
                 case 2:
-                    if(ammo > 0)
-                        g.drawImage(Assets.item_ak_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
-                    else if(ammo == 0)
-                        g.drawImage(Assets.item_ak_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
-                    //System.out.println(posX+"  "+posY);
+                    Sound.play("Ak");
+
+                    world.getEntityManager().addParticle(new Particle(((int) (activator.getX() + CREATURESIZE / 2)), ((int) (activator.getY() + CREATURESIZE / 2)), activator.getDir(), Assets.shell, handler, world, 600));
+
+                    buX = activator.getX() + (float) CREATURESIZE / 2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
+                    buY = activator.getY() + (float) CREATURESIZE / 2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
+                    world.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
                     break;
                 case 3:
-                    g.drawImage(Assets.item_uzi, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    Sound.play("Uzi");
+                    float dirOffset_uzi = (float) (Math.random() * 8);
+                    world.getEntityManager().addBullet(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, 0, handler, world));
                     break;
                 case 4:
-                    g.drawImage(Assets.item_shotgun_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    Sound.play("Shotgun");
+                    for (int i = 0; i < 6; i++) {
+                        float dirOffset_shotgun = (float) (Math.random() * 20);
+                        world.getEntityManager().addBullet(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset_shotgun, bulletSpeed, 0, handler, world));
+                    }
                     break;
                 case 5:
-                    if(ammo > 0)
-                        g.drawImage(Assets.item_rpg_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
-                    if(ammo == 0)
-                        g.drawImage(Assets.item_rpg_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    Sound.play("RocketLaunch");
+                    world.getEntityManager().addBullet(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180, bulletSpeed, 1, handler, world));
                     break;
                 default:
                     break;
             }
         }
-        //TODO render Item, render for each bullet
     }
 
-    //Getters und Setters
+    //getters and setters
     public int getType() {
         return type;
     }

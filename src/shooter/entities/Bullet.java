@@ -10,12 +10,14 @@ import shooter.gfx.World;
 import shooter.sound.Sound;
 
 public class Bullet extends Entity {
-    private final float speed;                                                                              //hier wird die Geschwindigkeit der Bullet gespeichert
-    private final int type;                                                                                 //hier wird die Position der Bullet gespeichert
-    Animation animation;                                                                                    //hier wird die Animation der Bullet gespeichert
+    //saves the bullets type and speed
+    private final float speed;
+    private final int type;
+    //saves the bullets animation
+    Animation animation;
 
     //this constructor initializes the values
-    public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, World world) {   //im Konstruktor werden die Position, Geschwindigkeit, etc. initialisiert
+    public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, World world) {
         super(posX, posY,3, dir, handler, world);
         this.type = type;
         this.dir = dir;
@@ -26,15 +28,15 @@ public class Bullet extends Entity {
                 break;
             case 1:
                 animation = new Animation(Assets.rocket,20);
-                //System.out.println(posX+"  "+posY);
                 break;
             default:
                 break;
         }
     }
-    
+
+    //ticks the bullets movement, collision and animation
     @Override
-    public void tick() {                                                                                    //in tick wird die Animation, die Bewegung und die Kollision getickt
+    public void tick() {
         if(animation != null)
             animation.tick();
 
@@ -53,32 +55,30 @@ public class Bullet extends Entity {
             world.getEntityManager().removeBullet(this);
         }
     }
+    //renders the bullet
     @Override
-    public void render(Graphics g) {                                                                        //in render wird die Bullet gerendert
-        // for debugging
-        //g.fillOval((int)(posX - handler.getxOffset()), (int)(posY - handler.getyOffset()), 10, 10);
+    public void render(Graphics g) {
         AffineTransform reset = new AffineTransform();
-        reset.rotate(0, 0, 0);  //save before rotation
-        Graphics2D g2 = (Graphics2D)g;  // cast Graphics to Graphics 2d
+        reset.rotate(0, 0, 0);
+        Graphics2D g2 = (Graphics2D)g;
         switch(type) {
             case 0:
-                g2.rotate(Math.toRadians(dir), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));   //rotate graphics object
+                g2.rotate(Math.toRadians(dir), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));
                 g2.drawImage(Assets.Bullet,(int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()),  null);
                 break;
             case 1:
-                g2.rotate(Math.toRadians(dir + 180), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));   //rotate graphics object
+                g2.rotate(Math.toRadians(dir + 180), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));
                 g.drawImage(animation.getCurrentFrame(), (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), null);
-                //System.out.println(posX+"  "+posY);
                 break;
             default:
                 break;
         }
 
-        g2.setTransform(reset); //reset rotation
+        g2.setTransform(reset);
         //TODO implement rendering for the Bullet
     }
 
-    //Getters
+    //getters
     public String getData(){
         return "";
     }
