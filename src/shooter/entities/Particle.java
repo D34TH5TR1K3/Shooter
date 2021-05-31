@@ -90,13 +90,7 @@ public class Particle{
     }
 
     //getters and setters
-    public Animation getAnimParticle() {
-        return AnimParticle;
-    }
-    public int getType() {
-        return type;
-    }
-    public int getTimeLeftToLive(){
-        return timeLeftToLive;
-    }
+    public Animation getAnimParticle() { return AnimParticle; }
+    public int getType() { return type; }
+    public int getTimeLeftToLive(){ return timeLeftToLive; }
 }

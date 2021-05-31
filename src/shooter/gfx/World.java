@@ -45,9 +45,8 @@ public class World {
     //method to fill the world with information from the GameSave File
     public void fillWorld(Player player, ArrayList<Entity> enemies){
         this.player = player;
-        for(Entity e:enemies){
+        for(Entity e:enemies)
             entityManager.addEnemy(e);
-        }
     }
     //method to check if the Rectangle collides with a Tile
     public boolean collisionCheck(Rectangle rect){
@@ -63,9 +62,9 @@ public class World {
     //method to check if the Rectangle collides with an Enemy
     public boolean checkEnemyCollision(Rectangle rect) {
         for (Entity e : entityManager.getEnemies()) {
-            System.out.println("start");
-            System.out.println(rect);
-            System.out.println(((Enemy) e).getHitbox());
+            //System.out.println("start");
+            //System.out.println(rect);
+            //System.out.println(((Enemy) e).getHitbox());
             if (((Enemy) e).getHitbox() != null && ((Enemy) e).getHitbox().intersects(rect)) {
                 ((Enemy) e).die();
                 return true;
@@ -76,39 +75,25 @@ public class World {
     //method to render all Tiles
     public void renderTiles(Graphics g){
         int tilesize = 30;
-        for(int x = 0; x < 64 * mapsize; x++){
+        for(int x = 0; x < 64 * mapsize; x++)
             for(int y = 0; y < 36 * mapsize; y++){
                 g.setColor(tiles[x][y].getColor());
                 g.fillRect(((int) (tilesize * x - handler.getxOffset())), ((int) (tilesize * y - handler.getyOffset())), tilesize *x+ tilesize, tilesize *y+ tilesize);
             }
-        }
     }
     //method to make according Tiles half solid
     public void fillHalfSolidTiles(){
-        for(int x = 0; x < 64 * mapsize; x++) {
-            for (int y = 0; y < 36 * mapsize; y++) {
-                if(tiles[x][y].isSolid()){
-                    for(int X = -1; X < 2; X++){
-                        for(int Y = -1; Y < 2; Y++){
+        for(int x = 0; x < 64 * mapsize; x++)
+            for (int y = 0; y < 36 * mapsize; y++)
+                if(tiles[x][y].isSolid())
+                    for(int X = -1; X < 2; X++)
+                        for(int Y = -1; Y < 2; Y++)
                             if(x+X >= 0 && x+X < 64 * mapsize && y+Y >= 0 && y+Y < 36 * mapsize)
-                            tiles[x+X][y+Y].setHalfSolid(true);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    //method to print the Tiles to console
-    public void printTiles(Graphics g){
-        for(int x = 0; x < 64 * mapsize; x++){
-            for(int y = 0; y < 36 * mapsize; y++){
-                System.out.print("");
-            }
-        }
+                                tiles[x+X][y+Y].setHalfSolid(true);
     }
     //method to create the Tiles and set whether they are solid
     public void fillTiles() {
-        for(int x = 0; x < 64 * mapsize; x++){
+        for(int x = 0; x < 64 * mapsize; x++)
             for(int y = 0; y < 36 * mapsize; y++){
                 Color mycolor = new Color(Assets.map_1layout.getRGB(x, y));
                 boolean solid = false;
@@ -119,34 +104,21 @@ public class World {
                     solid = true;
                 tiles[x][y] = new Tile(x, y, solid);
             }
-        }
     }
 
     //getters and setters
     public Tile getTiles(int x, int y) {
-        if(x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize) {
-            //System.out.println(x + "   " + y);
+        if(x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize)
             return tiles[x][y];
-        }else
-            return tiles[0][0];
+        return tiles[0][0];
     }
-    public Tile[][] getTiles() {
-        return tiles;
-    }
+    public Tile[][] getTiles() { return tiles; }
     public void setAllTiles(Color color){
-        for(int x = 0; x < 64 * mapsize; x++){
-            for(int y = 0; y < 36 * mapsize; y++){
+        for(int x = 0; x < 64 * mapsize; x++)
+            for(int y = 0; y < 36 * mapsize; y++)
                 tiles[x][y].setColor(color);
-            }
-        }
     }
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-    public Player getPlayer() {
-        return player;
-    }
-    public int getMapsize(){
-        return mapsize;
-    }
+    public EntityManager getEntityManager() { return entityManager; }
+    public Player getPlayer() { return player; }
+    public int getMapsize(){ return mapsize; }
 }

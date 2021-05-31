@@ -44,25 +44,20 @@ public class Assets {
         explosion = new BufferedImage[48];
         particles1 = new BufferedImage[5];
 
-        for(int x = 0; x < 5; x++){
+        for(int x = 0; x < 5; x++)
             particles1[x] = sprite_particles1.crop(x*30, 0, 30, 30);
-        }
 
-        for(int x = 0; x < 8; x++){
+        for(int x = 0; x < 8; x++)
             enemy_walk[x] = sprite1.crop(x*60, 0, 60, 60);
-        }
-        for(int x = 0; x < 8; x++){
+        for(int x = 0; x < 8; x++)
             enemy_walk_ak[x] = sprite1.crop(x*60, 60, 60, 60);
-        }
         int x = 0;
-        for(int i = 0; i < 5 ; i++) {
+        for(int i = 0; i < 5 ; i++)
             for(int z = 0; z < 7 ; z++) {
                 x++;
                 explosion[x] = sheet_explosion.crop(56 * z,  56 * i, 56,  56); // 56 x 56
             }
-        }
-        for(int i = 0; i < 5 ; i++) {
+        for(int i = 0; i < 5 ; i++)
             rocket[i] = sheetRocket.crop(80 * i,  0, 80,  10);
-        }
     }
 }

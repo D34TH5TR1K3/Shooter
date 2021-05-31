@@ -25,7 +25,8 @@ public class Animation {
         if(System.currentTimeMillis() - lastTime > speed) {
             index++;
             lastTime = System.currentTimeMillis();
-            if(index >= frames.length) index = 0;
+            if(index >= frames.length)
+                index = 0;
         }
     }
 
@@ -41,11 +42,6 @@ public class Animation {
     }
 
     //getters
-    public boolean lastFrame() {                            //hier wird zurückgegeben ob die Animation den letzten Frame erreicht hat
-        return index == frames.length - 1;
-    }
-
-    public BufferedImage getCurrentFrame() {                //hier wird der derzeitige Frame ausgegeben
-        return (active) ? frames[index] : frames[0];
-    }
+    public boolean lastFrame() { return index == frames.length - 1; }
+    public BufferedImage getCurrentFrame() { return (active) ? frames[index] : frames[0]; }
 }

@@ -19,9 +19,8 @@ public class GameState extends State {
     //ticks the world
     @Override
     public void tick() {
-        if(handler.getKeyManager().esc){
+        if(handler.getKeyManager().esc)
             State.setState(handler.getGame().menuState);
-        }
         world.tick();
     }
     //renders the world
@@ -31,7 +30,5 @@ public class GameState extends State {
     }
 
     //getters and setters
-    public World getWorld(){
-        return world;
-    }
+    public World getWorld(){ return world; }
 }

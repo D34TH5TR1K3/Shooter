@@ -84,15 +84,23 @@ public class Player extends Entity{
         activeAnimation.tick();
         dir = (float) (180 + Math.toDegrees(Math.atan2(posY - handler.getMouseManager().getMouseY() - handler.getGameCamera().getyOffset() + (float)CREATURESIZE/2, posX - handler.getMouseManager().getMouseX() - handler.getGameCamera().getxOffset() + (float)CREATURESIZE/2)));
         int velXmax = 10;
-        if(handler.getKeyManager().left && velX > -velXmax) velX -= 1;
-        else if(!handler.getKeyManager().right && !handler.getKeyManager().left) velX = 0;
-        if(handler.getKeyManager().right && velX < velXmax) velX += 1;
-        else if(!handler.getKeyManager().right && !handler.getKeyManager().left) velX = 0;
+        if(handler.getKeyManager().left && velX > -velXmax)
+            velX -= 1;
+        else if(!handler.getKeyManager().right && !handler.getKeyManager().left)
+            velX = 0;
+        if(handler.getKeyManager().right && velX < velXmax)
+            velX += 1;
+        else if(!handler.getKeyManager().right && !handler.getKeyManager().left)
+            velX = 0;
         int velYmax = 10;
-        if(handler.getKeyManager().up && velY > -velYmax) velY -= 1;
-        else if(!handler.getKeyManager().down && !handler.getKeyManager().up) velY = 0;
-        if(handler.getKeyManager().down && velY < velYmax) velY += 1;
-        else if(!handler.getKeyManager().down && !handler.getKeyManager().up) velY = 0;
+        if(handler.getKeyManager().up && velY > -velYmax)
+            velY -= 1;
+        else if(!handler.getKeyManager().down && !handler.getKeyManager().up)
+            velY = 0;
+        if(handler.getKeyManager().down && velY < velYmax)
+            velY += 1;
+        else if(!handler.getKeyManager().down && !handler.getKeyManager().up)
+            velY = 0;
         if(velX != 0 || velY != 0) {
             hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25 + velX)), ((int) (posY + CREATURESIZE / 2 - 25 + velY)));
             if (!world.collisionCheck(hitbox)) {
@@ -134,11 +142,6 @@ public class Player extends Entity{
     }
 
     //getters and setters
-    public Item getItem(){
-        return item;
-    }
-
-    public String getData(){
-        return ((int)posX+","+(int)posY+","+(int)dir+","+item.getAmmo());
-    }
+    public Item getItem(){ return item; }
+    public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getAmmo()); }
 }

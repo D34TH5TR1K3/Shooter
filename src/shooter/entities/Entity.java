@@ -57,13 +57,12 @@ public abstract class Entity {
 
     //method to check if a line of sight is clear
     public boolean checkLineOfSight(Line2D.Float line){
-        for(int x=0;x<64*world.getMapsize();x++){
+        for(int x=0;x<64*world.getMapsize();x++)
             for(int y=0;y<36*world.getMapsize();y++){
                 Tile temptile = world.getTiles(x,y);
                 if(line.intersects(temptile.getHitbox())&& temptile.isSolid())
                     return true;
             }
-        }
         return false;
     }
     //method to move a certain amount
@@ -77,7 +76,7 @@ public abstract class Entity {
         posY = amtY;
     }
     //method to face a certain direction
-    public void face(float amt) {                                                               //eine Methode um die Blickrichtung der Entitaet auf einen bestimmten Wert zu setzen
+    public void face(float amt) {
         dir = amt;
     }
 
@@ -89,14 +88,7 @@ public abstract class Entity {
     public float getY() { return posY; }
     public int getZ() { return posZ; }
     public float facing() { return dir; }
-
-    public float getDir() {
-        return dir;
-    }
-
-    public void setDir(float dir) {
-        this.dir = dir;
-    }
-
+    public float getDir() { return dir; }
+    public void setDir(float dir) { this.dir = dir; }
     public abstract String getData();
 }

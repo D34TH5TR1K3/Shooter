@@ -29,23 +29,22 @@ public class MenuState extends State {
         if(activeMenu.funcActive("ToMainMenu")){
             menu2.saveSettings();
             activeMenu = menu1;
-        }else if(activeMenu.funcActive("ToMenu2")){
+        }else if(activeMenu.funcActive("ToMenu2"))
             activeMenu = menu2;
-        }else if(activeMenu.funcActive("StartGame")){
+        else if(activeMenu.funcActive("StartGame"))
             State.setState(handler.getGame().gameState);
-        }else if(activeMenu.funcActive("VolumeToggle")){
+        else if(activeMenu.funcActive("VolumeToggle")){
            menu2.toggleButton("VolumeToggle");
            game.getSound().toggleSound(menu2.getButtonValue("VolumeToggle")>0);
-        }else if(activeMenu.funcActive("GodmodeToggle")){
+        }else if(activeMenu.funcActive("GodmodeToggle"))
             menu2.toggleButton("GodmodeToggle");
-        }else if(activeMenu.funcActive("FriendlyFireToggle")){
+        else if(activeMenu.funcActive("FriendlyFireToggle"))
             menu2.toggleButton("FriendlyFireToggle");
-        }else if(activeMenu.funcActive("Volume")){
+        else if(activeMenu.funcActive("Volume")){
             float volume = menu2.getSliderValue("Volume");
             game.getSound().setBgVol(game.getSound().getBgVolMin() + (game.getSound().getBgVolMax() - game.getSound().getBgVolMin()) * volume / 100f);
-        }else if(activeMenu.funcActive("exit")){
+        }else if(activeMenu.funcActive("exit"))
             System.exit(0);
-        }
     }
     //renders the activeMenu
     @Override

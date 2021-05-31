@@ -72,38 +72,14 @@ public class EntityManager {
     }
 
     //adds, removes and getters
-    public void addEnemy(Entity entity) {
-        tempEnemies.add(entity);
-    }
-
-    public void removeEnemy(Entity entity) {
-        removeEnemies.add(entity);
-    }
-
-    public void addItem(Entity entity) {
-        tempItems.add(entity);
-    }
-
-    public void removeItem(Entity entity) {
-        removeItems.add(entity);
-    }
-
-    public void addBullet(Entity entity) {
-        tempBullets.add(entity);
-    }
-
-    public void removeBullet(Entity entity) {
-        removeBullets.add(entity);
-    }
-
-    public void addParticle(Particle particle) {
-        tempParticles.add(particle);
-    }
-
-    public void removeParticle(Particle particle) {
-        removeParticles.add(particle);
-    }
-
+    public void addEnemy(Entity entity) { tempEnemies.add(entity); }
+    public void removeEnemy(Entity entity) { removeEnemies.add(entity); }
+    public void addItem(Entity entity) { tempItems.add(entity); }
+    public void removeItem(Entity entity) { removeItems.add(entity); }
+    public void addBullet(Entity entity) { tempBullets.add(entity); }
+    public void removeBullet(Entity entity) { removeBullets.add(entity); }
+    public void addParticle(Particle particle) { tempParticles.add(particle); }
+    public void removeParticle(Particle particle) { removeParticles.add(particle); }
     public Entity getClosestItem(float x, float y) {    //eine Methode um zu berechenen, welches Item am neahsten zum Spieler liegt
         float lowestDistance = 0;
         Entity closestEntity = null;
@@ -121,8 +97,5 @@ public class EntityManager {
         else
             return null;
     }
-
-    public ArrayList<Entity> getEnemies(){
-        return enemies;
-    }
+    public ArrayList<Entity> getEnemies(){ return enemies; }
 }

@@ -48,10 +48,8 @@ public class Bullet extends Entity {
             if(type == 1) {
                 Sound.play("RocketExplode");
                 world.getEntityManager().addParticle(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, world));
-            }
-            else if(type == 0) {
+            }else if(type == 0)
                 world.getEntityManager().addParticle(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, world));
-            }
             world.getEntityManager().removeBullet(this);
         }
     }
@@ -79,7 +77,5 @@ public class Bullet extends Entity {
     }
 
     //getters
-    public String getData(){
-        return "";
-    }
+    public String getData(){ return ""; }
 }

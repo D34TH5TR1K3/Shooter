@@ -33,9 +33,8 @@ public class Display {
 
     //method to create a Display
     public void createDisplay() {
-        if(writer.getScale() != 1){
+        if(writer.getScale() != 1)
             System.setProperty("sun.java2d.uiScale", String.valueOf(writer.getScale()));
-        }
         frame = new JFrame("Shooter");
         int width = 1920, height = 1080;
         frame.setSize(width, height);

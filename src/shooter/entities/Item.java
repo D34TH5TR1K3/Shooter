@@ -215,17 +215,8 @@ public class Item extends Entity{
     }
 
     //getters and setters
-    public int getType() {
-        return type;
-    }
-    public int getAmmo(){
-        return ammo;
-    }
-    public void setAmmo(int ammo){
-        this.ammo = ammo;
-    }
-
-    public String getData(){
-        return "";
-    }
+    public int getType() { return type; }
+    public int getAmmo(){ return ammo; }
+    public void setAmmo(int ammo){ this.ammo = ammo; }
+    public String getData(){ return ""; }
 }

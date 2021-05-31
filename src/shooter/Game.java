@@ -58,9 +58,8 @@ public class Game implements Runnable {
         State.setState(gameState);
 
         sound = new Sound();
-        if(writer.GetSettingValue("VolumeToggle") == 1){
+        if(writer.GetSettingValue("VolumeToggle") == 1)
             sound.playBackgroundMusic();
-        }
         float volume = writer.GetSettingValue("Volume");
         sound.setBgVol(sound.getBgVolMin() + (sound.getBgVolMax() - sound.getBgVolMin()) * volume / 100f);
     }

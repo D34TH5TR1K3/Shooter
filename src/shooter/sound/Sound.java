@@ -40,7 +40,8 @@ public class Sound {
 
     //ticks whether a new Clip needs to be played
     public void tick(){
-        if (BgClip!=null && (float) BgClip.getFramePosition()/ BgClipLen > 0.99f) playBackgroundMusic();
+        if (BgClip!=null && (float) BgClip.getFramePosition()/ BgClipLen > 0.99f)
+            playBackgroundMusic();
     }
 
     //static method to play SFX
@@ -59,7 +60,8 @@ public class Sound {
     }
     //method to play Background music
     public void playBackgroundMusic(){
-        if(BgClip!=null) BgClip.stop();
+        if(BgClip!=null)
+            BgClip.stop();
         try {
             BgClip = AudioSystem.getClip();
             BgClip.open(AudioSystem.getAudioInputStream(songs[(int)(Math.random()*songs.length)]));
@@ -80,8 +82,10 @@ public class Sound {
             playBackgroundMusic();
             return;
         }
-        if(val && !BgActive) BgClip.start();
-        if(!val && BgActive) BgClip.stop();
+        if(val && !BgActive)
+            BgClip.start();
+        if(!val && BgActive)
+            BgClip.stop();
         BgActive ^= true;
     }
 
@@ -91,23 +95,12 @@ public class Sound {
             System.out.println("VOLUME EXCEEDS MAX_VOLUME");
             return;
         }
-        else if(BgClip != null) ((FloatControl) BgClip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(value);
+        else if(BgClip != null)
+            ((FloatControl) BgClip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(value);
         BgVol = value;
     }
-
-    public float getBgVolMax() {
-        return BgVolMax;
-    }
-
-    public void setBgVolMax(float bgVolMax) {
-        BgVolMax = bgVolMax;
-    }
-
-    public float getBgVolMin() {
-        return BgVolMin;
-    }
-
-    public void setBgVolMin(float bgVolMin) {
-        BgVolMin = bgVolMin;
-    }
+    public float getBgVolMax() { return BgVolMax; }
+    public void setBgVolMax(float bgVolMax) { BgVolMax = bgVolMax; }
+    public float getBgVolMin() { return BgVolMin; }
+    public void setBgVolMin(float bgVolMin) { BgVolMin = bgVolMin; }
 }

@@ -38,11 +38,10 @@ public class Menu {
         renderRects.clear();
         for(Button button : buttons){
             button.setActive(false);
-            Rectangle uprect = new Rectangle((int)(button.getRect().getX() * 10), (int)(button.getRect().getY() * 10),          //scale rects from menu to 10x
+            Rectangle uprect = new Rectangle((int)(button.getRect().getX() * 10), (int)(button.getRect().getY() * 10),
                                             (int)(button.getRect().getWidth() * 10), (int)(button.getRect().getHeight() * 10));
-            if(uprect.intersects(rect)){
+            if(uprect.intersects(rect))
                 renderRects.add(new Rectangle((int)(uprect.getX()), (int)(uprect.getY()), (int)(uprect.getWidth()), (int)(uprect.getHeight())));
-            }
             if(uprect.intersects(rect) && handler.getMouseManager().isLeftPressed()){
                 button.setHighlighted(true);
                 renderRects.add(new Rectangle((int)(uprect.getX()), (int)(uprect.getY()), (int)(uprect.getWidth()), (int)(uprect.getHeight())));
@@ -52,9 +51,8 @@ public class Menu {
             }
         }
         for(Slider slider : sliders){
-            if(!handler.getMouseManager().isLeftPressed()){
+            if(!handler.getMouseManager().isLeftPressed())
                 slider.setActive(false);
-            }
             if(slider.isActive() || (Math.sqrt(Math.pow(slider.getXc() - handler.getMouseManager().getMouseX(), 2) +
                     Math.pow(slider.getYc() - handler.getMouseManager().getMouseY(), 2)) < 20 || slider.getRect().intersects(rect)) && handler.getMouseManager().isLeftPressed()){
                 slider.setActive(true);
@@ -68,10 +66,9 @@ public class Menu {
 
         Color color = new Color(100, 100, 100, 180);
         g.setColor(color);
-        for(Rectangle rect : renderRects){
+        for(Rectangle rect : renderRects)
             g.fillRect((int)(rect.getX()), (int)(rect.getY()), (int)(rect.getWidth()), (int)(rect.getHeight()));
-        }
-        //ob man sich im Debug-Modus befindet oder nicht
+
         boolean debug = false;
         for(Button button : buttons){
             if(button.getValue() != -1){
@@ -118,7 +115,7 @@ public class Menu {
         int indexSlider = 0;
         //TODO: read slider min and max etc from txt file since we know in which order they are read in
 
-        for(int y = 0; y < 108; y++){
+        for(int y = 0; y < 108; y++)
             for(int x = 0; x < 192; x++){
                 Color color = new Color(menu_layout.getRGB(x, y));
                 int red = color.getRed();
@@ -130,11 +127,10 @@ public class Menu {
                     points.add(point);
                 }
             }
-        }
         while(points.size() > 0){
             Point point1 = points.get(0);
             points.remove(point1);
-            for(Point point2 : points){
+            for(Point point2 : points)
                 if(point1.getRed() == point2.getRed() &&
                         point1.getGreen() == point2.getGreen() &&
                         point1.getBlue() == point2.getBlue()){
@@ -157,60 +153,48 @@ public class Menu {
                     points.remove(point2);
                     break;
                 }
-            }
         }
     }
     //method to check whether a function exists on the current menu
     public boolean funcActive(String func){
-        for(Button button : buttons){
-            if(button.getFunc().equals(func) && button.isActive()){
+        for(Button button : buttons)
+            if(button.getFunc().equals(func) && button.isActive())
                 return true;
-            }
-        }
-        for(Slider slider : sliders){
-            if(slider.getFunc().equals(func) && slider.isActive()){
+        for(Slider slider : sliders)
+            if(slider.getFunc().equals(func) && slider.isActive())
                 return true;
-            }
-        }
         return false;
     }
     //method to save changed Settings
     public void saveSettings(){
         handler.getGame().getWriter().readSettingsFromFile(false);
-        for(Slider slider : sliders){
+        for(Slider slider : sliders)
             handler.getGame().getWriter().changeSetting(slider.getFunc(), slider.getValue());
-        }
-        for(Button button : buttons){
-            if(button.getValue() != -1.0f){
+
+        for(Button button : buttons)
+            if(button.getValue() != -1.0f)
                 handler.getGame().getWriter().changeSetting(button.getFunc(), button.getValue());
-            }
-        }
+
         handler.getGame().getWriter().writeSettingsToFile();
     }
     //method to toggle a buttons value
     public void toggleButton(String func){
-        for(Button button : buttons){
-            if(button.getFunc().equals(func)){
+        for(Button button : buttons)
+            if(button.getFunc().equals(func))
                 button.toggle();
-            }
-        }
     }
 
     //getters
     public float getSliderValue(String func){
-        for(Slider slider : sliders){
-            if(slider.getFunc().equals(func)){
+        for(Slider slider : sliders)
+            if(slider.getFunc().equals(func))
                 return slider.getValue();
-            }
-        }
         return -1;
     }
     public float getButtonValue(String func){
-        for(Button button : buttons){
-            if(button.getFunc().equals(func)){
+        for(Button button : buttons)
+            if(button.getFunc().equals(func))
                 return button.getValue();
-            }
-        }
         return -1;
     }
 
@@ -232,9 +216,8 @@ public class Menu {
 
         public void setValuePixel(int pixel){
             int tempvalue = (int)((float)(pixel - xo*10) / ((xu - xo) * 10) * max);
-            if(tempvalue >= min && tempvalue <= max){
+            if(tempvalue >= min && tempvalue <= max)
                 value = tempvalue;
-            }
         }
 
         public void minMaxDef(float min, float max, float def){
@@ -263,57 +246,19 @@ public class Menu {
             rect = new Rectangle(xo*10, yo*10, xu*10 - xo*10, yu*10 - yo*10);
         }
 
-        public Rectangle getRect() {
-            return rect;
-        }
-
-        public float getValue() {
-            return value;
-        }
-
-        public int getXo() {
-            return xo;
-        }
-
-        public int getYo() {
-            return yo;
-        }
-
-        public int getXu() {
-            return xu;
-        }
-
-        public int getYu() {
-            return yu;
-        }
-
-        public float getXc() {
-            return value / max * (xu - xo) * 10 + xo * 10;
-        }
-
-        public float getYc() {
-            return yu * 5 - yo * 5 + yo * 10;
-        }
-
-        public boolean isActive() {
-            return active;
-        }
-
-        public void setActive(boolean active) {
-            this.active = active;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public String getFunc() {
-            return func;
-        }
-
-        public void setFunc(String func) {
-            this.func = func;
-        }
+        public Rectangle getRect() { return rect; }
+        public float getValue() { return value; }
+        public int getXo() { return xo; }
+        public int getYo() { return yo; }
+        public int getXu() { return xu; }
+        public int getYu() { return yu; }
+        public float getXc() { return value / max * (xu - xo) * 10 + xo * 10; }
+        public float getYc() { return yu * 5 - yo * 5 + yo * 10; }
+        public boolean isActive() { return active; }
+        public void setActive(boolean active) { this.active = active; }
+        public int getIndex() { return index; }
+        public String getFunc() { return func; }
+        public void setFunc(String func) { this.func = func; }
     }
     //subclass for buttons
     public static class Button{
@@ -358,62 +303,20 @@ public class Menu {
             rect = new Rectangle(xo + 1, yo + 1, xu - xo - 1, yu - yo - 1);
         }
 
-        public Rectangle getRect() {
-            return rect;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public int getXo() {
-            return xo;
-        }
-
-        public int getYo() {
-            return yo;
-        }
-
-        public int getXu() {
-            return xu;
-        }
-
-        public int getYu() {
-            return yu;
-        }
-
-        public boolean isActive() {
-            return active;
-        }
-
-        public void setActive(boolean active) {
-            this.active = active;
-        }
-
-        public String getFunc() {
-            return func;
-        }
-
-        public void setFunc(String func) {
-            this.func = func;
-        }
-
-        public boolean isHighlighted() {
-            return highlighted;
-        }
-
-        public void setHighlighted(boolean highlighted) {
-            this.highlighted = highlighted;
-        }
-
-        public float getValue() {
-            return value;
-        }
-
-        public void setValue(float value) {
-            this.value = value;
-        }
-
+        public Rectangle getRect() { return rect; }
+        public int getIndex() { return index; }
+        public int getXo() { return xo; }
+        public int getYo() { return yo; }
+        public int getXu() { return xu; }
+        public int getYu() { return yu; }
+        public boolean isActive() { return active; }
+        public void setActive(boolean active) { this.active = active; }
+        public String getFunc() { return func; }
+        public void setFunc(String func) { this.func = func; }
+        public boolean isHighlighted() { return highlighted; }
+        public void setHighlighted(boolean highlighted) { this.highlighted = highlighted; }
+        public float getValue() { return value; }
+        public void setValue(float value) { this.value = value; }
     }
     //subclass for points on the layout
     public static class Point{
@@ -431,28 +334,11 @@ public class Menu {
             this.Y = Y;
         }
 
-        public int getRed() {
-            return red;
-        }
-
-        public int getGreen() {
-            return green;
-        }
-
-        public int getBlue() {
-            return blue;
-        }
-
-        public int getX() {
-            return X;
-        }
-
-        public int getY() {
-            return Y;
-        }
-
-        public int getColor() {
-            return color;
-        }
+        public int getRed() { return red; }
+        public int getGreen() { return green; }
+        public int getBlue() { return blue; }
+        public int getX() { return X; }
+        public int getY() { return Y; }
+        public int getColor() { return color; }
     }
 }
