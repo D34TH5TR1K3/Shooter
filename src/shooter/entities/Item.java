@@ -25,15 +25,15 @@ public class Item extends Entity{
     //saves the ammo count
     private int ammo = 0;
     //saves the speed of a bullet and the rate of fire
-    private int bulletSpeed;
+    private short bulletSpeed;
     private float rpm;
     //saves the time it takes to reload or use an item
-    private int reloadTime;
+    private short reloadTime;
     private final float bulletDelay;
     //logical variable
     private long lastTime = 0;
     //saves the value of the offset between an item and a fired bullet
-    private int offset;
+    private short offset;
 
     //this constructor initializes the values
     public Item(float posX, float posY, int type, Handler handler, World world) {

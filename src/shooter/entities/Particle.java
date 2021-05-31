@@ -24,9 +24,9 @@ public class Particle{
     private int xNew, yNew;
     private float dir;
     //saves the particles type
-    private int type = 0;
+    private byte type = 0;
     //saves the particles speed
-    private int speedFactor = 10;
+    private byte speedFactor = 10;
 
     //these constructors initialize the values
     public Particle(int x, int y, int speed, BufferedImage[] frames, Handler handler, World world){
@@ -91,6 +91,6 @@ public class Particle{
 
     //getters and setters
     public Animation getAnimParticle() { return AnimParticle; }
-    public int getType() { return type; }
+    public byte getType() { return type; }
     public int getTimeLeftToLive(){ return timeLeftToLive; }
 }

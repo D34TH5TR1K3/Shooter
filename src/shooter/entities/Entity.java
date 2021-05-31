@@ -13,7 +13,7 @@ public abstract class Entity {
     protected float posX;
     protected float posY;
     private final int posZ;
-    public static final int CREATURESIZE = 180;
+    public static final short CREATURESIZE = 180;
     /*
     posZ in Form von Integern
     posZ 0: Level

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class World {
     //saves all of the Tiles and the size of the map
     private final Tile[][] tiles;
-    private final int mapsize = 2;
+    private final byte mapsize = 2;
     //player saves the player
     private Player player;
     //handler distributes variables
@@ -74,7 +74,7 @@ public class World {
     }
     //method to render all Tiles
     public void renderTiles(Graphics g){
-        int tilesize = 30;
+        byte tilesize = 30;
         for(int x = 0; x < 64 * mapsize; x++)
             for(int y = 0; y < 36 * mapsize; y++){
                 g.setColor(tiles[x][y].getColor());
@@ -93,8 +93,8 @@ public class World {
     }
     //method to create the Tiles and set whether they are solid
     public void fillTiles() {
-        for(int x = 0; x < 64 * mapsize; x++)
-            for(int y = 0; y < 36 * mapsize; y++){
+        for(short x = 0; x < 64 * mapsize; x++)
+            for(short y = 0; y < 36 * mapsize; y++){
                 Color mycolor = new Color(Assets.map_1layout.getRGB(x, y));
                 boolean solid = false;
                 int red = mycolor.getRed();

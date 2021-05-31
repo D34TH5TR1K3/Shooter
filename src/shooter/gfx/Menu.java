@@ -111,12 +111,12 @@ public class Menu {
 
     //method to read the menu from the layout and place the according objects
     public void readMenu(){
-        int indexButton = 0;
-        int indexSlider = 0;
+        short indexButton = 0;
+        short indexSlider = 0;
         //TODO: read slider min and max etc from txt file since we know in which order they are read in
 
-        for(int y = 0; y < 108; y++)
-            for(int x = 0; x < 192; x++){
+        for(short y = 0; y < 108; y++)
+            for(short x = 0; x < 192; x++){
                 Color color = new Color(menu_layout.getRGB(x, y));
                 int red = color.getRed();
                 int green = color.getGreen();
@@ -202,13 +202,13 @@ public class Menu {
     public static class Slider{
         boolean active = false;
         String func;
-        int index;
+        short index;
         float value, min, max, def;
         int color;
-        int xo, yo, xu, yu;
+        short xo, yo, xu, yu;
         Rectangle rect;
 
-        public Slider(int index, int x1, int y1, int x2, int y2, int color){
+        public Slider(short index, short x1, short y1, short x2, short y2, int color){
             this.index = index;
             this.color = color;
             createSlider(x1, y1, x2, y2);
@@ -227,7 +227,7 @@ public class Menu {
             this.value = def;
         }
 
-        public void createSlider(int x1, int y1, int x2, int y2){               //erstellt einen neuen Slider mit den übergebenen Koordinaten
+        public void createSlider(short x1, short y1, short x2, short y2){
             if(x1 < x2){
                 xo = x1;
                 xu = x2;
@@ -248,15 +248,15 @@ public class Menu {
 
         public Rectangle getRect() { return rect; }
         public float getValue() { return value; }
-        public int getXo() { return xo; }
-        public int getYo() { return yo; }
-        public int getXu() { return xu; }
-        public int getYu() { return yu; }
+        public short getXo() { return xo; }
+        public short getYo() { return yo; }
+        public short getXu() { return xu; }
+        public short getYu() { return yu; }
         public float getXc() { return value / max * (xu - xo) * 10 + xo * 10; }
         public float getYc() { return yu * 5 - yo * 5 + yo * 10; }
         public boolean isActive() { return active; }
         public void setActive(boolean active) { this.active = active; }
-        public int getIndex() { return index; }
+        public short getIndex() { return index; }
         public String getFunc() { return func; }
         public void setFunc(String func) { this.func = func; }
     }
@@ -268,11 +268,11 @@ public class Menu {
         boolean active = false;
         String func;
         int color;
-        int index;
-        int xo, yo, xu, yu;
+        short index;
+        short xo, yo, xu, yu;
         Rectangle rect;
 
-        public Button(int index, int x1, int y1, int x2, int y2, int color){
+        public Button(short index, short x1, short y1, short x2, short y2, int color){
             this.index = index;
             this.color = color;
             createButton(x1, y1, x2, y2);
@@ -285,7 +285,7 @@ public class Menu {
                 value = 1f;
         }
 
-        public void createButton(int x1, int y1, int x2, int y2){
+        public void createButton(short x1, short y1, short x2, short y2){
             if(x1 < x2){
                 xo = x1;
                 xu = x2;
@@ -304,11 +304,11 @@ public class Menu {
         }
 
         public Rectangle getRect() { return rect; }
-        public int getIndex() { return index; }
-        public int getXo() { return xo; }
-        public int getYo() { return yo; }
-        public int getXu() { return xu; }
-        public int getYu() { return yu; }
+        public short getIndex() { return index; }
+        public short getXo() { return xo; }
+        public short getYo() { return yo; }
+        public short getXu() { return xu; }
+        public short getYu() { return yu; }
         public boolean isActive() { return active; }
         public void setActive(boolean active) { this.active = active; }
         public String getFunc() { return func; }
@@ -322,10 +322,10 @@ public class Menu {
     public static class Point{
 
         int red, green, blue;
-        int X, Y;
+        short X, Y;
         int color;
 
-        public Point(int red, int green, int blue, int X, int Y, int color){
+        public Point(int red, int green, int blue, short X, short Y, int color){
             this.color = color;
             this.red = red;
             this.green = green;
@@ -337,8 +337,8 @@ public class Menu {
         public int getRed() { return red; }
         public int getGreen() { return green; }
         public int getBlue() { return blue; }
-        public int getX() { return X; }
-        public int getY() { return Y; }
+        public short getX() { return X; }
+        public short getY() { return Y; }
         public int getColor() { return color; }
     }
 }

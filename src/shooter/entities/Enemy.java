@@ -18,8 +18,8 @@ public class Enemy extends Entity{
     private final ArrayList<Tile> openlist = new ArrayList<>();
     private final ArrayList<Tile> closedlist = new ArrayList<>();
     private final ArrayList<Tile> neighbors = new ArrayList<>();
-    private int iterations = 0;
-    private int pathlength = 0;
+    private short iterations = 0;
+    private short pathlength = 0;
     private int addGCost, dx, dy;
     private int tempHCost, tempGCost;
     public ArrayList<Tile> trace = new ArrayList<>();
@@ -27,7 +27,7 @@ public class Enemy extends Entity{
     private Tile tempNode = null;
     //END PATHFINDING
     private Rectangle hitbox;
-    private final int SPEED = 8;
+    private final byte SPEED = 8;
     private int imageWidth = 50, imageHeight = 50;
     private Item item;
     private Animation walkAnimation, walkAnimation_ak;

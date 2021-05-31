@@ -6,7 +6,7 @@ public class Animation {
     //saves the speed of the animation
     private final int speed;
     //logical variables
-    private int index = 0;
+    private short index = 0;
     private long lastTime;
     //saves the animations textures
     private final BufferedImage[] frames;

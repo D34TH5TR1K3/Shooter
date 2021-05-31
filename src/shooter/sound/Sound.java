@@ -10,7 +10,7 @@ import java.util.Map;
 public class Sound {
     //saves the currently playing Clip and its length
     private Clip BgClip;
-    private int BgClipLen;
+    private short BgClipLen;
     //indicates the Max, Min and actual Volume
     private float BgVolMax = -15f, BgVolMin = -35f, BgVol = -40f;
     //indicates whether Background music is active
@@ -70,7 +70,7 @@ public class Sound {
 
             BgClip.start();
             BgActive = true;
-            BgClipLen = BgClip.getFrameLength();
+            BgClipLen = (short)BgClip.getFrameLength();
 
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
             e.printStackTrace();

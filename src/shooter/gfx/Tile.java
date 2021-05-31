@@ -5,23 +5,21 @@ import java.awt.*;
 public class Tile {
     //logical variables belonging to pathfinding
     private Tile parent;
-    private int hCost = 0;
-    private int gCost = 0;
-    private int fCost = hCost + gCost;
+    private int hCost = 0, gCost = 0, fCost =0;
     private boolean visited = false;
     private boolean closed = false;
     //saves the solidity of the Tile
     private final boolean isSolid;
     private boolean isHalfSolid = false;
     //saves the size and the position of the Tile
-    private final int TposX, TposY;
+    private final short TposX, TposY;
     //saves the hitbox of the Tile
     private final Rectangle hitbox;
     //saves the color of the Tile
     private Color color = Color.green;
 
     //this constructor initializes the values
-    public Tile(int x, int y, boolean isSolid){
+    public Tile(short x, short y, boolean isSolid){
         this.TposX = x;
         this.TposY = y;
         this.isSolid = isSolid;
@@ -32,8 +30,8 @@ public class Tile {
     public boolean isSolid() { return isSolid; }
     public boolean isHalfSolid() { return isHalfSolid; }
     public void setHalfSolid(boolean halfSolid) { isHalfSolid = halfSolid; }
-    public int getTposX() { return TposX; }
-    public int getTposY() { return TposY; }
+    public short getTposX() { return TposX; }
+    public short getTposY() { return TposY; }
     public Rectangle getHitbox() { return hitbox; }
     public Color getColor() { return color; }
     public void setColor(Color color) { this.color = color; }
