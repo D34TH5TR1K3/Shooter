@@ -1,5 +1,7 @@
 package shooter.gfx;
 
+import shooter.input.KeyManager;
+import shooter.input.MouseManager;
 import shooter.utils.Writer;
 
 import java.awt.*;
@@ -18,9 +20,10 @@ public class Display {
     public static Font fraktur;
 
     //this constructor initializes the values
-    public Display(Writer writer) {
+    public Display(Writer writer,KeyManager keyManager,MouseManager mouseManager) {
         this.writer = writer;
         createDisplay();
+        addManagers(keyManager, mouseManager);
         try{
             fraktur = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")).deriveFont(30f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -55,6 +58,14 @@ public class Display {
 
         frame.add(canvas);
         frame.pack();
+    }
+    //method to add the Managers to the Display
+    public void addManagers(KeyManager keyManager, MouseManager mouseManager) {
+        frame.addKeyListener(keyManager);
+        frame.addMouseListener(mouseManager);
+        frame.addMouseMotionListener(mouseManager);
+        canvas.addMouseListener(mouseManager);
+        canvas.addMouseMotionListener(mouseManager);
     }
 
     //getters

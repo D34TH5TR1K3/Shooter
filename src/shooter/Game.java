@@ -12,7 +12,7 @@ import java.awt.image.BufferStrategy;
 
 public class Game implements Runnable {
     //display is responsible for displaying the game to the user
-    private Display display;
+    private final Display display;
     //thread is responsible for running the game efficiently
     private Thread thread;
     //running indicates whether the game is running
@@ -20,56 +20,45 @@ public class Game implements Runnable {
     //game and menuState are States of the game with different functions
     public State gameState, menuState;
     //handler is responsible for variable distribution
-    private Handler handler;
+    private final Handler handler;
     //key and mouseManagers are responsible for user input
     private final KeyManager keyManager;
     private final MouseManager mouseManager;
     //gameCamera is responsible for the users viewport
-    private GameCamera gameCamera;
+    private final GameCamera gameCamera;
     //writer is responsible for writing to and reading from files
     private final Writer writer;
     //sound is responsible for playing sound
-    private Sound sound;
+    private final Sound sound;
 
     //this constructor initializes the values
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
         writer = new Writer();
-        start();
-    }
-
-    //init is responsible for the initialization of variables. all init methods get called here
-    private void init(){
-        display = new Display(writer);
-        display.getFrame().addKeyListener(keyManager);
-        display.getFrame().addMouseListener(mouseManager);
-        display.getFrame().addMouseMotionListener(mouseManager);
-        display.getCanvas().addMouseListener(mouseManager);
-        display.getCanvas().addMouseMotionListener(mouseManager);
-
+        display = new Display(writer,keyManager,mouseManager);
         Assets.init();
         handler = new Handler(this);
-
-        gameCamera = new GameCamera(0,0);
-
         gameState = new GameState(this,handler);
+        handler.setWorld(((GameState)gameState).getWorld());
         menuState = new MenuState(this,handler);
         State.setState(gameState);
-
+        gameCamera = new GameCamera(0,0);
         sound = new Sound();
         if(writer.GetSettingValue("VolumeToggle") == 1)
             sound.playBackgroundMusic();
         float volume = writer.GetSettingValue("Volume");
         sound.setBgVol(sound.getBgVolMin() + (sound.getBgVolMax() - sound.getBgVolMin()) * volume / 100f);
+        start();
     }
+
     //tick is responsible for the logic of the game. all tick methods get called here
     public void tick() {
         keyManager.tick();
         State.getState().tick();
         sound.tick();
         if(keyManager.save)
-            writer.writeGameSave(((GameState)gameState).getWorld());
+            writer.writeGameSave(handler.getWorld());
     }
     //render is responsible for the graphics of the game. all render methods get called here
     public void render() {
@@ -95,8 +84,6 @@ public class Game implements Runnable {
 
     //methods required for the Thread logic to work properly
     public void run() {
-        init();
-
         boolean debug = false;
 
         int fps = 60;
