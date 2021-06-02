@@ -18,8 +18,8 @@ public class World {
     //this constructor initializes the values
     public World(Handler handler) {
         this.handler = handler;
-        levels = new Level[]{Writer.loadLevel(1,handler)};
-        activeLevel = levels[0];
+        levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler)};
+        activeLevel = levels[1];
     }
 
     //ticks the active Level
@@ -32,6 +32,6 @@ public class World {
     }
 
     //getters and setters
-    public EntityManager getEntityManager() { return activeLevel.getEntityManager(); }
-    public Player getPlayer() { return activeLevel.getPlayer(); }
+    public Level getActiveLevel() { return activeLevel; }
+    public void setLevel(int num) { activeLevel = levels[num]; }
 }

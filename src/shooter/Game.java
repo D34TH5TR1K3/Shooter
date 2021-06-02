@@ -3,6 +3,7 @@ package shooter;
 import shooter.gfx.Assets;
 import shooter.gfx.Display;
 import shooter.gfx.GameCamera;
+import shooter.gfx.LoadingImage;
 import shooter.input.KeyManager;
 import shooter.input.MouseManager;
 import shooter.utils.Sound;
@@ -38,6 +39,8 @@ public class Game implements Runnable {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
         display = new Display(keyManager,mouseManager);
+        for(int i=0;i<3;i++)
+            LoadingImage.render(display);
         Assets.init();
         handler = new Handler(this);
         gameState = new GameState(this,handler);
@@ -59,15 +62,19 @@ public class Game implements Runnable {
         State.getState().tick();
         sound.tick();
         if(keyManager.save)
-            new Writer().writeGameSave(handler.getWorld());
+            Writer.writeGameSave(handler.getWorld().getActiveLevel());
+        if(keyManager.load)
+            handler.getWorld().setLevel(0);
+        if(keyManager.wipe)
+            Writer.wipeGame();
+        if(keyManager.level1)
+            handler.getWorld().setLevel(1);
+        if(keyManager.level2)
+            handler.getWorld().setLevel(2);
     }
     //render is responsible for the graphics of the game. all render methods get called here
     public void render() {
         BufferStrategy bs = display.getCanvas().getBufferStrategy();
-        if (bs == null) {
-            display.getCanvas().createBufferStrategy(3);
-            return;
-        }
         Graphics g = bs.getDrawGraphics();
         g.clearRect(0,0, 1920, 1080);
         State.getState().render(g);

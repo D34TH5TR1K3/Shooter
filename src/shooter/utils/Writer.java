@@ -19,13 +19,13 @@ import java.util.Scanner;
 
 public class Writer {
     //the Utils required to read from and write to files
-    FileWriter writer;
-    Scanner scanner;
+    private static FileWriter writer;
+    private Scanner scanner;
     //the Files for reading and writing Settings and GameSaves
-    File settingFile = new File("res/settings/settings.txt");
-    File gameSaveFile = new File("res/gameSaves/gameSave.txt");
+    private static final File settingFile = new File("res/settings/settings.txt");
+    private static final File gameSaveFile = new File("res/gameSaves/gameSave.txt");
     //settings saves all Settings in the program
-    ArrayList<Setting> settings = new ArrayList<>();
+    private final ArrayList<Setting> settings = new ArrayList<>();
 
     //empty constructor
     public Writer(){
@@ -126,7 +126,7 @@ public class Writer {
     public static Level loadLevel(int number,Handler handler){
         try{
             String path = "/levels/Level_"+number+"/";
-            Level level = new Level(new BufferedImage[]{ImageLoader.loadImage(path + "Map.png"), ImageLoader.loadImage(path + "Layout.png")},handler);
+            Level level = new Level(number,new BufferedImage[]{ImageLoader.loadImage(path + "Map.png"), ImageLoader.loadImage(path + "Layout.png")},handler);
             Scanner scanner = new Scanner(new File("res" + path + "LevelData.txt"));
             int enemyCount = Integer.parseInt(scanner.nextLine());
             int[] playerData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
@@ -146,55 +146,25 @@ public class Writer {
             return null;
         }
     }
-    /*
-    //method to create a game from a file
-    public World createGame(Handler handler){
-        try{
-            scanner = new Scanner(gameSaveFile);
-            int enemyCount = Integer.parseInt(scanner.nextLine());
-            World world = new World(handler);
-            if(enemyCount==-1){
-                world.fillWorld();
-            }else{
-                int[] pd = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
-                //pd = playerData
-                Player createdPlayer = new Player(pd[0],pd[1],(float)pd[2],handler,world);
-                createdPlayer.getItem().setAmmo(pd[3]);
-                ArrayList<Entity> createdEnemies = new ArrayList<>();
-                for(;enemyCount>0;enemyCount--){
-                    int[] ed = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
-                    //ed = EnemyData
-                    Enemy createdEnemy = new Enemy(ed[0],ed[1],ed[2],ed[3],handler,world);
-                    createdEnemy.getItem().setAmmo(ed[4]);
-                    createdEnemies.add(createdEnemy);
-                }
-                world.fillWorld(createdPlayer,createdEnemies);
-            }
-            return world;
-        } catch(IOException e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-    */
     //method for wiping the gameSave from a file
-    public void wipeGame() {
+    public static void wipeGame() {
         try{
             writer = new FileWriter(gameSaveFile,false);
-            writer.write("-1");
+            writer.write("0");
             writer.flush();
             writer.close();
         } catch(IOException e){
             e.printStackTrace();
         }
     }
-    //method to save the game to a file
-    public void writeGameSave(World world) {
-        GameSave gameSave = new GameSave(world);
+    //method to save a GameSave to a file
+    public static void writeGameSave(Level level) {
+        GameSave gameSave = new GameSave(level);
         try{
             writer = new FileWriter(gameSaveFile,false);
+            writer.write(gameSave.levelNumber+"\n");
             writer.write(gameSave.enemies.size()+"\n");
-            writer.write(gameSave.getPlayer().getData()+"\n");
+            writer.write(gameSave.player.getData()+"\n");
             for(Entity e: gameSave.enemies){
                 writer.write(e.getData()+"\n");
             }
@@ -202,6 +172,33 @@ public class Writer {
             writer.close();
         }catch(IOException e){
             e.printStackTrace();
+        }
+    }
+    //method to read a GameSave from a file
+    public static Level loadGameSave(Handler handler) {
+        try{
+            Scanner scanner = new Scanner(gameSaveFile);
+            String levelNumber = scanner.nextLine();
+            if(levelNumber.equals("0"))
+                return loadLevel(1,handler);
+            Level level = loadLevel(Integer.parseInt(levelNumber),handler);
+            level.resetEntityManager();
+            int enemyCount = Integer.parseInt(scanner.nextLine());
+            int[] playerData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
+            Player createdPlayer = new Player(playerData[0],playerData[1],(float)playerData[2],handler,level);
+            createdPlayer.getItem().setAmmo(playerData[3]);
+            ArrayList<Entity> createdEnemies = new ArrayList<>();
+            for(;enemyCount>0;enemyCount--){
+                int[] enemyData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
+                Enemy createdEnemy = new Enemy(enemyData[0],enemyData[1],enemyData[2],enemyData[3],handler,level);
+                createdEnemy.getItem().setAmmo(enemyData[4]);
+                createdEnemies.add(createdEnemy);
+            }
+            level.fillWorld(createdPlayer,createdEnemies);
+            return level;
+        }catch(IOException e){
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -220,12 +217,6 @@ public class Writer {
             return name;
         }
 
-        /*
-        public void setName(String name) {
-            this.name = name;
-        }
-        */
-
         public float getValue() {
             return value;
         }
@@ -236,29 +227,18 @@ public class Writer {
     }
     //subclass for easier saving of the game
     public static class GameSave {
-        private World world;
+        private Level level;
+        private int levelNumber;
         private Player player;
         private ArrayList<Entity> enemies;
 
-        public GameSave(World world){
-            this.world = world;
-            player = world.getPlayer();
-            enemies = world.getEntityManager().getEnemies();
+        public GameSave(Level level){
+            this.level = level;
+            levelNumber = level.getLevelNumber();
+            player = level.getPlayer();
+            enemies = level.getEntityManager().getEnemies();
         }
 
-        public World getWorld(){
-            return world;
-        }
-        public void setWorld(World world){
-            this.world = world;
-            player = world.getPlayer();
-            enemies = world.getEntityManager().getEnemies();
-        }
-        public Player getPlayer(){
-            return player;
-        }
-        public ArrayList<Entity> getEnemies(){
-            return enemies;
-        }
+        public Player getPlayer(){ return player; }
     }
 }

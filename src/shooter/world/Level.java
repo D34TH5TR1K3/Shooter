@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Level {
+    //indicates the number of the level
+    private final int levelNumber;
     //saves all of the Tiles and the size of the map
     private final Tile[][] tiles;
     private final byte mapsize = 2;
@@ -19,12 +21,13 @@ public class Level {
     //handler distributes variables
     private final Handler handler;
     //entityManager organizes the Entities
-    private final EntityManager entityManager;
+    private EntityManager entityManager;
     //saves the map and its layout
     private final BufferedImage[] map;
 
     //this constructor initializes the values
-    public Level(BufferedImage[] map, Handler handler) {
+    public Level(int levelNumber, BufferedImage[] map, Handler handler) {
+        this.levelNumber = levelNumber;
         tiles = new Tile[64*mapsize][36*mapsize];
         this.handler = handler;
         entityManager = new EntityManager(this);
@@ -104,6 +107,8 @@ public class Level {
     }
     public Tile[][] getTiles() { return tiles; }
     public EntityManager getEntityManager() { return entityManager; }
+    public void resetEntityManager() { this.entityManager = new EntityManager(this); }
     public Player getPlayer() { return player; }
     public int getMapsize() { return mapsize; }
+    public int getLevelNumber() { return levelNumber; }
 }
