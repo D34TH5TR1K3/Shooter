@@ -1,4 +1,4 @@
-package shooter.gfx;
+package shooter.world;
 
 import java.awt.*;
 

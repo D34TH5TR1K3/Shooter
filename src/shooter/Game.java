@@ -5,7 +5,7 @@ import shooter.gfx.Display;
 import shooter.gfx.GameCamera;
 import shooter.input.KeyManager;
 import shooter.input.MouseManager;
-import shooter.sound.Sound;
+import shooter.utils.Sound;
 import shooter.states.GameState;
 import shooter.states.MenuState;
 import shooter.states.State;
@@ -30,8 +30,6 @@ public class Game implements Runnable {
     private final MouseManager mouseManager;
     //gameCamera is responsible for the users viewport
     private final GameCamera gameCamera;
-    //writer is responsible for writing to and reading from files
-    private final Writer writer;
     //sound is responsible for playing sound
     private final Sound sound;
 
@@ -39,8 +37,7 @@ public class Game implements Runnable {
     public Game() {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
-        writer = new Writer();
-        display = new Display(writer,keyManager,mouseManager);
+        display = new Display(keyManager,mouseManager);
         Assets.init();
         handler = new Handler(this);
         gameState = new GameState(this,handler);
@@ -49,9 +46,9 @@ public class Game implements Runnable {
         State.setState(gameState);
         gameCamera = new GameCamera(0,0);
         sound = new Sound();
-        if(writer.GetSettingValue("VolumeToggle") == 1)
+        if(new Writer().GetSettingValue("VolumeToggle") == 1)
             sound.playBackgroundMusic();
-        float volume = writer.GetSettingValue("Volume");
+        float volume = new Writer().GetSettingValue("Volume");
         sound.setBgVol(sound.getBgVolMin() + (sound.getBgVolMax() - sound.getBgVolMin()) * volume / 100f);
         start();
     }
@@ -62,7 +59,7 @@ public class Game implements Runnable {
         State.getState().tick();
         sound.tick();
         if(keyManager.save)
-            writer.writeGameSave(handler.getWorld());
+            new Writer().writeGameSave(handler.getWorld());
     }
     //render is responsible for the graphics of the game. all render methods get called here
     public void render() {
@@ -84,19 +81,17 @@ public class Game implements Runnable {
     public KeyManager getKeyManager() { return keyManager; }
     public MouseManager getMouseManager() { return mouseManager; }
     public Sound getSound() { return sound; }
-    public Writer getWriter() { return writer; }
 
     //methods required for the Thread logic to work properly
     public void run() {
         boolean debug = false;
 
-        int fps = 60;
-        double timePerTick = 1000000000f / fps;
+        double timePerTick = 1000000000f / 60;
         double delta = 0;
         long now;
         long lastTime = System.nanoTime();
         long timer = 0;
-        int ticks = 0;
+        short ticks = 0;
 
         while(running) {
             now = System.nanoTime();
@@ -105,25 +100,22 @@ public class Game implements Runnable {
             lastTime = now;
 
             if(delta >= 1) {
-                if(debug) {
+                if(debug)
                     now = System.nanoTime();
-                }
                 tick();
                 if(debug) {
-                    System.out.println("tick");
-                    System.out.println((System.nanoTime() - now) / 1000000f);
+                    System.out.println("tick\t"+(System.nanoTime() - now) / 1000000f);
                     now = System.nanoTime();
                 }
                 render();
-                if(debug) {
-                    System.out.println("render");
-                    System.out.println((System.nanoTime() - now) / 1000000f);
-                }
+                if(debug)
+                    System.out.println("render\t"+(System.nanoTime() - now) / 1000000f);
                 ticks++;
                 delta--;
             }
 
             if(timer >= 1000000000) {
+                System.out.print(ticks+"\t");
                 ticks = 0;
                 timer = 0;
             }

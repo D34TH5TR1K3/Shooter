@@ -3,7 +3,7 @@ package shooter.entities;
 import shooter.Handler;
 import shooter.gfx.Animation;
 import shooter.gfx.Assets;
-import shooter.levels.Level;
+import shooter.world.Level;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

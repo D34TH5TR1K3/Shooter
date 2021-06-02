@@ -1,6 +1,6 @@
 package shooter.entities;
 
-import shooter.levels.Level;
+import shooter.world.Level;
 
 import java.awt.*;
 import java.util.ArrayList;

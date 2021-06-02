@@ -1,9 +1,8 @@
-package shooter.gfx;
+package shooter.world;
 
 import shooter.Handler;
 import shooter.entities.EntityManager;
 import shooter.entities.Player;
-import shooter.levels.Level;
 import shooter.utils.Writer;
 
 import java.awt.*;
@@ -23,11 +22,11 @@ public class World {
         activeLevel = levels[0];
     }
 
-    //ticks the entityManager
+    //ticks the active Level
     public void tick(){
         activeLevel.tick();
     }
-    //renders the map and the entityManager
+    //renders the active Level
     public void render(Graphics g){
         activeLevel.render(g);
     }

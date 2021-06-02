@@ -1,7 +1,7 @@
 package shooter;
 
 import shooter.gfx.GameCamera;
-import shooter.gfx.World;
+import shooter.world.World;
 import shooter.input.KeyManager;
 import shooter.input.MouseManager;
 

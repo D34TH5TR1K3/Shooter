@@ -1,11 +1,10 @@
-package shooter.levels;
+package shooter.world;
 
 import shooter.Handler;
 import shooter.entities.Enemy;
 import shooter.entities.Entity;
 import shooter.entities.EntityManager;
 import shooter.entities.Player;
-import shooter.gfx.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

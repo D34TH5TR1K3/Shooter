@@ -2,7 +2,7 @@ package shooter.states;
 
 import shooter.Game;
 import shooter.Handler;
-import shooter.gfx.World;
+import shooter.world.World;
 
 import java.awt.*;
 

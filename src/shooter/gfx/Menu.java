@@ -1,6 +1,7 @@
 package shooter.gfx;
 
 import shooter.Handler;
+import shooter.utils.Writer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,6 +21,8 @@ public class Menu {
     BufferedImage menu, menu_layout;
     //saves the functions of the Buttons and Sliders
     String[] actionButtons, actionSliders;
+    //a Writer to handle Settings
+    private final Writer writer = new Writer();
 
     //this constructor initializes the values
     public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
@@ -137,13 +140,13 @@ public class Menu {
                     if(Math.abs(point1.getY() - point2.getY()) > 5){
                         Button button1 = new Button(indexButton, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
                         button1.setFunc(actionButtons[indexButton]);
-                        button1.setValue(handler.getGame().getWriter().GetSettingValue(actionButtons[indexButton]));
+                        button1.setValue(writer.GetSettingValue(actionButtons[indexButton]));
                         indexButton++;
                         buttons.add(button1);
                     }else{
                         Slider slider1 = new Slider(indexSlider, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
                         slider1.setFunc(actionSliders[indexSlider]);
-                        float deftemp = handler.getGame().getWriter().GetSettingValue(actionSliders[indexSlider]);
+                        float deftemp = writer.GetSettingValue(actionSliders[indexSlider]);
 
                         indexSlider++;
                         slider1.minMaxDef(0f, 100f, deftemp);
@@ -167,15 +170,15 @@ public class Menu {
     }
     //method to save changed Settings
     public void saveSettings(){
-        handler.getGame().getWriter().readSettingsFromFile(false);
+        writer.readSettingsFromFile(false);
         for(Slider slider : sliders)
-            handler.getGame().getWriter().changeSetting(slider.getFunc(), slider.getValue());
+            writer.changeSetting(slider.getFunc(), slider.getValue());
 
         for(Button button : buttons)
             if(button.getValue() != -1.0f)
-                handler.getGame().getWriter().changeSetting(button.getFunc(), button.getValue());
+                writer.changeSetting(button.getFunc(), button.getValue());
 
-        handler.getGame().getWriter().writeSettingsToFile();
+        writer.writeSettingsToFile();
     }
     //method to toggle a buttons value
     public void toggleButton(String func){

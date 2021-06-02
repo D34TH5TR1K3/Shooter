@@ -13,14 +13,11 @@ public class Display {
     //saves the JFrame and Canvas for further distribution
     private JFrame frame;
     private Canvas canvas;
-    //saves a writer to read from Files
-    private final Writer writer;
     //saves a static font to be used with everything
     public static Font fraktur;
 
     //this constructor initializes the values
-    public Display(Writer writer,KeyManager keyManager,MouseManager mouseManager) {
-        this.writer = writer;
+    public Display(KeyManager keyManager,MouseManager mouseManager) {
         createDisplay();
         addManagers(keyManager, mouseManager);
         try{
@@ -35,8 +32,8 @@ public class Display {
 
     //method to create a Display
     public void createDisplay() {
-        if(writer.getScale() != 1)
-            System.setProperty("sun.java2d.uiScale", String.valueOf(writer.getScale()));
+        if(new Writer().getScale() != 1)
+            System.setProperty("sun.java2d.uiScale", String.valueOf(new Writer().getScale()));
         frame = new JFrame("Shooter");
         int width = 1920, height = 1080;
         frame.setSize(width, height);

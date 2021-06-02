@@ -1,4 +1,4 @@
-package shooter.sound;
+package shooter.utils;
 
 import javax.sound.sampled.*;
 import java.io.File;

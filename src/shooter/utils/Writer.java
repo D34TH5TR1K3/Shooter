@@ -5,8 +5,8 @@ import shooter.entities.Enemy;
 import shooter.entities.Entity;
 import shooter.entities.Player;
 import shooter.gfx.ImageLoader;
-import shooter.gfx.World;
-import shooter.levels.Level;
+import shooter.world.World;
+import shooter.world.Level;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
