@@ -1,6 +1,6 @@
 package shooter.entities;
 
-import shooter.gfx.World;
+import shooter.levels.Level;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,16 +20,16 @@ public class EntityManager {
     private final ArrayList<Particle> tempParticles = new ArrayList<>();
     private final ArrayList<Particle> removeParticles = new ArrayList<>();
     //world distributes variables
-    private final World world;
+    private final Level level;
 
     //this constructor initializes the values
-    public EntityManager(World world) {
-        this.world = world;
+    public EntityManager(Level level) {
+        this.level = level;
     }
 
     //ticks all entities
     public void tick(){
-        world.getPlayer().tick();
+        level.getPlayer().tick();
 
         enemies.addAll(tempEnemies);
         tempEnemies.clear();
@@ -68,7 +68,7 @@ public class EntityManager {
             e.render(g);
         for(Particle p : particles)
             p.render(g);
-        world.getPlayer().render(g);
+        level.getPlayer().render(g);
     }
 
     //adds, removes and getters

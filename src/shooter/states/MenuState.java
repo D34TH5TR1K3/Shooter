@@ -5,7 +5,7 @@ import shooter.Handler;
 import shooter.gfx.Assets;
 import shooter.gfx.Menu;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 public class MenuState extends State {
     //instances of menus

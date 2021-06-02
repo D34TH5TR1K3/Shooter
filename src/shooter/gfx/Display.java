@@ -4,11 +4,10 @@ import shooter.input.KeyManager;
 import shooter.input.MouseManager;
 import shooter.utils.Writer;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JFrame;
 
 public class Display {
     //saves the JFrame and Canvas for further distribution

@@ -7,6 +7,8 @@ public class Assets {
     public static BufferedImage Map1_walls, shell, item_pistol, item_uzi, item_shotgun_empty, item_shotgun_full, item_ak_empty, item_ak_full, enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet, item_rpg_empty, item_rpg_full;
     //saves the animations
     public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1;
+    //saves the maps and their layouts
+    public static BufferedImage[] maps = new BufferedImage[2];
 
     //initializes the games textures
     public static void init() {
@@ -59,5 +61,8 @@ public class Assets {
             }
         for(int i = 0; i < 5 ; i++)
             rocket[i] = sheetRocket.crop(80 * i,  0, 80,  10);
+
+        maps[0] = ImageLoader.loadImage("/textures/Map1.png");
+        maps[1] = ImageLoader.loadImage("/textures/Map1_layout.png");
     }
 }

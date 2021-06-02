@@ -1,13 +1,17 @@
 package shooter;
 
-import shooter.gfx.*;
-import shooter.input.*;
+import shooter.gfx.Assets;
+import shooter.gfx.Display;
+import shooter.gfx.GameCamera;
+import shooter.input.KeyManager;
+import shooter.input.MouseManager;
 import shooter.sound.Sound;
-import shooter.states.*;
+import shooter.states.GameState;
+import shooter.states.MenuState;
+import shooter.states.State;
 import shooter.utils.Writer;
 
 import java.awt.*;
-import java.lang.Runnable;
 import java.awt.image.BufferStrategy;
 
 public class Game implements Runnable {

@@ -1,8 +1,8 @@
 package shooter.gfx;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class ImageLoader {
     //static method to get an Image from a File

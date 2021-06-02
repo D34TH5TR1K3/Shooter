@@ -1,12 +1,11 @@
 package shooter.entities;
 
-import java.awt.Graphics;
-import java.util.ArrayList;
-
 import shooter.Handler;
 import shooter.gfx.Assets;
-import shooter.gfx.World;
+import shooter.levels.Level;
 import shooter.sound.Sound;
+
+import java.awt.*;
 
 public class Item extends Entity{
     //indicates whether an item is visible
@@ -36,8 +35,8 @@ public class Item extends Entity{
     private short offset;
 
     //this constructor initializes the values
-    public Item(float posX, float posY, int type, Handler handler, World world) {
-        super(posX,posY,2, handler, world);
+    public Item(float posX, float posY, int type, Handler handler, Level level) {
+        super(posX,posY,2, handler, level);
         this.type = type;
         active = true;
         switch(type) {
@@ -181,32 +180,32 @@ public class Item extends Entity{
                     Sound.play("Uzi");
                     buX = activator.getX() + (float) CREATURESIZE / 2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) CREATURESIZE / 2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    world.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
+                    level.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, level));
                     break;
                 case 2:
                     Sound.play("Ak");
 
-                    world.getEntityManager().addParticle(new Particle(((int) (activator.getX() + CREATURESIZE / 2)), ((int) (activator.getY() + CREATURESIZE / 2)), activator.getDir(), Assets.shell, handler, world, 600));
+                    level.getEntityManager().addParticle(new Particle(((int) (activator.getX() + CREATURESIZE / 2)), ((int) (activator.getY() + CREATURESIZE / 2)), activator.getDir(), Assets.shell, handler, level, 600));
 
                     buX = activator.getX() + (float) CREATURESIZE / 2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) CREATURESIZE / 2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    world.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, world));
+                    level.getEntityManager().addBullet(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, level));
                     break;
                 case 3:
                     Sound.play("Uzi");
                     float dirOffset_uzi = (float) (Math.random() * 8);
-                    world.getEntityManager().addBullet(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, 0, handler, world));
+                    level.getEntityManager().addBullet(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, 0, handler, level));
                     break;
                 case 4:
                     Sound.play("Shotgun");
                     for (int i = 0; i < 6; i++) {
                         float dirOffset_shotgun = (float) (Math.random() * 20);
-                        world.getEntityManager().addBullet(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset_shotgun, bulletSpeed, 0, handler, world));
+                        level.getEntityManager().addBullet(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset_shotgun, bulletSpeed, 0, handler, level));
                     }
                     break;
                 case 5:
                     Sound.play("RocketLaunch");
-                    world.getEntityManager().addBullet(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180, bulletSpeed, 1, handler, world));
+                    level.getEntityManager().addBullet(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180, bulletSpeed, 1, handler, level));
                     break;
                 default:
                     break;

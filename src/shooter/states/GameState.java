@@ -13,7 +13,7 @@ public class GameState extends State {
     //this constructor initializes the values
     public GameState(Game game, Handler handler) {
         super(game,handler);
-        world = handler.getGame().getWriter().createGame(handler);
+        world = new World(handler);
     }
 
     //ticks the world

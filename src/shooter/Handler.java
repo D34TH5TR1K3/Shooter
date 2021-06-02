@@ -2,7 +2,8 @@ package shooter;
 
 import shooter.gfx.GameCamera;
 import shooter.gfx.World;
-import shooter.input.*;
+import shooter.input.KeyManager;
+import shooter.input.MouseManager;
 
 public class Handler {
     //game saves the game to distribute its attributes

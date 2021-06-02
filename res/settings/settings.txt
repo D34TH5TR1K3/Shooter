@@ -1,5 +1,5 @@
 Scale,1.2
-VolumeToggle,1.0
+VolumeToggle,0.0
 GodmodeToggle,0.0
 FriendlyFireToggle,1.0
 Volume,100.0

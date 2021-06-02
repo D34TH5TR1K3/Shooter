@@ -3,7 +3,7 @@ package shooter.entities;
 
 import shooter.Handler;
 import shooter.gfx.Animation;
-import shooter.gfx.World;
+import shooter.levels.Level;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -17,7 +17,7 @@ public class Particle{
     private Animation AnimParticle;
     //handler and world distribute variables
     private final Handler handler;
-    private final World world;
+    private final Level level;
     //saves the size and direction
     private int width = 0, height = 0;
     private final int x, y;
@@ -29,14 +29,14 @@ public class Particle{
     private byte speedFactor = 10;
 
     //these constructors initialize the values
-    public Particle(int x, int y, int speed, BufferedImage[] frames, Handler handler, World world){
+    public Particle(int x, int y, int speed, BufferedImage[] frames, Handler handler, Level level){
         this.x = x;
         this.y = y;
         this.handler = handler;
-        this.world = world;
+        this.level = level;
         AnimParticle = new Animation(frames,speed);
     }
-    public Particle(int x, int y, float dir, BufferedImage texture, Handler handler, World world, int timeLeftToLive){
+    public Particle(int x, int y, float dir, BufferedImage texture, Handler handler, Level level, int timeLeftToLive){
         this.x = x;
         this.y = y;
         this.xNew = x;
@@ -44,17 +44,17 @@ public class Particle{
         this.dir = dir;
         this.texture = texture;
         this.handler = handler;
-        this.world = world;
+        this.level = level;
         this.timeLeftToLive = timeLeftToLive;
         type = 1;
     }
-    public Particle(int x, int y, int width, int height, int speed, BufferedImage[] frames, Handler handler, World world){
+    public Particle(int x, int y, int width, int height, int speed, BufferedImage[] frames, Handler handler, Level level){
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
         this.handler = handler;
-        this.world = world;
+        this.level = level;
         AnimParticle = new Animation(frames,speed);
     }
 
@@ -64,7 +64,7 @@ public class Particle{
         if(type == 0)
             AnimParticle.tick();
         else if(type == 1){
-            if(!world.collisionCheck(new Rectangle(x+27, y+21+speedFactor, 3, 3)))
+            if(!level.collisionCheck(new Rectangle(x+27, y+21+speedFactor, 3, 3)))
                 yNew += speedFactor;
             if(speedFactor > 0)
                 speedFactor--;

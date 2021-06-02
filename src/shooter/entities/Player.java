@@ -1,12 +1,12 @@
 package shooter.entities;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-
 import shooter.Handler;
 import shooter.gfx.Animation;
 import shooter.gfx.Assets;
-import shooter.gfx.World;
+import shooter.levels.Level;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 import static shooter.gfx.Display.fraktur;
 
@@ -24,18 +24,18 @@ public class Player extends Entity{
     private boolean ableToDrop = true;
 
     //this constructor initializes the values
-    public Player(int posX, int posY, float dir, Handler handler, World world) {
-        super(posX, posY, 4,dir, handler, world);
+    public Player(int posX, int posY, float dir, Handler handler, Level level) {
+        super(posX, posY, 4,dir, handler, level);
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, 50, 50);
-        item = new Item(posX, posY, 3, handler, world); //temporary
+        item = new Item(posX, posY, 3, handler, level); //temporary
         item.setInActive();
-        world.getEntityManager().addItem(item);
+        level.getEntityManager().addItem(item);
         for(int y = 0; y < 3; y++) {
-            world.getEntityManager().addItem(new Item(100, 100+50*y, 1, handler, world));
-            world.getEntityManager().addItem(new Item(150, 100+50*y, 2, handler, world));
-            world.getEntityManager().addItem(new Item(200, 100+50*y, 3, handler, world));
-            world.getEntityManager().addItem(new Item(250, 100+50*y, 4, handler, world));
-            world.getEntityManager().addItem(new Item(300, 100+50*y, 5, handler, world));
+            level.getEntityManager().addItem(new Item(100, 100+50*y, 1, handler, level));
+            level.getEntityManager().addItem(new Item(150, 100+50*y, 2, handler, level));
+            level.getEntityManager().addItem(new Item(200, 100+50*y, 3, handler, level));
+            level.getEntityManager().addItem(new Item(250, 100+50*y, 4, handler, level));
+            level.getEntityManager().addItem(new Item(300, 100+50*y, 5, handler, level));
         }
         walkAnimation = new Animation(Assets.enemy_walk,100);
         walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100);
@@ -73,7 +73,7 @@ public class Player extends Entity{
         }else{
             activeAnimation = walkAnimation;
             if(handler.getMouseManager().isRightPressed() && ableToPickup) {
-                item = (Item) (world.getEntityManager().getClosestItem(posX, posY));
+                item = (Item) (level.getEntityManager().getClosestItem(posX, posY));
                 if (item != null) {
                     item.pick_up(this);
                     ableToPickup = false;
@@ -103,17 +103,17 @@ public class Player extends Entity{
             velY = 0;
         if(velX != 0 || velY != 0) {
             hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25 + velX)), ((int) (posY + CREATURESIZE / 2 - 25 + velY)));
-            if (!world.collisionCheck(hitbox)) {
+            if (!level.collisionCheck(hitbox)) {
                 move(velX, velY);
                 activeAnimation.start();
             } else {
                 hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25 + velX)), ((int) (posY + CREATURESIZE / 2 - 25)));
-                if (!world.collisionCheck(hitbox)) {
+                if (!level.collisionCheck(hitbox)) {
                     move(velX, 0);
                     activeAnimation.start();
                 } else {
                     hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25)), ((int) (posY + velY + CREATURESIZE / 2 - 25)));
-                    if (!world.collisionCheck(hitbox)) {
+                    if (!level.collisionCheck(hitbox)) {
                         move(0, velY);
                         activeAnimation.start();
                     } else

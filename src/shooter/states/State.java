@@ -3,7 +3,7 @@ package shooter.states;
 import shooter.Game;
 import shooter.Handler;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 public abstract class State {
     //currentState organizes which State gets ticked and rendered

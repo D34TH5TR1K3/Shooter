@@ -1,13 +1,13 @@
 package shooter.entities;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-
 import shooter.Handler;
 import shooter.gfx.Animation;
 import shooter.gfx.Assets;
-import shooter.gfx.World;
+import shooter.levels.Level;
 import shooter.sound.Sound;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 public class Bullet extends Entity {
     //saves the bullets type and speed
@@ -17,8 +17,8 @@ public class Bullet extends Entity {
     Animation animation;
 
     //this constructor initializes the values
-    public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, World world) {
-        super(posX, posY,3, dir, handler, world);
+    public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, Level level) {
+        super(posX, posY,3, dir, handler, level);
         this.type = type;
         this.dir = dir;
         this.speed = speed;
@@ -44,13 +44,13 @@ public class Bullet extends Entity {
         posY = posY + (float) (Math.sin(Math.toRadians(dir) + Math.PI) * speed);
         //TODO implement directional movement
         moveAbs(posX, posY);
-        if(world.collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10))||world.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10))){
+        if(level.collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10))||level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10))){
             if(type == 1) {
                 Sound.play("RocketExplode");
-                world.getEntityManager().addParticle(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, world));
+                level.getEntityManager().addParticle(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, level));
             }else if(type == 0)
-                world.getEntityManager().addParticle(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, world));
-            world.getEntityManager().removeBullet(this);
+                level.getEntityManager().addParticle(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, level));
+            level.getEntityManager().removeBullet(this);
         }
     }
     //renders the bullet

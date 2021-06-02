@@ -3,7 +3,7 @@ package shooter.entities;
 import shooter.Handler;
 import shooter.gfx.Animation;
 import shooter.gfx.Tile;
-import shooter.gfx.World;
+import shooter.levels.Level;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -29,21 +29,21 @@ public abstract class Entity {
     protected boolean solid = false;
     protected boolean active = false;
     //world and handler distribute variables
-    protected World world;
+    protected Level level;
     protected Handler handler;
     //saves the Animation to render
     protected Animation activeAnimation;
 
     //these constructors initialize the values
-    public Entity(float posX, float posY, int posZ, Handler handler, World world) {
-        this.world = world;
+    public Entity(float posX, float posY, int posZ, Handler handler, Level level) {
+        this.level = level;
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
         this.handler = handler;
     }
-    public Entity(float posX, float posY, int posZ, float dir, Handler handler, World world) {
-        this.world = world;
+    public Entity(float posX, float posY, int posZ, float dir, Handler handler, Level level) {
+        this.level = level;
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
@@ -57,9 +57,9 @@ public abstract class Entity {
 
     //method to check if a line of sight is clear
     public boolean checkLineOfSight(Line2D.Float line){
-        for(int x=0;x<64*world.getMapsize();x++)
-            for(int y=0;y<36*world.getMapsize();y++){
-                Tile temptile = world.getTiles(x,y);
+        for(int x=0;x<64*level.getMapsize();x++)
+            for(int y=0;y<36*level.getMapsize();y++){
+                Tile temptile = level.getTiles(x,y);
                 if(line.intersects(temptile.getHitbox())&& temptile.isSolid())
                     return true;
             }

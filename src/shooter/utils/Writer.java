@@ -4,8 +4,11 @@ import shooter.Handler;
 import shooter.entities.Enemy;
 import shooter.entities.Entity;
 import shooter.entities.Player;
+import shooter.gfx.ImageLoader;
 import shooter.gfx.World;
+import shooter.levels.Level;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -119,6 +122,31 @@ public class Writer {
             e.printStackTrace();
         }
     }
+    //method to load a level from res
+    public static Level loadLevel(int number,Handler handler){
+        try{
+            String path = "/levels/Level_"+number+"/";
+            Level level = new Level(new BufferedImage[]{ImageLoader.loadImage(path + "Map.png"), ImageLoader.loadImage(path + "Layout.png")},handler);
+            Scanner scanner = new Scanner(new File("res" + path + "LevelData.txt"));
+            int enemyCount = Integer.parseInt(scanner.nextLine());
+            int[] playerData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
+            Player createdPlayer = new Player(playerData[0],playerData[1],(float)playerData[2],handler,level);
+            createdPlayer.getItem().setAmmo(playerData[3]);
+            ArrayList<Entity> createdEnemies = new ArrayList<>();
+            for(;enemyCount>0;enemyCount--){
+                int[] enemyData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
+                Enemy createdEnemy = new Enemy(enemyData[0],enemyData[1],enemyData[2],enemyData[3],handler,level);
+                createdEnemy.getItem().setAmmo(enemyData[4]);
+                createdEnemies.add(createdEnemy);
+            }
+            level.fillWorld(createdPlayer,createdEnemies);
+            return level;
+        } catch(IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /*
     //method to create a game from a file
     public World createGame(Handler handler){
         try{
@@ -133,7 +161,7 @@ public class Writer {
                 Player createdPlayer = new Player(pd[0],pd[1],(float)pd[2],handler,world);
                 createdPlayer.getItem().setAmmo(pd[3]);
                 ArrayList<Entity> createdEnemies = new ArrayList<>();
-                for(int i=0;i<enemyCount;i++){
+                for(;enemyCount>0;enemyCount--){
                     int[] ed = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
                     //ed = EnemyData
                     Enemy createdEnemy = new Enemy(ed[0],ed[1],ed[2],ed[3],handler,world);
@@ -148,6 +176,7 @@ public class Writer {
             return null;
         }
     }
+    */
     //method for wiping the gameSave from a file
     public void wipeGame() {
         try{
