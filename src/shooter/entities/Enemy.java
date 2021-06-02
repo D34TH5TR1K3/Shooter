@@ -25,6 +25,9 @@ public class Enemy extends Entity{
     public ArrayList<Tile> trace = new ArrayList<>();
     private Tile current = null;
     private Tile tempNode = null;
+    private int pathfindingDelay = 30;
+    private boolean playerSpotted = false;
+    private int[] lastCoords = new int[2];
     //END PATHFINDING
     private Rectangle hitbox;
     private final byte SPEED = 8;
@@ -285,8 +288,10 @@ public class Enemy extends Entity{
     }
     @Override
     public void tick() {
-        if(handler.getMouseManager().isRightPressed())
-            findpath(world.getTiles(((int) ((posX +CREATURESIZE/2) / 30)), ((int) ((posY+CREATURESIZE/2) / 30))), world.getTiles((int) ((world.getPlayer().getX()+CREATURESIZE/2) / 30), (int) ((world.getPlayer().getY()+CREATURESIZE/2) / 30)));
+        if(pathfindingDelay<1) {
+            findpath(world.getTiles(((int) ((posX + CREATURESIZE / 2) / 30)), ((int) ((posY + CREATURESIZE / 2) / 30))), world.getTiles(lastCoords[0], lastCoords[1]));
+            playerSpotted = false;
+        }
 
         //findpath(world.getTiles(3, 3), world.getTiles(30, 30));
         if(item.getAmmo()==0&&this.active){
@@ -298,12 +303,17 @@ public class Enemy extends Entity{
             //System.out.println(hitbox);
             if (lineOfSight()) {
                 trace.clear();
+                playerSpotted = true;
+                pathfindingDelay = 30;
                 dir = (float) (180 + Math.toDegrees(Math.atan2(posY - world.getPlayer().getY(), posX - world.getPlayer().getX() )));
-                if (item != null){
+                if (item != null)
                     item.activate(this);
-                }
             }else{
                 followTrace(trace);
+                if(playerSpotted) {
+                    lastCoords = new int[]{(int) ((world.getPlayer().getX() + CREATURESIZE / 2) / 30), (int) ((world.getPlayer().getY() + CREATURESIZE / 2) / 30)};
+                    pathfindingDelay--;
+                }
             }
         }
         activeAnimation.tick();
