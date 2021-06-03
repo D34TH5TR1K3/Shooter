@@ -23,10 +23,10 @@ public class Bullet extends Entity {
         this.dir = dir;
         this.speed = speed;
         switch(type) {
-            case 0:
+            case 1,2:
 
                 break;
-            case 1:
+            case 0:
                 animation = new Animation(Assets.rocket,20);
                 break;
             default:
