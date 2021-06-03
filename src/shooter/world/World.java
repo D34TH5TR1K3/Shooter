@@ -31,6 +31,12 @@ public class World {
         activeLevel.render(g);
     }
 
+    //reloads the Levels
+    public void reloadLevels(){
+        levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler)};
+        activeLevel = levels[activeLevel.getLevelNumber()];
+    }
+
     //getters and setters
     public Level getActiveLevel() { return activeLevel; }
     public void setLevel(int num) { activeLevel = levels[num]; }

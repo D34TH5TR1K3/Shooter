@@ -96,6 +96,12 @@ public class Level {
         }
         return false;
     }
+    //method to check if the Rectangle collides with the Player
+    public void checkPlayerCollision(Rectangle rect) {
+        Player p = getEntityManager().getPlayer();
+        if(p.getHitbox().intersects(rect))
+            p.die();
+    }
 
     //Getters
     public Tile getTiles(int x, int y) {

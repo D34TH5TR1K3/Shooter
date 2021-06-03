@@ -45,13 +45,15 @@ public class Bullet extends Entity {
         //TODO implement directional movement
         moveAbs(posX, posY);
         if(level.collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10))||level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10))){
-            if(type == 1) {
+            if(type == 0) {
                 Sound.play("RocketExplode");
                 level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, level));
-            }else if(type == 0)
+            }else if(type > 0)
                 level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, level));
             level.getEntityManager().removeEntity(this);
         }
+        if(type == 2)
+            level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
     }
     //renders the bullet
     @Override
@@ -60,11 +62,11 @@ public class Bullet extends Entity {
         reset.rotate(0, 0, 0);
         Graphics2D g2 = (Graphics2D)g;
         switch(type) {
-            case 0:
+            case 1,2:
                 g2.rotate(Math.toRadians(dir), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));
                 g2.drawImage(Assets.Bullet,(int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()),  null);
                 break;
-            case 1:
+            case 0:
                 g2.rotate(Math.toRadians(dir + 180), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));
                 g.drawImage(animation.getCurrentFrame(), (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), null);
                 break;

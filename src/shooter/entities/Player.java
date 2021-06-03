@@ -1,8 +1,10 @@
 package shooter.entities;
 
+import shooter.Game;
 import shooter.Handler;
 import shooter.gfx.Animation;
 import shooter.gfx.Assets;
+import shooter.gfx.LoadingImage;
 import shooter.world.Level;
 
 import java.awt.*;
@@ -141,7 +143,13 @@ public class Player extends Entity{
             g.drawString("No Weapon",100,800);
     }
 
+    //lets the player die and resets the Level
+    public void die() {
+        handler.getWorld().reloadLevels();
+    }
+
     //getters and setters
     public Item getItem(){ return item; }
     public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getAmmo()); }
+    public Rectangle getHitbox(){ return hitbox; }
 }

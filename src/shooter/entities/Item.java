@@ -180,7 +180,7 @@ public class Item extends Entity{
                     Sound.play("Uzi");
                     buX = activator.getX() + (float) CREATURESIZE / 2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) CREATURESIZE / 2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, level));
+                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
                     break;
                 case 2:
                     Sound.play("Ak");
@@ -189,23 +189,23 @@ public class Item extends Entity{
 
                     buX = activator.getX() + (float) CREATURESIZE / 2 + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) CREATURESIZE / 2 + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 0, handler, level));
+                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
                     break;
                 case 3:
                     Sound.play("Uzi");
                     float dirOffset_uzi = (float) (Math.random() * 8);
-                    level.getEntityManager().addEntity(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, 0, handler, level));
+                    level.getEntityManager().addEntity(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
                     break;
                 case 4:
                     Sound.play("Shotgun");
                     for (int i = 0; i < 6; i++) {
                         float dirOffset_shotgun = (float) (Math.random() * 20);
-                        level.getEntityManager().addEntity(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset_shotgun, bulletSpeed, 0, handler, level));
+                        level.getEntityManager().addEntity(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180 - 10 + dirOffset_shotgun, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
                     }
                     break;
                 case 5:
                     Sound.play("RocketLaunch");
-                    level.getEntityManager().addEntity(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180, bulletSpeed, 1, handler, level));
+                    level.getEntityManager().addEntity(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180, bulletSpeed, 0, handler, level));
                     break;
                 default:
                     break;
