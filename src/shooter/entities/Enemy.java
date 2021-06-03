@@ -258,8 +258,8 @@ public class Enemy extends Entity{
         //TODO: implement corpse texture
     }
     public boolean lineOfSight(){
-        if(Math.abs(level.getEntityManager().getPlayer().getX()-posX)>700||Math.abs(level.getEntityManager().getPlayer().getY()-posY)>500)
-            return false;
+        //if(Math.abs(level.getEntityManager().getPlayer().getX()-posX)>700||Math.abs(level.getEntityManager().getPlayer().getY()-posY)>500)
+        //    return false;
         ArrayList<Tile> tempTiles = new ArrayList<Tile>();
         //world.setAllTiles(Color.green);
         Line2D line = new Line2D.Float(level.getEntityManager().getPlayer().getX()+CREATURESIZE/2,level.getEntityManager().getPlayer().getY()+CREATURESIZE/2,posX+CREATURESIZE/2,posY+CREATURESIZE/2);
