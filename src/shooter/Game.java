@@ -58,6 +58,10 @@ public class Game implements Runnable {
     //tick is responsible for the logic of the game. all tick methods get called here
     public void tick() {
         keyManager.tick();
+        if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&!keyManager.reload)
+            return;
+        else if(keyManager.reload)
+            handler.getWorld().reloadLevels();
         State.getState().tick();
         sound.tick();
         if(keyManager.save)
@@ -73,6 +77,10 @@ public class Game implements Runnable {
     }
     //render is responsible for the graphics of the game. all render methods get called here
     public void render() {
+        if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()){
+            LoadingImage.renderDeathScreen();
+            return;
+        }
         BufferStrategy bs = display.getCanvas().getBufferStrategy();
         Graphics g = bs.getDrawGraphics();
         g.clearRect(0,0, 1920, 1080);

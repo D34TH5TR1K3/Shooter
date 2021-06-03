@@ -7,9 +7,8 @@ import java.awt.image.BufferedImage;
 public class LoadingImage {
     //loadingImage saves the Image to be rendered while the game is starting
     private static final BufferedImage loadingImage = ImageLoader.loadImage("/textures/loadingImage.png");
-    private static final BufferedImage deathScreenImage = loadingImage;
+    private static final BufferedImage deathScreenImage = ImageLoader.loadImage("/textures/deathScreenImage.png");
     private static Display display;
-    private static Graphics g;
 
     //render renders the loadingImage to the Screen
     public static void render() {
@@ -18,7 +17,7 @@ public class LoadingImage {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
-        g = bs.getDrawGraphics();
+        Graphics g = bs.getDrawGraphics();
         g.drawImage(loadingImage,0,0,null);
         bs.show();
         g.dispose();
@@ -32,7 +31,16 @@ public class LoadingImage {
     }
     //renders the DeathScreen
     public static void renderDeathScreen() {
-        for(int i = 0; i < 3 ; i++)
+        for(int i = 0; i < 3 ; i++) {
+            BufferStrategy bs = display.getCanvas().getBufferStrategy();
+            if (bs == null){
+                display.getCanvas().createBufferStrategy(3);
+                return;
+            }
+            Graphics g = bs.getDrawGraphics();
             g.drawImage(deathScreenImage,0,0,null);
+            bs.show();
+            g.dispose();
+        }
     }
 }

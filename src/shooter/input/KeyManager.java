@@ -8,7 +8,7 @@ public class KeyManager implements KeyListener {
     private final boolean[] keys;
     //saves all functional keys
     public boolean up, left, down, right;
-    public boolean esc, save, load, wipe, level1, level2;
+    public boolean esc, reload, save, load, wipe, level1, level2;
 
     //this constructor initializes the values
     public KeyManager() { keys = new boolean[256]; }
@@ -20,6 +20,7 @@ public class KeyManager implements KeyListener {
         down = keys[KeyEvent.VK_S];
         right = keys[KeyEvent.VK_D];
         esc = keys[KeyEvent.VK_ESCAPE];
+        reload = keys[KeyEvent.VK_R];
         save = keys[KeyEvent.VK_COMMA];
         load = keys[KeyEvent.VK_PERIOD];
         wipe = keys[KeyEvent.VK_SLASH];

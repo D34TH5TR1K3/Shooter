@@ -19,6 +19,8 @@ public class Player extends Entity{
     private int velX = 0, velY = 0;
     //saves the equipped item
     private Item item;
+    //indicates whether the player is alive
+    private boolean alive = true;
     //saves the players animations
     private final Animation walkAnimation, walkAnimation_ak;
     //required for player weapon interaction
@@ -145,11 +147,13 @@ public class Player extends Entity{
 
     //lets the player die and resets the Level
     public void die() {
-        handler.getWorld().reloadLevels();
+        alive = false;
+        LoadingImage.renderDeathScreen();
     }
 
     //getters and setters
     public Item getItem(){ return item; }
     public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getAmmo()); }
     public Rectangle getHitbox(){ return hitbox; }
+    public boolean isAlive(){ return alive; }
 }
