@@ -22,7 +22,7 @@ public class Player extends Entity{
     //indicates whether the player is alive
     private boolean alive = true;
     //saves the players animations
-    private final Animation walkAnimation, walkAnimation_ak;
+    private final Animation walkAnimation, walkAnimation_uzi;
     //required for player weapon interaction
     private boolean ableToPickup = true;
     private boolean ableToDrop = true;
@@ -41,8 +41,8 @@ public class Player extends Entity{
             level.getEntityManager().addEntity(new Item(250, 100+50*y, 4, handler, level));
             level.getEntityManager().addEntity(new Item(300, 100+50*y, 5, handler, level));
         }
-        walkAnimation = new Animation(Assets.enemy_walk,100);
-        walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100);
+        walkAnimation = new Animation(Assets.player_walk,100);
+        walkAnimation_uzi = new Animation(Assets.player_walk_uzi,100);
         activeAnimation = walkAnimation;
     }
 
@@ -54,7 +54,7 @@ public class Player extends Entity{
                 case 1:
                     break;
                 case 2:
-                    activeAnimation = walkAnimation_ak;
+                    activeAnimation = walkAnimation_uzi;
                     break;
                 case 3:
                     break;
@@ -133,9 +133,9 @@ public class Player extends Entity{
     public void render(Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform reset = g2d.getTransform();
-        g2d.rotate(Math.toRadians(dir), posX+(float)CREATURESIZE/2-handler.getxOffset(), posY+(float)CREATURESIZE/2-handler.getyOffset());
+        g2d.rotate(Math.toRadians(dir), posX+28+(float)96/2-handler.getxOffset(), posY+28+(float)96/2-handler.getyOffset());
 
-        g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
+        g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX+28-handler.getxOffset()), (int)(posY+28-handler.getyOffset()), 96, 96, null);
 
         g2d.setTransform(reset);
         g.setFont(fraktur);

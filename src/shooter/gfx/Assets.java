@@ -6,12 +6,28 @@ public class Assets {
     //saves the textures
     public static BufferedImage Map1_walls, shell, item_pistol, item_uzi, item_shotgun_empty, item_shotgun_full, item_ak_empty, item_ak_full, enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet, item_rpg_empty, item_rpg_full;
     //saves the animations
-    public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1;
+    public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1, player_walk, player_walk_uzi;
     //saves the maps and their layouts
     public static BufferedImage[] maps = new BufferedImage[2];
 
     //initializes the games textures
     public static void init() {
+        SpriteSheet player_32_sprite = new SpriteSheet(ImageLoader.loadImage("/textures/Player_32.png"));
+        SpriteSheet player_45_sprite = new SpriteSheet(ImageLoader.loadImage("/textures/Player_45.png"));
+
+
+        player_walk = new BufferedImage[8];
+        player_walk_uzi = new BufferedImage[8];
+
+        for(int x = 0; x < 8; x++)
+            player_walk[x] = player_32_sprite.crop(x * 32, 3 * 32, 32, 32);
+        for(int x = 0; x < 8; x++)
+            player_walk_uzi[x] = player_32_sprite.crop(x * 32, 4 * 32, 32, 32);
+
+
+
+
+
         SpriteSheet sprite1 = new SpriteSheet(ImageLoader.loadImage("/textures/sprite1.png"));
         SpriteSheet sheetRocket = new SpriteSheet(ImageLoader.loadImage("/textures/Rocket_80_10.png"));
         SpriteSheet sheet_explosion = new SpriteSheet(ImageLoader.loadImage("/textures/explosion_sprite.png"));
