@@ -31,7 +31,6 @@ public class Enemy extends Entity{
     //END PATHFINDING
     private Rectangle hitbox;
     private final byte SPEED = 8;
-    private int imageWidth = 50, imageHeight = 50;
     private Item item;
     private Animation walkAnimation, walkAnimation_ak;
 
@@ -39,12 +38,12 @@ public class Enemy extends Entity{
     public Enemy(int posX, int posY, int dir, int gunType, Handler handler, Level level) {  //im Konstruktor werden die Position und die Animation des Gegners initialisiert
         super(posX, posY, 4, dir, handler, level);
         this.setActive();
-        hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
+        hitbox = new Rectangle(posX - 35, posY - 35, 70, 70);
         item = new Item(posX, posY, gunType, handler, level);
         item.setInActive();
         level.getEntityManager().addEntity(item);
-        walkAnimation = new Animation(Assets.enemy_walk,100);
-        walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100);
+        walkAnimation = new Animation(Assets.enemy_walk,100, 666, 666);
+        walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100, 666, 666);
         activeAnimation = walkAnimation_ak;
     }
 
@@ -260,14 +259,14 @@ public class Enemy extends Entity{
     public boolean lineOfSight(){
         //if(Math.abs(level.getEntityManager().getPlayer().getX()-posX)>700||Math.abs(level.getEntityManager().getPlayer().getY()-posY)>500)
         //    return false;
-        ArrayList<Tile> tempTiles = new ArrayList<Tile>();
+        ArrayList<Tile> tempTiles = new ArrayList<>();
         //world.setAllTiles(Color.green);
-        Line2D line = new Line2D.Float(level.getEntityManager().getPlayer().getX()+CREATURESIZE/2,level.getEntityManager().getPlayer().getY()+CREATURESIZE/2,posX+CREATURESIZE/2,posY+CREATURESIZE/2);
+        Line2D line = new Line2D.Float(level.getEntityManager().getPlayer().getX(),level.getEntityManager().getPlayer().getY(),posX,posY);
         //System.out.println(Math.toDegrees(Math.PI + Math.atan2(world.getPlayer().getY() - posY, world.getPlayer().getX() - posX)));
         float tempDir = (float) (Math.PI + Math.atan2(level.getEntityManager().getPlayer().getY() - posY, level.getEntityManager().getPlayer().getX() - posX));
-        float tempX = posX + 90;
-        float tempY = posY + 90;
-        while(Math.abs(level.getEntityManager().getPlayer().getX() + 90 - tempX) > 40 || Math.abs(level.getEntityManager().getPlayer().getY() + 90 - tempY) > 40) {
+        float tempX = posX;
+        float tempY = posY;
+        while(Math.abs(level.getEntityManager().getPlayer().getX() - tempX) > 40 || Math.abs(level.getEntityManager().getPlayer().getY() - tempY) > 40) {
             tempX = tempX + (float) (Math.cos(tempDir + Math.PI) * 30);
             tempY = tempY + (float) (Math.sin(tempDir + Math.PI) * 30);
             for(int x = 0; x < 3; x++){
@@ -275,7 +274,6 @@ public class Enemy extends Entity{
                     Tile tempT = level.getTiles((int) (x+tempX / 30 - 1), (int) (y+tempY / 30 - 1));
                     if(!tempTiles.contains(tempT))
                         tempTiles.add(tempT);
-                    //tempT.setColor(Color.pink);
                 }
             }
 
@@ -300,7 +298,7 @@ public class Enemy extends Entity{
             return;
         }
         if(active) {
-            hitbox.setLocation(((int) (posX + CREATURESIZE / 2 - 25)), ((int) (posY + CREATURESIZE / 2 - 25)));
+            hitbox.setLocation(((int) (posX - 35)), ((int) (posY - 35)));
             //System.out.println(hitbox);
             if (lineOfSight()) {
                 trace.clear();
@@ -330,9 +328,9 @@ public class Enemy extends Entity{
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform reset = g2d.getTransform();
         //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.rotate(Math.toRadians(dir), posX+CREATURESIZE/2-handler.getxOffset(), posY+CREATURESIZE/2-handler.getyOffset());
+        g2d.rotate(Math.toRadians(dir), posX-handler.getxOffset(), posY-handler.getyOffset());
 
-        g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
+        g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-90-handler.getxOffset()), (int)(posY-90-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
 
         g2d.setTransform(reset);
 

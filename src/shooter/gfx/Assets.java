@@ -6,7 +6,9 @@ public class Assets {
     //saves the textures
     public static BufferedImage Map1_walls, shell, item_pistol, item_uzi, item_shotgun_empty, item_shotgun_full, item_ak_empty, item_ak_full, enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet, item_rpg_empty, item_rpg_full;
     //saves the animations
-    public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1, player_walk, player_walk_uzi;
+    public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1,
+            player_walk, player_walk_handgun, player_walk_uzi, player_walk_knife, player_walk_shotgun, player_walk_mp, player_walk_silencer, player_walk_machete,
+            player_attack_unarmed, player_attack_handgun, player_attack_uzi, player_attack_knife, player_attack_shotgun, player_attack_mp, player_attack_silencer, player_attack_machete;
     //saves the maps and their layouts
     public static BufferedImage[] maps = new BufferedImage[2];
 
@@ -17,15 +19,56 @@ public class Assets {
 
 
         player_walk = new BufferedImage[8];
+        player_walk_knife = new BufferedImage[8];
+        player_walk_machete = new BufferedImage[8];
+        player_walk_handgun = new BufferedImage[8];
         player_walk_uzi = new BufferedImage[8];
+        player_walk_shotgun = new BufferedImage[8];
+        player_walk_mp = new BufferedImage[8];
+        player_walk_silencer = new BufferedImage[8];
+
+        player_attack_unarmed = new BufferedImage[7];
+        player_attack_knife = new BufferedImage[9];
+        player_attack_machete = new BufferedImage[8];
+        player_attack_handgun = new BufferedImage[2];
+        player_attack_uzi = new BufferedImage[2];
+        player_attack_shotgun = new BufferedImage[13];
+        player_attack_mp = new BufferedImage[2];
+        player_attack_silencer = new BufferedImage[2];
 
         for(int x = 0; x < 8; x++)
             player_walk[x] = player_32_sprite.crop(x * 32, 3 * 32, 32, 32);
         for(int x = 0; x < 8; x++)
-            player_walk_uzi[x] = player_32_sprite.crop(x * 32, 4 * 32, 32, 32);
+            player_walk_knife[x] = player_45_sprite.crop(x * 32, 0 * 45, 32, 45);
+        for(int x = 0; x < 8; x++)
+            player_walk_machete[x] = player_32_sprite.crop(x * 45, 1 * 45, 32, 45);
+        for(int x = 0; x < 8; x++)
+            player_walk_handgun[x] = player_32_sprite.crop(x * 45, 1 * 32, 45, 32);
+        for(int x = 0; x < 8; x++)
+            player_walk_uzi[x] = player_32_sprite.crop(x * 45, 4 * 32, 45, 32);
+        for(int x = 0; x < 8; x++)
+            player_walk_shotgun[x] = player_32_sprite.crop(x * 45, 2 * 32, 45, 32);
+        for(int x = 0; x < 8; x++)
+            player_walk_mp[x] = player_32_sprite.crop(x * 45, 5 * 32, 45, 32);
+        for(int x = 0; x < 8; x++)
+            player_walk_silencer[x] = player_32_sprite.crop(x * 45, 6 * 32, 45, 32);
 
-
-
+        for(int x = 0; x < 7; x++)
+            player_attack_unarmed[x] = player_45_sprite.crop(x * 60, 3 * 45, 60, 45);
+        for(int x = 0; x < 9; x++)
+            player_attack_knife[x] = player_45_sprite.crop(x * 45, 2 * 45, 45, 45);
+        for(int x = 0; x < 8; x++)
+            player_attack_machete[x] = player_32_sprite.crop(x * 48, 4 * 45, 48, 45);
+        for(int x = 0; x < 2; x++)
+            player_attack_handgun[x] = player_32_sprite.crop(x * 45+8*45, 1 * 32, 45, 32);
+        for(int x = 0; x < 2; x++)
+            player_attack_uzi[x] = player_32_sprite.crop(x * 45+8*45, 4 * 32, 45, 32);
+        for(int x = 0; x < 13; x++)
+            player_attack_shotgun[x] = player_32_sprite.crop(x * 45+8*45, 2 * 32, 45, 32);
+        for(int x = 0; x < 2; x++)
+            player_attack_mp[x] = player_32_sprite.crop(x * 45+8*45, 5 * 32, 45, 32);
+        for(int x = 0; x < 2; x++)
+            player_attack_silencer[x] = player_32_sprite.crop(x * 48+8*45, 6 * 32, 48, 32);
 
 
         SpriteSheet sprite1 = new SpriteSheet(ImageLoader.loadImage("/textures/sprite1.png"));

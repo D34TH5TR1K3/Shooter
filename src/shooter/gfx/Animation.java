@@ -12,11 +12,18 @@ public class Animation {
     private final BufferedImage[] frames;
     //indicates whether the animation is active
     private boolean active = true;
-
+    //center offset of the animation
+    private int xOffset, yOffset;
+    //image size
+    private int width, height;
     //this constructor initializes the values
-    public Animation(BufferedImage[] frames, int speed) {
+    public Animation(BufferedImage[] frames, int speed, int xOffset, int yOffset) {
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
         this.speed = speed;
         this.frames = frames;
+        this.width = frames[0].getWidth();
+        this.height = frames[0].getHeight();
         lastTime = System.currentTimeMillis();
     }
 
@@ -44,4 +51,16 @@ public class Animation {
     //getters
     public boolean lastFrame() { return index == frames.length - 1; }
     public BufferedImage getCurrentFrame() { return (active) ? frames[index] : frames[0]; }
+    public int getxOffset() {
+        return xOffset;
+    }
+    public int getyOffset() {
+        return yOffset;
+    }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
 }

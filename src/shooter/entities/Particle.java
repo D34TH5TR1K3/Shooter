@@ -26,7 +26,7 @@ public class Particle extends Entity{
     //these constructors initialize the values
     public Particle(int x, int y, int speed, BufferedImage[] frames, Handler handler, Level level){
         super(x,y,4,handler, level);
-        AnimParticle = new Animation(frames,speed);
+        AnimParticle = new Animation(frames,speed, 666, 666);
     }
     public Particle(int x, int y, float dir, BufferedImage texture, Handler handler, Level level, int timeLeftToLive){
         super(x,y,4,dir,handler, level);
@@ -40,7 +40,7 @@ public class Particle extends Entity{
         super(x,y,4,handler, level);
         this.width = width;
         this.height = height;
-        AnimParticle = new Animation(frames,speed);
+        AnimParticle = new Animation(frames,speed, 666, 666);
     }
 
     //ticks a particles collision and animation

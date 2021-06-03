@@ -27,7 +27,7 @@ public class Bullet extends Entity {
 
                 break;
             case 0:
-                animation = new Animation(Assets.rocket,20);
+                animation = new Animation(Assets.rocket,20, 666, 666);
                 break;
             default:
                 break;
