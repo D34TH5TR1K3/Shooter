@@ -42,7 +42,7 @@ public class Enemy extends Entity{
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, imageWidth, imageHeight);
         item = new Item(posX, posY, gunType, handler, level);
         item.setInActive();
-        level.getEntityManager().addItem(item);
+        level.getEntityManager().addEntity(item);
         walkAnimation = new Animation(Assets.enemy_walk,100);
         walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100);
         activeAnimation = walkAnimation_ak;
@@ -258,16 +258,16 @@ public class Enemy extends Entity{
         //TODO: implement corpse texture
     }
     public boolean lineOfSight(){
-        if(Math.abs(level.getPlayer().getX()-posX)>700||Math.abs(level.getPlayer().getY()-posY)>500)
+        if(Math.abs(level.getEntityManager().getPlayer().getX()-posX)>700||Math.abs(level.getEntityManager().getPlayer().getY()-posY)>500)
             return false;
         ArrayList<Tile> tempTiles = new ArrayList<Tile>();
         //world.setAllTiles(Color.green);
-        Line2D line = new Line2D.Float(level.getPlayer().getX()+CREATURESIZE/2,level.getPlayer().getY()+CREATURESIZE/2,posX+CREATURESIZE/2,posY+CREATURESIZE/2);
+        Line2D line = new Line2D.Float(level.getEntityManager().getPlayer().getX()+CREATURESIZE/2,level.getEntityManager().getPlayer().getY()+CREATURESIZE/2,posX+CREATURESIZE/2,posY+CREATURESIZE/2);
         //System.out.println(Math.toDegrees(Math.PI + Math.atan2(world.getPlayer().getY() - posY, world.getPlayer().getX() - posX)));
-        float tempDir = (float) (Math.PI + Math.atan2(level.getPlayer().getY() - posY, level.getPlayer().getX() - posX));
+        float tempDir = (float) (Math.PI + Math.atan2(level.getEntityManager().getPlayer().getY() - posY, level.getEntityManager().getPlayer().getX() - posX));
         float tempX = posX + 90;
         float tempY = posY + 90;
-        while(Math.abs(level.getPlayer().getX() + 90 - tempX) > 40 || Math.abs(level.getPlayer().getY() + 90 - tempY) > 40) {
+        while(Math.abs(level.getEntityManager().getPlayer().getX() + 90 - tempX) > 40 || Math.abs(level.getEntityManager().getPlayer().getY() + 90 - tempY) > 40) {
             tempX = tempX + (float) (Math.cos(tempDir + Math.PI) * 30);
             tempY = tempY + (float) (Math.sin(tempDir + Math.PI) * 30);
             for(int x = 0; x < 3; x++){
@@ -306,13 +306,13 @@ public class Enemy extends Entity{
                 trace.clear();
                 playerSpotted = true;
                 pathfindingDelay = 30;
-                dir = (float) (180 + Math.toDegrees(Math.atan2(posY - level.getPlayer().getY(), posX - level.getPlayer().getX() )));
+                dir = (float) (180 + Math.toDegrees(Math.atan2(posY - level.getEntityManager().getPlayer().getY(), posX - level.getEntityManager().getPlayer().getX() )));
                 if (item != null)
                     item.activate(this);
             }else{
                 followTrace(trace);
                 if(playerSpotted) {
-                    lastCoords = new int[]{(int) ((level.getPlayer().getX() + CREATURESIZE / 2) / 30), (int) ((level.getPlayer().getY() + CREATURESIZE / 2) / 30)};
+                    lastCoords = new int[]{(int) ((level.getEntityManager().getPlayer().getX() + CREATURESIZE / 2) / 30), (int) ((level.getEntityManager().getPlayer().getY() + CREATURESIZE / 2) / 30)};
                     pathfindingDelay--;
                 }
             }

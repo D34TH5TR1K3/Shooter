@@ -29,13 +29,13 @@ public class Player extends Entity{
         hitbox = new Rectangle(posX + CREATURESIZE/2 - 25, posY + CREATURESIZE/2 - 25, 50, 50);
         item = new Item(posX, posY, 3, handler, level); //temporary
         item.setInActive();
-        level.getEntityManager().addItem(item);
+        level.getEntityManager().addEntity(item);
         for(int y = 0; y < 3; y++) {
-            level.getEntityManager().addItem(new Item(100, 100+50*y, 1, handler, level));
-            level.getEntityManager().addItem(new Item(150, 100+50*y, 2, handler, level));
-            level.getEntityManager().addItem(new Item(200, 100+50*y, 3, handler, level));
-            level.getEntityManager().addItem(new Item(250, 100+50*y, 4, handler, level));
-            level.getEntityManager().addItem(new Item(300, 100+50*y, 5, handler, level));
+            level.getEntityManager().addEntity(new Item(100, 100+50*y, 1, handler, level));
+            level.getEntityManager().addEntity(new Item(150, 100+50*y, 2, handler, level));
+            level.getEntityManager().addEntity(new Item(200, 100+50*y, 3, handler, level));
+            level.getEntityManager().addEntity(new Item(250, 100+50*y, 4, handler, level));
+            level.getEntityManager().addEntity(new Item(300, 100+50*y, 5, handler, level));
         }
         walkAnimation = new Animation(Assets.enemy_walk,100);
         walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100);

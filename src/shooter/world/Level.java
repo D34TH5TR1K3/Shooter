@@ -16,8 +16,6 @@ public class Level {
     //saves all of the Tiles and the size of the map
     private final Tile[][] tiles;
     private final byte mapsize = 2;
-    //player saves the player
-    private Player player;
     //handler distributes variables
     private final Handler handler;
     //entityManager organizes the Entities
@@ -30,7 +28,7 @@ public class Level {
         this.levelNumber = levelNumber;
         tiles = new Tile[64*mapsize][36*mapsize];
         this.handler = handler;
-        entityManager = new EntityManager(this);
+        entityManager = new EntityManager();
         this.map = map;
         fillTiles();
         fillHalfSolidTiles();
@@ -48,9 +46,9 @@ public class Level {
 
     //method to fill the world with information from a LevelFile
     public void fillWorld(Player player, ArrayList<Entity> enemies) {
-        this.player = player;
+        entityManager.setPlayer(player);
         for(Entity e:enemies) {
-            entityManager.addEnemy(e);
+            entityManager.addEntity(e);
         }
     }
     //method to create the Tiles and set whether they are solid
@@ -107,8 +105,7 @@ public class Level {
     }
     public Tile[][] getTiles() { return tiles; }
     public EntityManager getEntityManager() { return entityManager; }
-    public void resetEntityManager() { this.entityManager = new EntityManager(this); }
-    public Player getPlayer() { return player; }
+    public void resetEntityManager() { this.entityManager = new EntityManager(); }
     public int getMapsize() { return mapsize; }
     public int getLevelNumber() { return levelNumber; }
 }

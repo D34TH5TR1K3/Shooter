@@ -235,7 +235,7 @@ public class Writer {
         public GameSave(Level level){
             this.level = level;
             levelNumber = level.getLevelNumber();
-            player = level.getPlayer();
+            player = level.getEntityManager().getPlayer();
             enemies = level.getEntityManager().getEnemies();
         }
 
