@@ -39,8 +39,7 @@ public class Game implements Runnable {
         keyManager = new KeyManager();
         mouseManager = new MouseManager();
         display = new Display(keyManager,mouseManager);
-        for(int i=0;i<3;i++)
-            LoadingImage.render(display);
+        LoadingImage.initialRender(display);
         Assets.init();
         handler = new Handler(this);
         gameState = new GameState(this,handler);
