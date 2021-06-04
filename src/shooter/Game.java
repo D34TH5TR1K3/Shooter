@@ -58,6 +58,8 @@ public class Game implements Runnable {
     //tick is responsible for the logic of the game. all tick methods get called here
     public void tick() {
         keyManager.tick();
+        if(handler.getKeyManager().esc)
+            State.setState(handler.getGame().menuState);
         if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&!keyManager.reload)
             return;
         else if(keyManager.reload)
