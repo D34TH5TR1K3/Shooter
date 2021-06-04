@@ -186,7 +186,8 @@ public class Writer {
             int enemyCount = Integer.parseInt(scanner.nextLine());
             int[] playerData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
             Player createdPlayer = new Player(playerData[0],playerData[1],(float)playerData[2],handler,level);
-            createdPlayer.getItem().setAmmo(playerData[3]);
+            if(playerData[3]!=0)
+                createdPlayer.getItem().setAmmo(playerData[3]);
             ArrayList<Entity> createdEnemies = new ArrayList<>();
             for(;enemyCount>0;enemyCount--){
                 int[] enemyData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
