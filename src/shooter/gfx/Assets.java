@@ -6,7 +6,7 @@ public class Assets {
     //saves the textures
     public static BufferedImage Map1_walls, shell, item_pistol, item_uzi, item_shotgun_empty, item_shotgun_full, item_ak_empty, item_ak_full, enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet, item_rpg_empty, item_rpg_full;
     //saves the animations
-    public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1,
+    public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1, player_legs,
             player_walk, player_walk_handgun, player_walk_uzi, player_walk_knife, player_walk_shotgun, player_walk_mp, player_walk_silencer, player_walk_machete,
             player_attack_unarmed, player_attack_handgun, player_attack_uzi, player_attack_knife, player_attack_shotgun, player_attack_mp, player_attack_silencer, player_attack_machete;
     //saves the maps and their layouts
@@ -17,6 +17,7 @@ public class Assets {
         SpriteSheet player_32_sprite = new SpriteSheet(ImageLoader.loadImage("/textures/Player_32.png"));
         SpriteSheet player_45_sprite = new SpriteSheet(ImageLoader.loadImage("/textures/Player_45.png"));
 
+        player_legs = new BufferedImage[16];
 
         player_walk = new BufferedImage[8];
         player_walk_knife = new BufferedImage[8];
@@ -35,6 +36,9 @@ public class Assets {
         player_attack_shotgun = new BufferedImage[13];
         player_attack_mp = new BufferedImage[2];
         player_attack_silencer = new BufferedImage[2];
+
+        for(int x = 0; x < 16; x++)
+            player_legs[x] = player_32_sprite.crop(x * 32, 0 * 32, 32, 32);
 
         for(int x = 0; x < 8; x++)
             player_walk[x] = player_32_sprite.crop(x * 32, 3 * 32, 32, 32);

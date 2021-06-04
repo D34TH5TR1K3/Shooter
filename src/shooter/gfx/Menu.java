@@ -4,12 +4,18 @@ import shooter.Handler;
 import shooter.utils.Writer;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static shooter.gfx.Display.fraktur;
+import static shooter.gfx.Display.frakturBig;
 
 public class Menu {
+    //variables for title animation
+    private float[] titleDir;
+    private Color[] titleColor;
+    private float counter = 0;
     //saves the points, buttons, sliders and Rectangles to be rendered
     private final ArrayList<Point> points = new ArrayList<>();
     private final ArrayList<Button> buttons = new ArrayList<>();
@@ -31,11 +37,31 @@ public class Menu {
         this.menu_layout = menu_layout;
         this.menu = menu;
         this.handler = handler;
+        titleColor = new Color[100];
+        titleDir = new float[100];
         readMenu();
     }
 
     //ticks the menus logic
     public void tick(){
+        counter += 0.01f;
+
+
+        for(int i = 0; i < 15; i++){
+            float temp = (float) (Math.sin(i)+1)/2;
+            //titleColor[i] = new Color(0, (int)(temp*255), 255*i/10, 255*i/10);
+
+            titleColor[i] = Color.getHSBColor((float) (counter/10+i*0.05), 1, 1);
+            int alpha = 255*i/10;
+            if(alpha > 255)
+                alpha = 255;
+            titleColor[i] = new Color(titleColor[i].getRed(), titleColor[i].getBlue(), titleColor[i].getGreen(), alpha);
+
+            titleDir[i] = (float)(Math.sin((float)(i)/10+counter)+1)*3;
+        }
+
+
+
         Rectangle rect = new Rectangle(handler.getMouseManager().getMouseX(), handler.getMouseManager().getMouseY(), 1, 1);
 
         renderRects.clear();
@@ -67,6 +93,19 @@ public class Menu {
     public void render(Graphics g){
         g.drawImage(menu, 0, 0, 1920, 1080, null);
 
+
+        Graphics2D g2d = (Graphics2D)g;
+        AffineTransform reset = g2d.getTransform();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);   //antialiasing for font
+        g2d.setFont(frakturBig);
+        int titleWidth = g2d.getFontMetrics(frakturBig).stringWidth("wolfenstein");
+        for(int i = 0; i < 15; i++) {
+            g2d.rotate(Math.toRadians(titleDir[i]), 1920 / 2, 250);
+            g2d.setColor(titleColor[i]);
+            g2d.drawString("wolfenstein", 1920 / 2 - titleWidth / 2, 250);
+            g2d.setTransform(reset);
+        }
+
         Color color = new Color(100, 100, 100, 180);
         g.setColor(color);
         for(Rectangle rect : renderRects)
@@ -82,7 +121,6 @@ public class Menu {
                 g.fillOval(button.getXu()*10-40-30, (button.getYo()*10 + (button.getYu()*10 - button.getYo()*10)/2)-26, 60, 60);
             }
             if(debug) {
-                Graphics2D g2d = (Graphics2D)g;
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);   //antialiasing for font
                 g2d.setFont(fraktur);
                 g2d.setColor(Color.black);
@@ -102,7 +140,6 @@ public class Menu {
             float xc = slider.getXc();
             float yc = slider.getYc();
             g.drawImage(Assets.sliderKnob, (int)(xc-30), (int)(yc-30), null);
-            Graphics2D g2d = (Graphics2D)g;
             g2d.setFont(fraktur);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setColor(Color.black);

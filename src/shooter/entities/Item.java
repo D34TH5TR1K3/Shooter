@@ -179,6 +179,7 @@ public class Item extends Entity{
             ammo--;
             switch(type) {
                 case 1:
+                    activator.shoot(1);
                     Sound.play("Uzi");
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
@@ -186,7 +187,7 @@ public class Item extends Entity{
                     break;
                 case 2:
                     Sound.play("Ak");
-
+                    activator.shoot(2);
                     level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
 
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
@@ -194,6 +195,7 @@ public class Item extends Entity{
                     level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
                     break;
                 case 3:
+                    activator.shoot(3);
                     Sound.play("Uzi");
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI -2)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI -2)) * offset);
@@ -201,6 +203,7 @@ public class Item extends Entity{
                     level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
                     break;
                 case 4:
+                    activator.shoot(4);
                     Sound.play("Shotgun");
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
@@ -210,6 +213,7 @@ public class Item extends Entity{
                     }
                     break;
                 case 5:
+                    activator.shoot(5);
                     Sound.play("RocketLaunch");
                     level.getEntityManager().addEntity(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180, bulletSpeed, 0, handler, level));
                     break;

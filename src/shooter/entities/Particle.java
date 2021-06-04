@@ -40,7 +40,7 @@ public class Particle extends Entity{
         super(x,y,4,handler, level);
         this.width = width;
         this.height = height;
-        AnimParticle = new Animation(frames,speed, 666, 666);
+        AnimParticle = new Animation(frames,speed);
     }
 
     //ticks a particles collision and animation

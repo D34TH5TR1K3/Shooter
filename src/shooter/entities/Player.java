@@ -13,6 +13,7 @@ import java.awt.geom.AffineTransform;
 import static shooter.gfx.Display.fraktur;
 
 public class Player extends Entity{
+    private float moveDir;
     //saves the players hitbox
     private final Rectangle hitbox;
     //velocities required for smooth movement
@@ -22,7 +23,8 @@ public class Player extends Entity{
     //indicates whether the player is alive
     private boolean alive = true;
     //saves the players animations
-    private final Animation walkAnimation, walkAnimation_knife, walkAnimation_machete, walkAnimation_handgun, walkAnimation_uzi, walkAnimation_shotgun, walkAnimation_mp, walkAnimation_silencer,
+    private final Animation legAnimation,
+                            walkAnimation, walkAnimation_knife, walkAnimation_machete, walkAnimation_handgun, walkAnimation_uzi, walkAnimation_shotgun, walkAnimation_mp, walkAnimation_silencer,
                             attackAnimation_unarmed, attackAnimation_knife, attackAnimation_machete, attackAnimation_handgun, attackAnimation_uzi, attackAnimation_shotgun, attackAnimation_mp, attackAnimation_silencer;
     //required for player weapon interaction
     private boolean ableToPickup = true;
@@ -42,6 +44,8 @@ public class Player extends Entity{
             level.getEntityManager().addEntity(new Item(250, 100+50*y, 4, handler, level));
             level.getEntityManager().addEntity(new Item(300, 100+50*y, 5, handler, level));
         }
+        legAnimation = new Animation(Assets.player_legs, 50, 16, 16);
+
         walkAnimation = new Animation(Assets.player_walk,100, 15, 16);
         walkAnimation_knife = new Animation(Assets.player_walk_knife,100, 14, 15);
         walkAnimation_machete = new Animation(Assets.player_walk_machete, 100, 17, 22);
@@ -60,37 +64,44 @@ public class Player extends Entity{
         attackAnimation_mp = new Animation(Assets.player_attack_mp, 100, 10, 16);
         attackAnimation_silencer = new Animation(Assets.player_attack_silencer, 100, 9, 16);
 
-        activeAnimation = walkAnimation;
+        activeAnimation = walkAnimation_uzi;
+    }
+    @Override
+    public void shoot(int type){
+        switch (type) {
+            case 1:
+                activeAnimation = attackAnimation_handgun;
+                activeAnimation.incHealth();
+                break;
+            case 2:
+                activeAnimation = attackAnimation_handgun;
+                activeAnimation.incHealth();
+                break;
+            case 3:
+                activeAnimation = attackAnimation_uzi;
+                activeAnimation.incHealth();
+                break;
+            case 4:
+                activeAnimation = attackAnimation_shotgun;
+                activeAnimation.incHealth();
+                break;
+            case 5:
+                activeAnimation = attackAnimation_handgun;
+                activeAnimation.incHealth();
+                break;
+            default:
+                activeAnimation = attackAnimation_unarmed;
+                break;
+        }
     }
 
     //ticks input, animation and other logic
     @Override
     public void tick() {
         if(item != null) {
-
-            if(handler.getMouseManager().isLeftPressed()) {
-                switch (item.getType()) {
-                    case 1:
-                        activeAnimation = attackAnimation_handgun;
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-                        activeAnimation = attackAnimation_uzi;
-                        break;
-                    case 4:
-                        activeAnimation = attackAnimation_shotgun;
-                        break;
-                    case 5:
-
-                        break;
-                    default:
-                        activeAnimation = attackAnimation_unarmed;
-                        break;
-                }
+            if(handler.getMouseManager().isLeftPressed())
                 item.activate(this);
-            }else{
+            if(activeAnimation.getHealth() <= 0) {
                 switch (item.getType()) {
                     case 1:
                         activeAnimation = walkAnimation_handgun;
@@ -130,6 +141,7 @@ public class Player extends Entity{
                 ableToPickup = true;
         }
         activeAnimation.tick();
+        legAnimation.tick();
         dir = (float) (180 + Math.toDegrees(Math.atan2(posY - handler.getMouseManager().getMouseY() - handler.getGameCamera().getyOffset(), posX - handler.getMouseManager().getMouseX() - handler.getGameCamera().getxOffset())));
         int velXmax = 10;
         if(handler.getKeyManager().left && velX > -velXmax)
@@ -153,23 +165,31 @@ public class Player extends Entity{
             hitbox.setLocation(((int) (posX - 35 + velX)), ((int) (posY - 35 + velY)));
             if (!level.collisionCheck(hitbox)) {
                 move(velX, velY);
+                moveDir = (float) (Math.toDegrees(Math.atan2(velY , velX)));
                 activeAnimation.start();
+                legAnimation.start();
             } else {
                 hitbox.setLocation(((int) (posX - 35 + velX)), ((int) (posY - 35)));
                 if (!level.collisionCheck(hitbox)) {
                     move(velX, 0);
                     activeAnimation.start();
+                    legAnimation.start();
                 } else {
                     hitbox.setLocation(((int) (posX - 35)), ((int) (posY - 35)));
                     if (!level.collisionCheck(hitbox)) {
                         move(0, velY);
                         activeAnimation.start();
-                    } else
+                        legAnimation.start();
+                    } else {
                         hitbox.setLocation(((int) posX - 35), ((int) (posY - 35)));
+                    }
                 }
             }
-        }else if(item == null)
+        }else{
+            legAnimation.stop();
             activeAnimation.stop();
+        }
+
         handler.getGameCamera().centerOnEntity(this);
     }
     //renders the Player
@@ -178,6 +198,10 @@ public class Player extends Entity{
         Graphics2D g2d = (Graphics2D)g;
         //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), 5, 5);//debugging player pos
         AffineTransform reset = g2d.getTransform();
+
+        g2d.rotate(Math.toRadians(moveDir), posX-handler.getxOffset(), posY-handler.getyOffset());
+        g2d.drawImage(legAnimation.getCurrentFrame(), (int)(posX-legAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-legAnimation.getyOffset()*3-handler.getyOffset()), legAnimation.getWidth()*3, legAnimation.getHeight()*3, null);
+        g2d.setTransform(reset);
         g2d.rotate(Math.toRadians(dir), posX-handler.getxOffset(), posY-handler.getyOffset());
         g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-activeAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-activeAnimation.getyOffset()*3-handler.getyOffset()), activeAnimation.getWidth()*3, activeAnimation.getHeight()*3, null);
 

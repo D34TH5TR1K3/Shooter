@@ -14,7 +14,7 @@ public class Display {
     private JFrame frame;
     private Canvas canvas;
     //saves a static font to be used with everything
-    public static Font fraktur;
+    public static Font fraktur, frakturBig;
 
     //this constructor initializes the values
     public Display(KeyManager keyManager,MouseManager mouseManager) {
@@ -22,6 +22,7 @@ public class Display {
         addManagers(keyManager, mouseManager);
         try{
             fraktur = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")).deriveFont(30f);
+            frakturBig = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")).deriveFont(130f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")));
         }

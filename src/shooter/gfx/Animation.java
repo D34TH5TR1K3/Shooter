@@ -16,7 +16,20 @@ public class Animation {
     private int xOffset, yOffset;
     //image size
     private int width, height;
+    //
+    private int health = -1;
     //this constructor initializes the values
+    public Animation(BufferedImage[] frames, int speed, int xOffset, int yOffset, int health) {
+        this.health = health;
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
+        this.speed = speed;
+        this.frames = frames;
+        this.width = frames[0].getWidth();
+        this.height = frames[0].getHeight();
+        lastTime = System.currentTimeMillis();
+    }
+
     public Animation(BufferedImage[] frames, int speed, int xOffset, int yOffset) {
         this.xOffset = xOffset;
         this.yOffset = yOffset;
@@ -27,13 +40,22 @@ public class Animation {
         lastTime = System.currentTimeMillis();
     }
 
+    public Animation(BufferedImage[] frames, int speed) {
+        this.speed = speed;
+        this.frames = frames;
+        lastTime = System.currentTimeMillis();
+    }
+
     //ticks the animation
     public void tick() {
         if(System.currentTimeMillis() - lastTime > speed) {
-            index++;
+            if(health != 0)
+                index++;
             lastTime = System.currentTimeMillis();
-            if(index >= frames.length)
+            if (index >= frames.length) {
+                health--;
                 index = 0;
+            }
         }
     }
 
@@ -62,5 +84,17 @@ public class Animation {
     }
     public int getHeight() {
         return height;
+    }
+    public void setHealth(int health) {
+        this.health = health;
+    }
+    public int getHealth() {
+        return health;
+    }
+    public void incHealth() {
+        if(health < 1)
+            health = 1;
+        else
+            health++;
     }
 }

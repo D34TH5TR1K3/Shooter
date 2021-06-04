@@ -45,7 +45,7 @@ public class Game implements Runnable {
         gameState = new GameState(this,handler);
         handler.setWorld(((GameState)gameState).getWorld());
         menuState = new MenuState(this,handler);
-        State.setState(gameState);
+        State.setState(menuState);
         gameCamera = new GameCamera(0,0);
         sound = new Sound();
         if(new Writer().GetSettingValue("VolumeToggle") == 1)
