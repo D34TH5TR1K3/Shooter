@@ -8,10 +8,11 @@ public class LoadingImage {
     //loadingImage saves the Image to be rendered while the game is starting
     private static final BufferedImage loadingImage = ImageLoader.loadImage("/textures/loadingImage.png");
     private static final BufferedImage deathScreenImage = ImageLoader.loadImage("/textures/deathScreenImage.png");
+    private static final BufferedImage specialThanksImage = ImageLoader.loadImage("/textures/specialThanksImage.png");
     private static Display display;
 
     //render renders the loadingImage to the Screen
-    public static void render() {
+    public static void renderLoadingImage() {
         BufferStrategy bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
@@ -22,12 +23,11 @@ public class LoadingImage {
         bs.show();
         g.dispose();
     }
-
     //renders the Image 3 Times to bypass the BufferStrategy
     public static void initialRender(Display display) {
         LoadingImage.display = display;
         for(int i = 0; i < 3 ; i++)
-            render();
+            renderLoadingImage();
     }
     //renders the DeathScreen
     public static void renderDeathScreen() {
@@ -39,6 +39,20 @@ public class LoadingImage {
             }
             Graphics g = bs.getDrawGraphics();
             g.drawImage(deathScreenImage,0,0,null);
+            bs.show();
+            g.dispose();
+        }
+    }
+    //renders the Special Thanks scene
+    public static void renderSpecialThanks() {
+        for(int i = 0; i < 3 ; i++) {
+            BufferStrategy bs = display.getCanvas().getBufferStrategy();
+            if (bs == null){
+                display.getCanvas().createBufferStrategy(3);
+                return;
+            }
+            Graphics g = bs.getDrawGraphics();
+            g.drawImage(specialThanksImage,0,0,null);
             bs.show();
             g.dispose();
         }

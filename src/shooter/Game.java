@@ -60,7 +60,7 @@ public class Game implements Runnable {
         keyManager.tick();
         if(handler.getKeyManager().esc)
             State.setState(handler.getGame().menuState);
-        if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&!keyManager.reload)
+        if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&!keyManager.reload&&State.getState().equals(gameState))
             return;
         else if(keyManager.reload)
             handler.getWorld().reloadLevels();
@@ -79,7 +79,7 @@ public class Game implements Runnable {
     }
     //render is responsible for the graphics of the game. all render methods get called here
     public void render() {
-        if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()){
+        if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&State.getState().equals(gameState)){
             LoadingImage.renderDeathScreen();
             return;
         }
