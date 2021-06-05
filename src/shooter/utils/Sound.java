@@ -7,12 +7,14 @@ import java.util.Map;
 
 public class Sound {
     //saves the currently playing Clip and its length
-    private Clip BgClip;
-    private short BgClipLen;
-    //indicates the Max, Min and actual Volume
-    private float BgVolMax = -15f, BgVolMin = -35f, BgVol = -40f;
+    private static Clip BgClip;
+    private static short BgClipLen;
+    //indicates the Max, Min and actual Volume of the Music
+    private static float BgVolMax = -15f, BgVolMin = -35f, BgVol = -40f;
+    //indicates the Max, Min and actual Volume of SFX
+    private static float SFXVolMax = -15f, SFXVolMin = -35f, SFXVol = -20f;
     //indicates whether Background music is active
-    private boolean BgActive = false;
+    private static boolean BgActive = false;
     //sounds distributes the Files with SFX
     private static final Map<String,File> sounds = Map.of(
             "Shotgun", new File("res/sound/Shotgun.wav"),
@@ -37,7 +39,7 @@ public class Sound {
     }
 
     //ticks whether a new Clip needs to be played
-    public void tick(){
+    public static void tick(){
         if (BgClip!=null && (float) BgClip.getFramePosition()/ BgClipLen > 0.99f)
             playBackgroundMusic();
     }
@@ -48,7 +50,7 @@ public class Sound {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(sounds.get(Name)));
 
-            ((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(-20f);
+            ((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(SFXVol);
 
             clip.start();
 
@@ -56,8 +58,12 @@ public class Sound {
             e.printStackTrace();
         }
     }
+    //method to toggle SFX
+    public static void toggleSFX(boolean value) {
+        SFXVol = (value)?SFXVol:-0.0f;
+    }
     //method to play Background music
-    public void playBackgroundMusic(){
+    public static void playBackgroundMusic(){
         if(BgClip!=null)
             BgClip.stop();
         try {
@@ -75,7 +81,7 @@ public class Sound {
         }
     }
     //method to toggle Sound
-    public void toggleSound(boolean val){
+    public static void toggleBackgroundMusic(boolean val){
         if(val && BgClip == null) {
             playBackgroundMusic();
             return;
@@ -88,17 +94,13 @@ public class Sound {
     }
 
     //getters and setters
-    public void setBgVol(Float value) {
-        if(value > BgVolMax) {
-            System.out.println("VOLUME EXCEEDS MAX_VOLUME");
-            return;
-        }
-        else if(BgClip != null)
-            ((FloatControl) BgClip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(value);
-        BgVol = value;
+    public static void setBgVol(float value) {
+        if(BgClip != null) ((FloatControl) BgClip.getControl(FloatControl.Type.MASTER_GAIN)).setValue(value);
+        BgVol = Math.min(value, BgVolMax);
     }
-    public float getBgVolMax() { return BgVolMax; }
-    public void setBgVolMax(float bgVolMax) { BgVolMax = bgVolMax; }
-    public float getBgVolMin() { return BgVolMin; }
-    public void setBgVolMin(float bgVolMin) { BgVolMin = bgVolMin; }
+    public static float getBgVolMax() { return BgVolMax; }
+    public static float getBgVolMin() { return BgVolMin; }
+    public static void setSFXVol(float value) { SFXVol = Math.min(value, SFXVolMax); }
+    public static float getSFXVolMax() { return SFXVolMax; }
+    public static float getSFXVolMin() { return SFXVolMin; }
 }

@@ -4,6 +4,7 @@ import shooter.Game;
 import shooter.Handler;
 import shooter.gfx.Assets;
 import shooter.gfx.Menu;
+import shooter.utils.Sound;
 
 import java.awt.*;
 
@@ -35,14 +36,14 @@ public class MenuState extends State {
             State.setState(handler.getGame().gameState);
         else if(activeMenu.funcActive("VolumeToggle")){
            menu2.toggleButton("VolumeToggle");
-           game.getSound().toggleSound(menu2.getButtonValue("VolumeToggle")>0);
+           Sound.toggleBackgroundMusic(menu2.getButtonValue("VolumeToggle")>0);
         }else if(activeMenu.funcActive("GodmodeToggle"))
             menu2.toggleButton("GodmodeToggle");
         else if(activeMenu.funcActive("FriendlyFireToggle"))
             menu2.toggleButton("FriendlyFireToggle");
         else if(activeMenu.funcActive("Volume")){
             float volume = menu2.getSliderValue("Volume");
-            game.getSound().setBgVol(game.getSound().getBgVolMin() + (game.getSound().getBgVolMax() - game.getSound().getBgVolMin()) * volume / 100f);
+            Sound.setBgVol(Sound.getBgVolMin() + (Sound.getBgVolMax() - Sound.getBgVolMin()) * volume / 100f);
         }else if(activeMenu.funcActive("exit"))
             System.exit(0);
     }

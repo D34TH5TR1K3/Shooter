@@ -31,8 +31,6 @@ public class Game implements Runnable {
     private final MouseManager mouseManager;
     //gameCamera is responsible for the users viewport
     private final GameCamera gameCamera;
-    //sound is responsible for playing sound
-    private final Sound sound;
 
     //this constructor initializes the values
     public Game() {
@@ -47,11 +45,10 @@ public class Game implements Runnable {
         menuState = new MenuState(this,handler);
         State.setState(menuState);
         gameCamera = new GameCamera(0,0);
-        sound = new Sound();
         if(new Writer().GetSettingValue("VolumeToggle") == 1)
-            sound.playBackgroundMusic();
+            Sound.playBackgroundMusic();
         float volume = new Writer().GetSettingValue("Volume");
-        sound.setBgVol(sound.getBgVolMin() + (sound.getBgVolMax() - sound.getBgVolMin()) * volume / 100f);
+        Sound.setBgVol(Sound.getBgVolMin() + (Sound.getBgVolMax() - Sound.getBgVolMin()) * volume / 100f);
         start();
     }
 
@@ -65,7 +62,7 @@ public class Game implements Runnable {
         else if(keyManager.reload)
             handler.getWorld().reloadLevels();
         State.getState().tick();
-        sound.tick();
+        Sound.tick();
         if(keyManager.save)
             Writer.writeGameSave(handler.getWorld().getActiveLevel());
         if(keyManager.load)
@@ -96,7 +93,6 @@ public class Game implements Runnable {
     public GameCamera getGameCamera() { return gameCamera; }
     public KeyManager getKeyManager() { return keyManager; }
     public MouseManager getMouseManager() { return mouseManager; }
-    public Sound getSound() { return sound; }
 
     //methods required for the Thread logic to work properly
     public void run() {
