@@ -92,10 +92,10 @@ public class Assets {
         map_1 = ImageLoader.loadImage("/textures/Map1.png");
         enemy = ImageLoader.loadImage("/textures/player_1.png");
         map_1layout = ImageLoader.loadImage("/textures/Map1_layout.png");
-        menu1 = ImageLoader.loadImage("/textures/menu3.png");
-        menu_layout1 = ImageLoader.loadImage("/textures/menu_layout3.png");
-        menu2 = ImageLoader.loadImage("/textures/menu4.png");
-        menu_layout2 = ImageLoader.loadImage("/textures/menu_layout4.png");
+        menu1 = ImageLoader.loadImage("/textures/menuNeu_main.png");
+        menu_layout1 = ImageLoader.loadImage("/textures/menu_layout_main.png");
+        menu2 = ImageLoader.loadImage("/textures/menuNeu.png");
+        menu_layout2 = ImageLoader.loadImage("/textures/menu_layout1.png");
         sliderKnob = ImageLoader.loadImage("/textures/slider.png");
         player = ImageLoader.loadImage("/textures/player_1.png");
         Bullet = ImageLoader.loadImage("/textures/bullet_4px.png");

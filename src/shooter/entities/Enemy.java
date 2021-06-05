@@ -224,10 +224,8 @@ public class Enemy extends Entity{
 
                         temptile.setParent(current);
                         if (!temptile.isVisited()) {
-                            //System.out.println("helloOoOoo");
                             openlist.add(temptile);
                             temptile.setVisited(true);
-                            temptile.setColor(Color.blue);
                         }
                     }
 

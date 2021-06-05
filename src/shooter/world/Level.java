@@ -41,6 +41,7 @@ public class Level {
     //renders the map and the entityManager
     public void render(Graphics g) {
         g.drawImage(map[0],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
+        //renderTiles(g);
         entityManager.render(g);
     }
 
@@ -108,6 +109,19 @@ public class Level {
         if(x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize)
             return tiles[x][y];
         return tiles[0][0];
+    }
+    public void renderTiles(Graphics g){
+        for(int x = 0; x < 64 * mapsize; x++){
+            for(int y = 0; y < 36 * mapsize; y++){
+                if(tiles[x][y].isHalfSolid()){
+                    g.setColor(Color.red);
+                }else if(tiles[x][y].isSolid()){
+                    g.setColor(Color.green);
+                }
+                g.setColor(tiles[x][y].getColor());
+                g.fillRect(((int) (30 * x - handler.getxOffset())), ((int) (30 * y - handler.getyOffset())), 30*x+30, 30*y+30);
+            }
+        }
     }
     public Tile[][] getTiles() { return tiles; }
     public EntityManager getEntityManager() { return entityManager; }

@@ -29,6 +29,8 @@ public class Menu {
     String[] actionButtons, actionSliders;
     //a Writer to handle Settings
     private final Writer writer = new Writer();
+    //which menu is it?
+    private int menuType;
 
     //this constructor initializes the values
     public Menu(String[] actionButtons, String[] actionSliders, Handler handler, BufferedImage menu, BufferedImage menu_layout){
@@ -37,6 +39,10 @@ public class Menu {
         this.menu_layout = menu_layout;
         this.menu = menu;
         this.handler = handler;
+        if(menu == Assets.menu1)
+            menuType = 1;
+        else
+            menuType = 0;
         titleColor = new Color[100];
         titleDir = new float[100];
         readMenu();
@@ -46,20 +52,20 @@ public class Menu {
     public void tick(){
         counter += 0.01f;
 
+        if(menuType == 1) {
+            for (int i = 0; i < 15; i++) {
+                float temp = (float) (Math.sin(i) + 1) / 2;
+                //titleColor[i] = new Color(0, (int)(temp*255), 255*i/10, 255*i/10);
 
-        for(int i = 0; i < 15; i++){
-            float temp = (float) (Math.sin(i)+1)/2;
-            //titleColor[i] = new Color(0, (int)(temp*255), 255*i/10, 255*i/10);
+                titleColor[i] = Color.getHSBColor((float) (counter / 10 + i * 0.05), 1, 1);
+                int alpha = 255 * i / 10;
+                if (alpha > 255)
+                    alpha = 255;
+                titleColor[i] = new Color(titleColor[i].getRed(), titleColor[i].getBlue(), titleColor[i].getGreen(), alpha);
 
-            titleColor[i] = Color.getHSBColor((float) (counter/10+i*0.05), 1, 1);
-            int alpha = 255*i/10;
-            if(alpha > 255)
-                alpha = 255;
-            titleColor[i] = new Color(titleColor[i].getRed(), titleColor[i].getBlue(), titleColor[i].getGreen(), alpha);
-
-            titleDir[i] = (float)(Math.sin((float)(i)/10+counter)+1)*3;
+                titleDir[i] = (float) (Math.sin((float) (i) / 10 + counter) + 1) * 3;
+            }
         }
-
 
 
         Rectangle rect = new Rectangle(handler.getMouseManager().getMouseX(), handler.getMouseManager().getMouseY(), 1, 1);
@@ -92,20 +98,19 @@ public class Menu {
     //renders the menu
     public void render(Graphics g){
         g.drawImage(menu, 0, 0, 1920, 1080, null);
-
-
-        Graphics2D g2d = (Graphics2D)g;
-        AffineTransform reset = g2d.getTransform();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);   //antialiasing for font
-        g2d.setFont(frakturBig);
-        int titleWidth = g2d.getFontMetrics(frakturBig).stringWidth("wolfenstein");
-        for(int i = 0; i < 15; i++) {
-            g2d.rotate(Math.toRadians(titleDir[i]), 1920 / 2, 250);
-            g2d.setColor(titleColor[i]);
-            g2d.drawString("wolfenstein", 1920 / 2 - titleWidth / 2, 250);
-            g2d.setTransform(reset);
+        Graphics2D g2d = (Graphics2D) g;
+        if(menuType == 1) {
+            AffineTransform reset = g2d.getTransform();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);   //antialiasing for font
+            g2d.setFont(frakturBig);
+            int titleWidth = g2d.getFontMetrics(frakturBig).stringWidth("wolfenberg");
+            for (int i = 0; i < 15; i++) {
+                g2d.rotate(Math.toRadians(titleDir[i]), 1920 / 2, 150);
+                g2d.setColor(titleColor[i]);
+                g2d.drawString("wolfenberg", 1920 / 2 - titleWidth / 2, 150);
+                g2d.setTransform(reset);
+            }
         }
-
         Color color = new Color(100, 100, 100, 180);
         g.setColor(color);
         for(Rectangle rect : renderRects)

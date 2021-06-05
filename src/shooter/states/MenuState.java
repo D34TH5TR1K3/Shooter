@@ -17,8 +17,8 @@ public class MenuState extends State {
     //this constructor initializes the values
     public MenuState(Game game, Handler handler){
         super(game,handler);
-        menu1 = new Menu(new String[]{"StartGame", "exit", "ToMenu2", ""}, new String[]{"", "", "", ""}, handler, Assets.menu1, Assets.menu_layout1);
-        menu2 = new Menu(new String[]{"ToMainMenu", "VolumeToggle", "GodmodeToggle", "FriendlyFireToggle"}, new String[]{"Volume", "Difficulty", "BulletSpeed", ""}, handler, Assets.menu2, Assets.menu_layout2);
+        menu1 = new Menu(new String[]{"StartGame", "", "ToMenu2", "", "exit", ""}, new String[]{"", "", "", ""}, handler, Assets.menu1, Assets.menu_layout1);
+        menu2 = new Menu(new String[]{"ToMainMenu", "", "", "VolumeToggle"}, new String[]{"Volume", "", "", "", "", "", "", ""}, handler, Assets.menu2, Assets.menu_layout2);
 
         activeMenu = menu1;
     }
