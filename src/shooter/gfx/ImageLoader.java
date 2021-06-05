@@ -3,7 +3,6 @@ package shooter.gfx;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Objects;
 
 public class ImageLoader {
     //static method to get an Image from a File

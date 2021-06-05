@@ -2,8 +2,8 @@ package shooter.entities;
 
 import shooter.Handler;
 import shooter.gfx.Assets;
-import shooter.world.Level;
 import shooter.utils.Sound;
+import shooter.world.Level;
 
 import java.awt.*;
 

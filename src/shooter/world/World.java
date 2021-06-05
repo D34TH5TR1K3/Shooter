@@ -1,8 +1,6 @@
 package shooter.world;
 
 import shooter.Handler;
-import shooter.entities.EntityManager;
-import shooter.entities.Player;
 import shooter.utils.Writer;
 
 import java.awt.*;

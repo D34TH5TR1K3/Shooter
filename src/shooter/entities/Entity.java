@@ -2,8 +2,8 @@ package shooter.entities;
 
 import shooter.Handler;
 import shooter.gfx.Animation;
-import shooter.world.Tile;
 import shooter.world.Level;
+import shooter.world.Tile;
 
 import java.awt.*;
 import java.awt.geom.Line2D;

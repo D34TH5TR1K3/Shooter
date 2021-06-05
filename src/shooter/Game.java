@@ -6,10 +6,10 @@ import shooter.gfx.GameCamera;
 import shooter.gfx.LoadingImage;
 import shooter.input.KeyManager;
 import shooter.input.MouseManager;
-import shooter.utils.Sound;
 import shooter.states.GameState;
 import shooter.states.MenuState;
 import shooter.states.State;
+import shooter.utils.Sound;
 import shooter.utils.Writer;
 
 import java.awt.*;

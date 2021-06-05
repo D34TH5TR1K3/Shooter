@@ -1,6 +1,5 @@
 package shooter.entities;
 
-import shooter.Game;
 import shooter.Handler;
 import shooter.gfx.Animation;
 import shooter.gfx.Assets;
