@@ -73,16 +73,15 @@ public class Game implements Runnable {
     }
     //render is responsible for the graphics of the game. all render methods get called here
     public void render() {
-        if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&State.getState().equals(gameState)){
-            LoadingImage.renderDeathScreen();
-            return;
-        }
         BufferStrategy bs = display.getCanvas().getBufferStrategy();
         Graphics g = bs.getDrawGraphics();
         g.clearRect(0,0, 1920, 1080);
         State.getState().render(g);
         bs.show();
         g.dispose();
+        if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&State.getState().equals(gameState)){
+            LoadingImage.renderDeathScreen();
+        }
     }
 
     //getters and setters

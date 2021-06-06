@@ -69,7 +69,7 @@ public class MenuState extends State {
         } else if(activeMenu.funcActive("Player Bullet Speed")) {
             shooter.entities.Bullet.playerBulletSpeed = menu2.getSliderValue("Player Bullet Speed");
         } else if(activeMenu.funcActive("Enemy Movement Speed")) {
-            shooter.entities.Enemy.speed = menu2.getSliderValue("Enemy Movement Speed") / 20;
+            shooter.entities.Enemy.speed = menu2.getSliderValue("Enemy Movement Speed") / 10;
         } else if(activeMenu.funcActive("Enemy Bullet Speed")) {
             shooter.entities.Bullet.enemyBulletSpeed = menu2.getSliderValue("Enemy Bullet Speed");
         } else if(activeMenu.funcActive("Enemy Reload Speed")) {

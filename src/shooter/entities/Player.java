@@ -35,7 +35,7 @@ public class Player extends Entity{
     public Player(int posX, int posY, float dir, Handler handler, Level level) {
         super(posX, posY, 4,dir, handler, level);
         hitbox = new Rectangle(posX - 35, posY - 35, 70, 70);
-        item = new Item(posX, posY, 1, handler, level); //temporary
+        item = new Item(posX, posY, 3, handler, level); //temporary
         item.setInActive();
         level.getEntityManager().addEntity(item);
         for(int y = 0; y < 3; y++) {

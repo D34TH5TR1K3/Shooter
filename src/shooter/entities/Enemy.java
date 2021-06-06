@@ -30,7 +30,7 @@ public class Enemy extends Entity{
     private int[] lastCoords = new int[2];
     //END PATHFINDING
     private Rectangle hitbox;
-    public static float speed = new shooter.utils.Writer().getSettingValue("Enemy Movement Speed");
+    public static float speed = new shooter.utils.Writer().getSettingValue("Enemy Movement Speed") / 10;
     private Item item;
     private final Animation
             legAnimation, walkAnimation_knife, walkAnimation_shotgun, walkAnimation_mp, walkAnimation_silencer, attackAnimation_knife, attackAnimation_shotgun, attackAnimation_mp, attackAnimation_silencer, deathAnimation_knife;
