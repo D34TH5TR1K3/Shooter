@@ -8,6 +8,7 @@ import shooter.world.Level;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.Arrays;
 
 import static shooter.gfx.Display.fraktur;
 
@@ -22,9 +23,9 @@ public class Player extends Entity{
     //indicates whether the player is alive
     private boolean alive = true;
     //saves the players animations
-    private final Animation legAnimation,
-                            walkAnimation, walkAnimation_knife, walkAnimation_machete, walkAnimation_handgun, walkAnimation_uzi, walkAnimation_shotgun, walkAnimation_mp, walkAnimation_silencer,
-                            attackAnimation_unarmed, attackAnimation_knife, attackAnimation_machete, attackAnimation_handgun, attackAnimation_uzi, attackAnimation_shotgun, attackAnimation_mp, attackAnimation_silencer;
+    private final Animation legAnimation;
+    private final Animation[] walkAnimations;
+    private final Animation[] attackAnimations;
     //required for player weapon interaction
     private boolean ableToPickup = true;
     private boolean ableToDrop = true;
@@ -39,89 +40,46 @@ public class Player extends Entity{
         item.setInActive();
         level.getEntityManager().addEntity(item);
         for(int y = 0; y < 3; y++) {
-            level.getEntityManager().addEntity(new Item(100, 100+50*y, 1, handler, level));
-            level.getEntityManager().addEntity(new Item(150, 100+50*y, 2, handler, level));
-            level.getEntityManager().addEntity(new Item(200, 100+50*y, 3, handler, level));
-            level.getEntityManager().addEntity(new Item(250, 100+50*y, 4, handler, level));
-            level.getEntityManager().addEntity(new Item(300, 100+50*y, 5, handler, level));
+            level.getEntityManager().addEntity(new Item(100, 100+50*y, 3, handler, level));
+            level.getEntityManager().addEntity(new Item(150, 100+50*y, 5, handler, level));
+            level.getEntityManager().addEntity(new Item(200, 100+50*y, 6, handler, level));
+            level.getEntityManager().addEntity(new Item(250, 100+50*y, 7, handler, level));
         }
         legAnimation = new Animation(Assets.player_legs, 50, 16, 16);
 
-        walkAnimation = new Animation(Assets.player_walk,100, 15, 16, false);
-        walkAnimation_knife = new Animation(Assets.player_walk_knife,100, 14, 15, false);
-        walkAnimation_machete = new Animation(Assets.player_walk_machete, 100, 17, 22, false);
-        walkAnimation_handgun = new Animation(Assets.player_walk_handgun, 100, 9, 16, false);
-        walkAnimation_uzi = new Animation(Assets.player_walk_uzi,100,9 , 16, false);
-        walkAnimation_shotgun = new Animation(Assets.player_walk_shotgun, 100, 10, 16, false);
-        walkAnimation_mp = new Animation(Assets.player_walk_mp, 100, 10, 16, false);
-        walkAnimation_silencer = new Animation(Assets.player_walk_silencer, 100, 9, 16, false);
+        walkAnimations = new Animation[]{
+                new Animation(Assets.player_walk,100, 15, 16),
+                new Animation(Assets.player_walk_knife,100, 14, 15),
+                new Animation(Assets.player_walk_machete, 100, 17, 22),
+                new Animation(Assets.player_walk_handgun, 100, 9, 16),
+                new Animation(Assets.player_walk_silencer, 100, 9, 16),
+                new Animation(Assets.player_walk_uzi, 100, 10, 16),
+                new Animation(Assets.player_walk_mp,100,10,16),
+                new Animation(Assets.player_walk_shotgun, 100, 10, 16),
+                null
+        };
+        attackAnimations = new Animation[]{
+                new Animation(Assets.player_attack_unarmed,100, 15, 16),
+                new Animation(Assets.player_attack_knife,100, 14, 15),
+                new Animation(Assets.player_attack_machete, 100, 17, 22),
+                new Animation(Assets.player_attack_handgun, 150, 9, 16),
+                new Animation(Assets.player_attack_silencer, 100, 9, 16),
+                new Animation(Assets.player_attack_uzi, 100, 10, 16),
+                new Animation(Assets.player_attack_mp,100,10,16),
+                new Animation(Assets.player_attack_shotgun, 100, 10, 16),
+                null
+        };
 
-        attackAnimation_unarmed = new Animation(Assets.player_attack_unarmed,100, 15, 16, true);
-        attackAnimation_knife = new Animation(Assets.player_attack_knife,100, 14, 15, true);
-        attackAnimation_machete = new Animation(Assets.player_attack_machete, 100, 17, 22, true);
-        attackAnimation_handgun = new Animation(Assets.player_attack_handgun, 150, 9, 16, true);
-        attackAnimation_uzi = new Animation(Assets.player_attack_uzi,50,9 , 16, true);
-        attackAnimation_shotgun = new Animation(Assets.player_attack_shotgun, 100, 10, 16, true);
-        attackAnimation_mp = new Animation(Assets.player_attack_mp, 100, 10, 16, true);
-        attackAnimation_silencer = new Animation(Assets.player_attack_silencer, 100, 9, 16, true);
-
-        activeAnimation = walkAnimation_uzi;
-    }
-    @Override
-    public void shoot(int type){
-        switch (type) {
-            case 1:
-                activeAnimation = attackAnimation_handgun;
-                activeAnimation.incHealth();
-                break;
-            case 2:
-                activeAnimation = attackAnimation_handgun;
-                activeAnimation.incHealth();
-                break;
-            case 3:
-                activeAnimation = attackAnimation_uzi;
-                break;
-            case 4:
-                activeAnimation = attackAnimation_shotgun;
-                activeAnimation.incHealth();
-                break;
-            case 5:
-                activeAnimation = attackAnimation_handgun;
-                activeAnimation.incHealth();
-                break;
-            default:
-                activeAnimation = attackAnimation_unarmed;
-                break;
-        }
+        activeAnimation = walkAnimations[0];
     }
 
     //ticks input, animation and other logic
     @Override
     public void tick() {
         if(item != null) {
-            if(handler.getMouseManager().isLeftPressed())
+            if(handler.getMouseManager().isLeftPressed()) {
                 item.activate(this);
-            if(activeAnimation.lastFrame()) {
-                switch (item.getType()) {
-                    case 1:
-                        activeAnimation = walkAnimation_handgun;
-                        break;
-                    case 2:
-
-                        break;
-                    case 3:
-                        activeAnimation = walkAnimation_uzi;
-                        break;
-                    case 4:
-                        activeAnimation = walkAnimation_shotgun;
-                        break;
-                    case 5:
-
-                        break;
-                    default:
-                        activeAnimation = walkAnimation;
-                        break;
-                }
+                activeAnimation = attackAnimations[item.getType()];
             }
             if(handler.getMouseManager().isRightPressed() && ableToDrop){
                 item.drop(this);
@@ -130,7 +88,7 @@ public class Player extends Entity{
             }else if(!handler.getMouseManager().isRightPressed())
                 ableToDrop = true;
         }else{
-            activeAnimation = walkAnimation;
+            activeAnimation = walkAnimations[0];
             if(handler.getMouseManager().isRightPressed() && ableToPickup) {
                 item = (Item) (level.getEntityManager().getClosestItem(posX, posY));
                 if (item != null) {
@@ -139,6 +97,14 @@ public class Player extends Entity{
                 }
             }else if(!handler.getMouseManager().isRightPressed())
                 ableToPickup = true;
+        }
+        if(activeAnimation.lastFrame()&&activeAnimation.isAttackAnimation()) {
+            activeAnimation.tick();
+            activeAnimation = walkAnimations[(item==null)?0:item.getType()];
+        }
+        if(activeAnimation.lastFrame()&&Arrays.asList(attackAnimations).contains(activeAnimation)) {
+            activeAnimation.tick();
+            activeAnimation = walkAnimations[(item==null)?0:item.getType()];
         }
         activeAnimation.tick();
         legAnimation.tick();
@@ -215,8 +181,8 @@ public class Player extends Entity{
 
     //lets the player die and resets the Level
     public void die() {
-        alive = false;
-        LoadingImage.renderDeathScreen();
+        //alive = false;
+        //LoadingImage.renderDeathScreen();
     }
 
     //getters and setters

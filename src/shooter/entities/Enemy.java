@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.lang.Math.abs;
 
@@ -32,8 +33,10 @@ public class Enemy extends Entity{
     private Rectangle hitbox;
     public static float speed = new shooter.utils.Writer().getSettingValue("Enemy Movement Speed") / 10;
     private Item item;
-    private final Animation
-            legAnimation, walkAnimation_knife, walkAnimation_shotgun, walkAnimation_mp, walkAnimation_silencer, attackAnimation_knife, attackAnimation_shotgun, attackAnimation_mp, attackAnimation_silencer, deathAnimation_knife;
+    private final Animation legAnimation;
+    private final Animation[] walkAnimations;
+    private final Animation[] attackAnimations;
+    private final Animation deathAnimation_knife;
     //provides a variable to change the reloadspeed of the enemy
     public static float reloadspeed = new shooter.utils.Writer().getSettingValue("Enemy Reload Speed") / 10;
     //provides a variable to change the distance to the player for Line Of Sight to work
@@ -50,21 +53,34 @@ public class Enemy extends Entity{
 
         legAnimation = new Animation(Assets.enemy_legs, 200, 16, 16);
 
-        walkAnimation_knife = new Animation(Assets.enemy_walk_knife, 100, 16, 16);
-        walkAnimation_shotgun = new Animation(Assets.enemy_walk_shotgun,100, 12, 12);
-        walkAnimation_mp = new Animation(Assets.enemy_walk_mp,100, 10, 12);
-        walkAnimation_silencer = new Animation(Assets.enemy_walk_silencer,100,14, 12);
-
-        attackAnimation_knife = new Animation(Assets.enemy_attack_knife, 100, 18, 16);
-        attackAnimation_shotgun = new Animation(Assets.enemy_attack_shotgun,100, 12, 12);
-        attackAnimation_mp = new Animation(Assets.enemy_attack_mp, 100,10, 12);
-        attackAnimation_silencer = new Animation(Assets.enemy_attack_silencer, 100, 14, 12);
+        walkAnimations = new Animation[]{
+                null,
+                new Animation(Assets.enemy_walk_knife, 100, 16, 16),
+                null,
+                null,
+                new Animation(Assets.enemy_walk_silencer,100,14, 12),
+                new Animation(Assets.enemy_walk_mp,100, 10, 12),
+                null,
+                new Animation(Assets.enemy_walk_shotgun,100, 12, 12),
+                null
+        };
+        attackAnimations = new Animation[]{
+                null,
+                new Animation(Assets.enemy_attack_knife, 100, 18, 16, true),
+                null,
+                null,
+                new Animation(Assets.enemy_attack_silencer, 100, 14, 12,true),
+                new Animation(Assets.enemy_attack_mp, 100,10, 12,true),
+                null,
+                new Animation(Assets.enemy_attack_shotgun,100, 12, 12,true),
+                null
+        };
 
         deathAnimation_knife = new Animation(Assets.enemy_die_knife, 100, 30 ,20);
 
         //walkAnimation = new Animation(Assets.enemy_walk,100, 666, 666);
         //walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100, 666, 666);
-        activeAnimation = walkAnimation_knife;
+        activeAnimation = walkAnimations[1];
     }
 
     public void followTrace(ArrayList<Tile> trace){
@@ -327,8 +343,10 @@ public class Enemy extends Entity{
                 playerSpotted = true;
                 pathfindingDelay = 30;
                 dir = (float) (180 + Math.toDegrees(Math.atan2(posY - level.getEntityManager().getPlayer().getY(), posX - level.getEntityManager().getPlayer().getX() )));
-                if (item != null)
+                if (item != null) {
                     item.activate(this);
+                    activeAnimation = attackAnimations[item.getType()];
+                }
             }else{
                 followTrace(trace);
                 if(playerSpotted) {
@@ -336,6 +354,10 @@ public class Enemy extends Entity{
                     pathfindingDelay--;
                 }
             }
+        }
+        if(activeAnimation.lastFrame()&&Arrays.asList(attackAnimations).contains(activeAnimation)) {
+            activeAnimation.tick();
+            activeAnimation = walkAnimations[(item==null)?0:item.getType()];
         }
         activeAnimation.tick();
     }

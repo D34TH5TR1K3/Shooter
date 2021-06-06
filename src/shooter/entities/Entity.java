@@ -54,7 +54,6 @@ public abstract class Entity {
     //abstract tick and render without bodies
     public abstract void tick();
     public abstract void render(Graphics g);
-    public void shoot(int type){};
 
     //method to check if a line of sight is clear
     public boolean checkLineOfSight(Line2D.Float line){
