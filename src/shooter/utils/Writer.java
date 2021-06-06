@@ -81,7 +81,7 @@ public class Writer {
         }
     }
     //method to get the value of a Setting
-    public float GetSettingValue(String name){
+    public float getSettingValue(String name){
         try {
             scanner = new Scanner(settingFile);
             String fileRead = scanner.nextLine();   //read 1st line
@@ -139,6 +139,7 @@ public class Writer {
                 createdEnemies.add(createdEnemy);
             }
             level.fillWorld(createdPlayer,createdEnemies);
+            scanner.close();
             return level;
         } catch(IOException e){
             e.printStackTrace();
@@ -195,6 +196,7 @@ public class Writer {
                 createdEnemies.add(createdEnemy);
             }
             level.fillWorld(createdPlayer,createdEnemies);
+            scanner.close();
             return level;
         }catch(IOException e){
             e.printStackTrace();

@@ -182,16 +182,16 @@ public class Menu {
                     if(Math.abs(point1.getY() - point2.getY()) > 5){
                         Button button1 = new Button(indexButton, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
                         button1.setFunc(actionButtons[indexButton]);
-                        button1.setValue(writer.GetSettingValue(actionButtons[indexButton]));
+                        button1.setValue(writer.getSettingValue(actionButtons[indexButton]));
                         indexButton++;
                         buttons.add(button1);
                     }else{
                         Slider slider1 = new Slider(indexSlider, point1.getX(), point1.getY(), point2.getX(), point2.getY(), point2.getColor());
                         slider1.setFunc(actionSliders[indexSlider]);
-                        float deftemp = writer.GetSettingValue(actionSliders[indexSlider]);
+                        float deftemp = writer.getSettingValue(actionSliders[indexSlider]);
 
                         indexSlider++;
-                        slider1.minMaxDef(0f, 100f, deftemp);
+                        slider1.minMaxDef(1f, 100f, deftemp);
                         sliders.add(slider1);
                     }
 

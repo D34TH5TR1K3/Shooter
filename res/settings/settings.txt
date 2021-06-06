@@ -1,7 +1,12 @@
 Scale,1.2
-VolumeToggle,1.0
-GodmodeToggle,0.0
-FriendlyFireToggle,0.0
-Volume,30.0
-Difficulty,100.0
-BulletSpeed,100.0
+Friendly Fire,1.0
+SFX,1.0
+Music,1.0
+Music Volume,20.0
+SFX Volume,100.0
+Player Movement Speed,50.0
+Player Bullet Speed,50.0
+Enemy Movement Speed,50.0
+Enemy Bullet Speed,50.0
+Enemy Reload Speed,10.0
+Enemy Line Of Sight,50.0

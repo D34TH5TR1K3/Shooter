@@ -15,6 +15,10 @@ public class Bullet extends Entity {
     private final int type;
     //saves the bullets animation
     Animation animation;
+    //provides a variable to change if Friendly Fire is active
+    public static boolean friendlyFire = new shooter.utils.Writer().getSettingValue("Friendly Fire") > 0;
+    //provides variables to change the speed of the bullets
+    public static float playerBulletSpeed = new shooter.utils.Writer().getSettingValue("Player Bullet Speed"), enemyBulletSpeed = new shooter.utils.Writer().getSettingValue("Enemy Bullet Speed");
 
     //this constructor initializes the values
     public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, Level level) {
@@ -40,8 +44,13 @@ public class Bullet extends Entity {
         if(animation != null)
             animation.tick();
 
-        posX = posX + (float) (Math.cos(Math.toRadians(dir) + Math.PI) * speed);
-        posY = posY + (float) (Math.sin(Math.toRadians(dir) + Math.PI) * speed);
+        if(type==2) {
+            posX = posX + (float) (Math.cos(Math.toRadians(dir) + Math.PI) * speed * enemyBulletSpeed / 50);
+            posY = posY + (float) (Math.sin(Math.toRadians(dir) + Math.PI) * speed * enemyBulletSpeed / 50);
+        } else {
+            posX = posX + (float) (Math.cos(Math.toRadians(dir) + Math.PI) * speed * playerBulletSpeed / 50);
+            posY = posY + (float) (Math.sin(Math.toRadians(dir) + Math.PI) * speed * playerBulletSpeed / 50);
+        }
         //TODO implement directional movement
         moveAbs(posX, posY);
         if(level.collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10))||level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10))){
@@ -52,8 +61,11 @@ public class Bullet extends Entity {
                 level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, level));
             level.getEntityManager().removeEntity(this);
         }
-        //if(type == 2)
-        //    level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
+        if(type == 2) {
+            level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
+            if(friendlyFire)
+                level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
+        }
     }
     //renders the bullet
     @Override

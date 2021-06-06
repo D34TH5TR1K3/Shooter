@@ -30,10 +30,14 @@ public class Enemy extends Entity{
     private int[] lastCoords = new int[2];
     //END PATHFINDING
     private Rectangle hitbox;
-    private final byte SPEED = 8;
+    public static float speed = new shooter.utils.Writer().getSettingValue("Enemy Movement Speed");
     private Item item;
     private final Animation
             legAnimation, walkAnimation_knife, walkAnimation_shotgun, walkAnimation_mp, walkAnimation_silencer, attackAnimation_knife, attackAnimation_shotgun, attackAnimation_mp, attackAnimation_silencer, deathAnimation_knife;
+    //provides a variable to change the reloadspeed of the enemy
+    public static float reloadspeed = new shooter.utils.Writer().getSettingValue("Enemy Reload Speed") / 10;
+    //provides a variable to change the distance to the player for Line Of Sight to work
+    public static float LOSdist = new shooter.utils.Writer().getSettingValue("Enemy Line Of Sight") * 10;
 
     //this constructor initializes the values
     public Enemy(int posX, int posY, int dir, int gunType, Handler handler, Level level) {  //im Konstruktor werden die Position und die Animation des Gegners initialisiert
@@ -78,8 +82,8 @@ public class Enemy extends Entity{
 //            dir = (float) (180+Math.toDegrees(Math.atan2(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30 +15, posX+ CREATURESIZE/2- currentTarget.getTposX()*30+15)));
             dir = (float) (180 + Math.toDegrees(Math.atan2(posY - currentTarget.getTposY()*30-15, posX - currentTarget.getTposX()*30-15)));
             //System.out.println(posY+ 90+"   "+posX+ 90+"   "+currentTarget.getTposY()*30+"   "+currentTarget.getTposX()*30);
-            posX = posX + (float) (Math.cos(Math.toRadians(dir+180) + Math.PI) * 5);
-            posY = posY + (float) (Math.sin(Math.toRadians(dir+180) + Math.PI) * 5);
+            posX += (float) (Math.cos(Math.toRadians(dir+180) + Math.PI) * speed);
+            posY += (float) (Math.sin(Math.toRadians(dir+180) + Math.PI) * speed);
         }
 
     }
@@ -274,8 +278,8 @@ public class Enemy extends Entity{
         //TODO: implement corpse texture
     }
     public boolean lineOfSight(){
-        //if(Math.abs(level.getEntityManager().getPlayer().getX()-posX)>700||Math.abs(level.getEntityManager().getPlayer().getY()-posY)>500)
-        //    return false;
+        if(Math.abs(level.getEntityManager().getPlayer().getX()-posX)>LOSdist||Math.abs(level.getEntityManager().getPlayer().getY()-posY)>LOSdist)
+            return false;
         ArrayList<Tile> tempTiles = new ArrayList<>();
         //world.setAllTiles(Color.green);
         Line2D line = new Line2D.Float(level.getEntityManager().getPlayer().getX(),level.getEntityManager().getPlayer().getY(),posX,posY);
@@ -311,7 +315,8 @@ public class Enemy extends Entity{
         }
 
         if(item.getAmmo()==0&&this.active){
-            item.reload();
+            for(int i=(int)reloadspeed;i>0;i--)
+                item.reload();
             return;
         }
         if(active) {

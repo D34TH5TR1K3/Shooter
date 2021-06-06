@@ -16,7 +16,7 @@ public class Player extends Entity{
     //saves the players hitbox
     private final Rectangle hitbox;
     //velocities required for smooth movement
-    private int velX = 0, velY = 0;
+    private float velX = 0, velY = 0;
     //saves the equipped item
     private Item item;
     //indicates whether the player is alive
@@ -28,12 +28,14 @@ public class Player extends Entity{
     //required for player weapon interaction
     private boolean ableToPickup = true;
     private boolean ableToDrop = true;
+    //provides a variable to change Player speed
+    public static float speed = new shooter.utils.Writer().getSettingValue("Player Movement Speed");
 
     //this constructor initializes the values
     public Player(int posX, int posY, float dir, Handler handler, Level level) {
         super(posX, posY, 4,dir, handler, level);
         hitbox = new Rectangle(posX - 35, posY - 35, 70, 70);
-        item = new Item(posX, posY, 3, handler, level); //temporary
+        item = new Item(posX, posY, 1, handler, level); //temporary
         item.setInActive();
         level.getEntityManager().addEntity(item);
         for(int y = 0; y < 3; y++) {
@@ -141,22 +143,21 @@ public class Player extends Entity{
         activeAnimation.tick();
         legAnimation.tick();
         dir = (float) (180 + Math.toDegrees(Math.atan2(posY - handler.getMouseManager().getMouseY() - handler.getGameCamera().getyOffset(), posX - handler.getMouseManager().getMouseX() - handler.getGameCamera().getxOffset())));
-        int velXmax = 10;
+        float velXmax = speed / 5f + 5f,velYmax = speed / 5f + 5f;
         if(handler.getKeyManager().left && velX > -velXmax)
-            velX -= 1;
+            velX--;
         else if(!handler.getKeyManager().right && !handler.getKeyManager().left)
             velX = 0;
         if(handler.getKeyManager().right && velX < velXmax)
-            velX += 1;
+            velX++;
         else if(!handler.getKeyManager().right && !handler.getKeyManager().left)
             velX = 0;
-        int velYmax = 10;
         if(handler.getKeyManager().up && velY > -velYmax)
-            velY -= 1;
+            velY--;
         else if(!handler.getKeyManager().down && !handler.getKeyManager().up)
             velY = 0;
         if(handler.getKeyManager().down && velY < velYmax)
-            velY += 1;
+            velY++;
         else if(!handler.getKeyManager().down && !handler.getKeyManager().up)
             velY = 0;
         if(velX != 0 || velY != 0) {

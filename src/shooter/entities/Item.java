@@ -43,7 +43,7 @@ public class Item extends Entity{
             case 1:
                 ammo = 8;
                 bulletSpeed = 20;
-                rpm = 200;
+                rpm = 180;
                 reloadTime = 120;
                 offset = 70;
                 break;
@@ -57,21 +57,21 @@ public class Item extends Entity{
             case 3:
                 ammo = 25;
                 bulletSpeed = 15;
-                rpm = 600;
+                rpm = 700;
                 reloadTime = 120;
                 offset = 80;
                 break;
             case 4:
                 ammo = 6;
-                bulletSpeed = 20;
-                rpm = 50;
+                bulletSpeed = 15;
+                rpm = 60;
                 reloadTime = 240;
                 offset = 70;
                 break;
             case 5:
                 ammo = 1;
                 bulletSpeed = 20;
-                rpm = 30;
+                rpm = 1;
                 reloadTime = 240;
                 break;
             default:

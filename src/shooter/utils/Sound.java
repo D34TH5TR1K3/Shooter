@@ -38,6 +38,18 @@ public class Sound {
 
     }
 
+    //initializes the Settings
+    public static void init() {
+        Writer writer = new Writer();
+        if(writer.getSettingValue("Music") == 1)
+            Sound.playBackgroundMusic();
+        float volume = writer.getSettingValue("Music Volume");
+        Sound.setBgVol(Sound.getBgVolMin() + (Sound.getBgVolMax() - Sound.getBgVolMin()) * volume / 100f);
+        if(writer.getSettingValue("SFX") == 0)
+            Sound.toggleSFX(false);
+        volume = writer.getSettingValue("SFX Volume");
+        Sound.setSFXVol(Sound.getSFXVolMin() + (Sound.getSFXVolMax() - Sound.getSFXVolMin()) * volume / 100f);
+    }
     //ticks whether a new Clip needs to be played
     public static void tick(){
         if (BgClip!=null && (float) BgClip.getFramePosition()/ BgClipLen > 0.99f)
@@ -47,6 +59,8 @@ public class Sound {
     //static method to play SFX
     public static void play(String Name){
         try {
+            if(SFXVol==-0.0f)
+                return;
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(sounds.get(Name)));
 

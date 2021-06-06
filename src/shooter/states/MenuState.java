@@ -5,6 +5,8 @@ import shooter.Handler;
 import shooter.gfx.Assets;
 import shooter.gfx.Menu;
 import shooter.utils.Sound;
+import shooter.utils.Writer;
+import shooter.world.World;
 
 import java.awt.*;
 
@@ -13,12 +15,15 @@ public class MenuState extends State {
     public Menu menu1, menu2;
     //activeMenu saves the active Menu
     private Menu activeMenu;
+    //saves the World to access Saves and Levels
+    private final World world;
 
     //this constructor initializes the values
     public MenuState(Game game, Handler handler){
         super(game,handler);
-        menu1 = new Menu(new String[]{"StartGame", "", "ToMenu2", "", "exit", ""}, new String[]{"", "", "", ""}, handler, Assets.menu1, Assets.menu_layout1);
-        menu2 = new Menu(new String[]{"ToMainMenu", "", "", "VolumeToggle"}, new String[]{"Volume", "", "", "", "", "", "", ""}, handler, Assets.menu2, Assets.menu_layout2);
+        world = handler.getWorld();
+        menu1 = new Menu(new String[]{"New Game", "Load Game", "Options", "Save Game", "Exit", "Credits"}, new String[]{}, handler, Assets.menu1, Assets.menu_layout1);
+        menu2 = new Menu(new String[]{"Back", "Friendly Fire", "SFX", "Music"}, new String[]{"Music Volume", "SFX Volume", "Player Movement Speed", "Player Bullet Speed", "Enemy Movement Speed", "Enemy Bullet Speed", "Enemy Reload Speed", "Enemy Line Of Sight"}, handler, Assets.menu2, Assets.menu_layout2);
 
         activeMenu = menu1;
     }
@@ -27,25 +32,52 @@ public class MenuState extends State {
     @Override
     public void tick() {
         activeMenu.tick();
-        if(activeMenu.funcActive("ToMainMenu")){
-            menu2.saveSettings();
-            activeMenu = menu1;
-        }else if(activeMenu.funcActive("ToMenu2"))
+        if(activeMenu.funcActive("New Game")) {
+            Writer.wipeGame();
+            world.reloadLevels();
+            world.setLevel(1);
+            State.setState(game.gameState);
+        } else if(activeMenu.funcActive("Load Game")) {
+            world.reloadLevels();
+            world.setLevel(0);
+            State.setState(game.gameState);
+        } else if(activeMenu.funcActive("Options")) {
             activeMenu = menu2;
-        else if(activeMenu.funcActive("StartGame"))
-            State.setState(handler.getGame().gameState);
-        else if(activeMenu.funcActive("VolumeToggle")){
-           menu2.toggleButton("VolumeToggle");
-           Sound.toggleBackgroundMusic(menu2.getButtonValue("VolumeToggle")>0);
-        }else if(activeMenu.funcActive("GodmodeToggle"))
-            menu2.toggleButton("GodmodeToggle");
-        else if(activeMenu.funcActive("FriendlyFireToggle"))
-            menu2.toggleButton("FriendlyFireToggle");
-        else if(activeMenu.funcActive("Volume")){
-            float volume = menu2.getSliderValue("Volume");
-            Sound.setBgVol(Sound.getBgVolMin() + (Sound.getBgVolMax() - Sound.getBgVolMin()) * volume / 100f);
-        }else if(activeMenu.funcActive("exit"))
+        } else if(activeMenu.funcActive("Save Game")) {
+            Writer.writeGameSave(world.getActiveLevel());
+        } else if(activeMenu.funcActive("Exit")) {
             System.exit(0);
+        } else if(activeMenu.funcActive("Back")) {
+            activeMenu = menu1;
+        } else if(activeMenu.funcActive("Friendly Fire")) {
+            menu2.toggleButton("Friendly Fire");
+            shooter.entities.Bullet.friendlyFire ^= menu2.getButtonValue("Friendly Fire")>0;
+        } else if(activeMenu.funcActive("SFX")) {
+            menu2.toggleButton("SFX");
+            Sound.toggleSFX(menu2.getButtonValue("SFX")>0);
+        } else if(activeMenu.funcActive("Music")) {
+            menu2.toggleButton("Music");
+            Sound.toggleBackgroundMusic(menu2.getButtonValue("Music")>0);
+        } else if(activeMenu.funcActive("Music Volume")) {
+            float volume = menu2.getSliderValue("Music Volume");
+            Sound.setBgVol(Sound.getBgVolMin() + (Sound.getBgVolMax() - Sound.getBgVolMin()) * volume / 100f);
+        } else if(activeMenu.funcActive("SFX Volume")) {
+            float volume = menu2.getSliderValue("SFX Volume");
+            Sound.setSFXVol(Sound.getSFXVolMin() + (Sound.getSFXVolMax() - Sound.getSFXVolMin()) * volume / 100f);
+        } else if(activeMenu.funcActive("Player Movement Speed")) {
+            shooter.entities.Player.speed = menu2.getSliderValue("Player Movement Speed");
+        } else if(activeMenu.funcActive("Player Bullet Speed")) {
+            shooter.entities.Bullet.playerBulletSpeed = menu2.getSliderValue("Player Bullet Speed");
+        } else if(activeMenu.funcActive("Enemy Movement Speed")) {
+            shooter.entities.Enemy.speed = menu2.getSliderValue("Enemy Movement Speed") / 20;
+        } else if(activeMenu.funcActive("Enemy Bullet Speed")) {
+            shooter.entities.Bullet.enemyBulletSpeed = menu2.getSliderValue("Enemy Bullet Speed");
+        } else if(activeMenu.funcActive("Enemy Reload Speed")) {
+            shooter.entities.Enemy.reloadspeed = menu2.getSliderValue("Enemy Reload Speed") / 10;
+        } else if(activeMenu.funcActive("Enemy Line Of Sight")) {
+            shooter.entities.Enemy.LOSdist = menu2.getSliderValue("Enemy Line Of Sight") * 10;
+        }
+        menu2.saveSettings();
     }
     //renders the activeMenu
     @Override

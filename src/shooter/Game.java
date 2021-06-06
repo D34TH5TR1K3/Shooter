@@ -45,10 +45,7 @@ public class Game implements Runnable {
         menuState = new MenuState(this,handler);
         State.setState(menuState);
         gameCamera = new GameCamera(0,0);
-        if(new Writer().GetSettingValue("VolumeToggle") == 1)
-            Sound.playBackgroundMusic();
-        float volume = new Writer().GetSettingValue("Volume");
-        Sound.setBgVol(Sound.getBgVolMin() + (Sound.getBgVolMax() - Sound.getBgVolMin()) * volume / 100f);
+        Sound.init();
         start();
     }
 
