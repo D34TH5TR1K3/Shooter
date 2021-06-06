@@ -52,8 +52,8 @@ public class Bullet extends Entity {
                 level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, level));
             level.getEntityManager().removeEntity(this);
         }
-        if(type == 2)
-            level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
+        //if(type == 2)
+        //    level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
     }
     //renders the bullet
     @Override

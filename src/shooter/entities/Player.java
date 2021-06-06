@@ -45,23 +45,23 @@ public class Player extends Entity{
         }
         legAnimation = new Animation(Assets.player_legs, 50, 16, 16);
 
-        walkAnimation = new Animation(Assets.player_walk,100, 15, 16);
-        walkAnimation_knife = new Animation(Assets.player_walk_knife,100, 14, 15);
-        walkAnimation_machete = new Animation(Assets.player_walk_machete, 100, 17, 22);
-        walkAnimation_handgun = new Animation(Assets.player_walk_handgun, 100, 9, 16);
-        walkAnimation_uzi = new Animation(Assets.player_walk_uzi,100,9 , 16);
-        walkAnimation_shotgun = new Animation(Assets.player_walk_shotgun, 100, 10, 16);
-        walkAnimation_mp = new Animation(Assets.player_walk_mp, 100, 10, 16);
-        walkAnimation_silencer = new Animation(Assets.player_walk_silencer, 100, 9, 16);
+        walkAnimation = new Animation(Assets.player_walk,100, 15, 16, false);
+        walkAnimation_knife = new Animation(Assets.player_walk_knife,100, 14, 15, false);
+        walkAnimation_machete = new Animation(Assets.player_walk_machete, 100, 17, 22, false);
+        walkAnimation_handgun = new Animation(Assets.player_walk_handgun, 100, 9, 16, false);
+        walkAnimation_uzi = new Animation(Assets.player_walk_uzi,100,9 , 16, false);
+        walkAnimation_shotgun = new Animation(Assets.player_walk_shotgun, 100, 10, 16, false);
+        walkAnimation_mp = new Animation(Assets.player_walk_mp, 100, 10, 16, false);
+        walkAnimation_silencer = new Animation(Assets.player_walk_silencer, 100, 9, 16, false);
 
-        attackAnimation_unarmed = new Animation(Assets.player_attack_unarmed,100, 15, 16);
-        attackAnimation_knife = new Animation(Assets.player_attack_knife,100, 14, 15);
-        attackAnimation_machete = new Animation(Assets.player_attack_machete, 100, 17, 22);
-        attackAnimation_handgun = new Animation(Assets.player_attack_handgun, 150, 9, 16);
-        attackAnimation_uzi = new Animation(Assets.player_attack_uzi,50,9 , 16);
-        attackAnimation_shotgun = new Animation(Assets.player_attack_shotgun, 100, 10, 16);
-        attackAnimation_mp = new Animation(Assets.player_attack_mp, 100, 10, 16);
-        attackAnimation_silencer = new Animation(Assets.player_attack_silencer, 100, 9, 16);
+        attackAnimation_unarmed = new Animation(Assets.player_attack_unarmed,100, 15, 16, true);
+        attackAnimation_knife = new Animation(Assets.player_attack_knife,100, 14, 15, true);
+        attackAnimation_machete = new Animation(Assets.player_attack_machete, 100, 17, 22, true);
+        attackAnimation_handgun = new Animation(Assets.player_attack_handgun, 150, 9, 16, true);
+        attackAnimation_uzi = new Animation(Assets.player_attack_uzi,50,9 , 16, true);
+        attackAnimation_shotgun = new Animation(Assets.player_attack_shotgun, 100, 10, 16, true);
+        attackAnimation_mp = new Animation(Assets.player_attack_mp, 100, 10, 16, true);
+        attackAnimation_silencer = new Animation(Assets.player_attack_silencer, 100, 9, 16, true);
 
         activeAnimation = walkAnimation_uzi;
     }
@@ -78,7 +78,6 @@ public class Player extends Entity{
                 break;
             case 3:
                 activeAnimation = attackAnimation_uzi;
-                activeAnimation.incHealth();
                 break;
             case 4:
                 activeAnimation = attackAnimation_shotgun;
@@ -100,7 +99,7 @@ public class Player extends Entity{
         if(item != null) {
             if(handler.getMouseManager().isLeftPressed())
                 item.activate(this);
-            if(activeAnimation.getHealth() <= 0) {
+            if(activeAnimation.lastFrame()) {
                 switch (item.getType()) {
                     case 1:
                         activeAnimation = walkAnimation_handgun;
@@ -186,7 +185,8 @@ public class Player extends Entity{
             }
         }else{
             legAnimation.stop();
-            activeAnimation.stop();
+            if(!activeAnimation.isAttackAnimation())
+                activeAnimation.stop();
         }
 
         handler.getGameCamera().centerOnEntity(this);

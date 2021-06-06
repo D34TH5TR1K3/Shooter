@@ -43,6 +43,7 @@ public class Level {
         g.drawImage(map[0],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
         //renderTiles(g);
         entityManager.render(g);
+        g.drawImage(map[2],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
     }
 
     //method to fill the world with information from a LevelFile

@@ -215,7 +215,7 @@ public class Item extends Entity{
                 case 5:
                     activator.shoot(5);
                     Sound.play("RocketLaunch");
-                    level.getEntityManager().addEntity(new Bullet(activator.getX() + (float) CREATURESIZE / 2, activator.getY() + (float) CREATURESIZE / 2, activator.getDir() + 180, bulletSpeed, 0, handler, level));
+                    level.getEntityManager().addEntity(new Bullet(activator.getX(), activator.getY(), activator.getDir() + 180, bulletSpeed, 0, handler, level));
                     break;
                 default:
                     break;

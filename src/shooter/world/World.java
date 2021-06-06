@@ -17,7 +17,7 @@ public class World {
     public World(Handler handler) {
         this.handler = handler;
         levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler), Writer.loadLevel(3,handler)};
-        activeLevel = levels[3];
+        activeLevel = levels[2];
     }
 
     //ticks the active Level

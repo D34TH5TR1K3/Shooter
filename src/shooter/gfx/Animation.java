@@ -17,10 +17,11 @@ public class Animation {
     //image size
     private int width, height;
     //
+    private boolean attackAnimation = false;
     private int health = -1;
     //this constructor initializes the values
-    public Animation(BufferedImage[] frames, int speed, int xOffset, int yOffset, int health) {
-        this.health = health;
+    public Animation(BufferedImage[] frames, int speed, int xOffset, int yOffset, boolean attackAnimation) {
+        this.attackAnimation = attackAnimation;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
         this.speed = speed;
@@ -96,5 +97,8 @@ public class Animation {
             health = 1;
         else
             health++;
+    }
+    public boolean isAttackAnimation() {
+        return attackAnimation;
     }
 }

@@ -32,7 +32,8 @@ public class Enemy extends Entity{
     private Rectangle hitbox;
     private final byte SPEED = 8;
     private Item item;
-    private Animation walkAnimation, walkAnimation_ak;
+    private final Animation
+            legAnimation, walkAnimation_knife, walkAnimation_shotgun, walkAnimation_mp, walkAnimation_silencer, attackAnimation_knife, attackAnimation_shotgun, attackAnimation_mp, attackAnimation_silencer, deathAnimation_knife;
 
     //this constructor initializes the values
     public Enemy(int posX, int posY, int dir, int gunType, Handler handler, Level level) {  //im Konstruktor werden die Position und die Animation des Gegners initialisiert
@@ -42,9 +43,24 @@ public class Enemy extends Entity{
         item = new Item(posX, posY, gunType, handler, level);
         item.setInActive();
         level.getEntityManager().addEntity(item);
-        walkAnimation = new Animation(Assets.enemy_walk,100, 666, 666);
-        walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100, 666, 666);
-        activeAnimation = walkAnimation_ak;
+
+        legAnimation = new Animation(Assets.enemy_legs, 200, 16, 16);
+
+        walkAnimation_knife = new Animation(Assets.enemy_walk_knife, 100, 16, 16);
+        walkAnimation_shotgun = new Animation(Assets.enemy_walk_shotgun,100, 12, 12);
+        walkAnimation_mp = new Animation(Assets.enemy_walk_mp,100, 10, 12);
+        walkAnimation_silencer = new Animation(Assets.enemy_walk_silencer,100,14, 12);
+
+        attackAnimation_knife = new Animation(Assets.enemy_attack_knife, 100, 18, 16);
+        attackAnimation_shotgun = new Animation(Assets.enemy_attack_shotgun,100, 12, 12);
+        attackAnimation_mp = new Animation(Assets.enemy_attack_mp, 100,10, 12);
+        attackAnimation_silencer = new Animation(Assets.enemy_attack_silencer, 100, 14, 12);
+
+        deathAnimation_knife = new Animation(Assets.enemy_die_knife, 100, 30 ,20);
+
+        //walkAnimation = new Animation(Assets.enemy_walk,100, 666, 666);
+        //walkAnimation_ak = new Animation(Assets.enemy_walk_ak,100, 666, 666);
+        activeAnimation = walkAnimation_knife;
     }
 
     public void followTrace(ArrayList<Tile> trace){
@@ -52,7 +68,7 @@ public class Enemy extends Entity{
             Tile currentTarget = trace.get(trace.size() - 2);
             //currentTarget.setColor(Color.white);
             //System.out.println(Math.abs(posX+ CREATURESIZE/2 - currentTarget.getTposX()*30+15)+"   "+Math.abs(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30+15));
-            if(Math.abs(posX+ CREATURESIZE/2 - currentTarget.getTposX()*30-15) < 20 && Math.abs(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30-15) < 20){
+            if(Math.abs(posX - currentTarget.getTposX()*30-15) < 20 && Math.abs(posY - currentTarget.getTposY()*30-15) < 20){
                 trace.remove(currentTarget);
             }
 //            posX = currentTarget.getposX() - CREATURESIZE/2;
@@ -60,7 +76,7 @@ public class Enemy extends Entity{
 //            trace.remove(currentTarget);
 
 //            dir = (float) (180+Math.toDegrees(Math.atan2(posY+ CREATURESIZE/2 - currentTarget.getTposY()*30 +15, posX+ CREATURESIZE/2- currentTarget.getTposX()*30+15)));
-            dir = (float) (180 + Math.toDegrees(Math.atan2(posY +CREATURESIZE/2- currentTarget.getTposY()*30-15, posX +CREATURESIZE/2- currentTarget.getTposX()*30-15)));
+            dir = (float) (180 + Math.toDegrees(Math.atan2(posY - currentTarget.getTposY()*30-15, posX - currentTarget.getTposX()*30-15)));
             //System.out.println(posY+ 90+"   "+posX+ 90+"   "+currentTarget.getTposY()*30+"   "+currentTarget.getTposX()*30);
             posX = posX + (float) (Math.cos(Math.toRadians(dir+180) + Math.PI) * 5);
             posY = posY + (float) (Math.sin(Math.toRadians(dir+180) + Math.PI) * 5);
@@ -90,6 +106,8 @@ public class Enemy extends Entity{
 //                    world.getTiles()[i][j].setColor(Color.black);
 //                }
                 level.getTiles()[i][j].setColor(Color.green);
+                if(level.getTiles()[i][j].isSolid())
+                    level.getTiles()[i][j].setColor(Color.black);
                 //tiles[i][j].setSolidFalse();
                 level.getTiles()[i][j].setParent(null);
                 level.getTiles()[i][j].setVisited(false);
@@ -250,7 +268,8 @@ public class Enemy extends Entity{
         item.drop(this);
         this.hitbox = null;
         this.setInActive();
-        activeAnimation = walkAnimation;
+        dir += 180;
+        activeAnimation = deathAnimation_knife;
         activeAnimation.stop();
         //TODO: implement corpse texture
     }
@@ -287,7 +306,7 @@ public class Enemy extends Entity{
     @Override
     public void tick() {
         if(pathfindingDelay<1) {
-            findpath(level.getTiles(((int) ((posX + CREATURESIZE / 2) / 30)), ((int) ((posY + CREATURESIZE / 2) / 30))), level.getTiles(lastCoords[0], lastCoords[1]));
+            findpath(level.getTiles(((int) ((posX) / 30)), ((int) ((posY) / 30))), level.getTiles(lastCoords[0], lastCoords[1]));
             playerSpotted = false;
         }
 
@@ -308,7 +327,7 @@ public class Enemy extends Entity{
             }else{
                 followTrace(trace);
                 if(playerSpotted) {
-                    lastCoords = new int[]{(int) ((level.getEntityManager().getPlayer().getX() + CREATURESIZE / 2) / 30), (int) ((level.getEntityManager().getPlayer().getY() + CREATURESIZE / 2) / 30)};
+                    lastCoords = new int[]{(int) ((level.getEntityManager().getPlayer().getX()) / 30), (int) ((level.getEntityManager().getPlayer().getY()) / 30)};
                     pathfindingDelay--;
                 }
             }
@@ -325,10 +344,19 @@ public class Enemy extends Entity{
 //        }
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform reset = g2d.getTransform();
-        //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.rotate(Math.toRadians(dir), posX-handler.getxOffset(), posY-handler.getyOffset());
 
-        g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-90-handler.getxOffset()), (int)(posY-90-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
+        g2d.rotate(Math.toRadians(dir), posX-handler.getxOffset(), posY-handler.getyOffset());
+        g2d.drawImage(legAnimation.getCurrentFrame(), (int)(posX-legAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-legAnimation.getyOffset()*3-handler.getyOffset()), legAnimation.getWidth()*3, legAnimation.getHeight()*3, null);
+        g2d.setTransform(reset);
+        g2d.rotate(Math.toRadians(dir), posX-handler.getxOffset(), posY-handler.getyOffset());
+        g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-activeAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-activeAnimation.getyOffset()*3-handler.getyOffset()), activeAnimation.getWidth()*3, activeAnimation.getHeight()*3, null);
+
+
+
+        //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //g2d.rotate(Math.toRadians(dir), posX-handler.getxOffset(), posY-handler.getyOffset());
+
+        //g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-90-handler.getxOffset()), (int)(posY-90-handler.getyOffset()), Entity.CREATURESIZE, Entity.CREATURESIZE, null);
 
         g2d.setTransform(reset);
 

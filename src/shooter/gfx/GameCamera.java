@@ -14,8 +14,8 @@ public class GameCamera {
 
     //method to center the viewport on a given entity
     public void centerOnEntity(Entity e){
-        xOffset = e.getX() - 960 + (float)Entity.CREATURESIZE / 2;
-        yOffset = e.getY() - 540 + (float)Entity.CREATURESIZE / 2;
+        xOffset = e.getX() - 960;
+        yOffset = e.getY() - 540;
     }
     //method to move a certain amount
     public void move(float xAmt, float yAmt){
