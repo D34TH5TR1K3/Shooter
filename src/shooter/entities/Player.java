@@ -77,7 +77,7 @@ public class Player extends Entity{
     @Override
     public void tick() {
         if(item != null) {
-            if(handler.getMouseManager().isLeftPressed()) {
+            if(handler.getMouseManager().isLeftPressed()&&item.getAmmo()!=0) {
                 item.activate(this);
                 activeAnimation = attackAnimations[item.getType()];
             }

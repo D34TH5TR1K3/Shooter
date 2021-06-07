@@ -343,7 +343,7 @@ public class Enemy extends Entity{
                 playerSpotted = true;
                 pathfindingDelay = 30;
                 dir = (float) (180 + Math.toDegrees(Math.atan2(posY - level.getEntityManager().getPlayer().getY(), posX - level.getEntityManager().getPlayer().getX() )));
-                if (item != null) {
+                if (item != null&&item.getAmmo()!=0) {
                     item.activate(this);
                     activeAnimation = attackAnimations[item.getType()];
                 }
