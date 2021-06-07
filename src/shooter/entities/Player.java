@@ -98,10 +98,6 @@ public class Player extends Entity{
             }else if(!handler.getMouseManager().isRightPressed())
                 ableToPickup = true;
         }
-        if(activeAnimation.lastFrame()&&activeAnimation.isAttackAnimation()) {
-            activeAnimation.tick();
-            activeAnimation = walkAnimations[(item==null)?0:item.getType()];
-        }
         if(activeAnimation.lastFrame()&&Arrays.asList(attackAnimations).contains(activeAnimation)) {
             activeAnimation.tick();
             activeAnimation = walkAnimations[(item==null)?0:item.getType()];
@@ -131,19 +127,22 @@ public class Player extends Entity{
             if (!level.collisionCheck(hitbox)) {
                 move(velX, velY);
                 moveDir = (float) (Math.toDegrees(Math.atan2(velY , velX)));
-                activeAnimation.start();
+                if(Arrays.asList(walkAnimations).contains(activeAnimation))
+                    activeAnimation.start();
                 legAnimation.start();
             } else {
                 hitbox.setLocation(((int) (posX - 35 + velX)), ((int) (posY - 35)));
                 if (!level.collisionCheck(hitbox)) {
                     move(velX, 0);
-                    activeAnimation.start();
+                    if(Arrays.asList(walkAnimations).contains(activeAnimation))
+                        activeAnimation.start();
                     legAnimation.start();
                 } else {
                     hitbox.setLocation(((int) (posX - 35)), ((int) (posY - 35)));
                     if (!level.collisionCheck(hitbox)) {
                         move(0, velY);
-                        activeAnimation.start();
+                        if(Arrays.asList(walkAnimations).contains(activeAnimation))
+                            activeAnimation.start();
                         legAnimation.start();
                     } else {
                         hitbox.setLocation(((int) posX - 35), ((int) (posY - 35)));
@@ -152,7 +151,7 @@ public class Player extends Entity{
             }
         }else{
             legAnimation.stop();
-            if(!activeAnimation.isAttackAnimation())
+            if(Arrays.asList(walkAnimations).contains(activeAnimation))
                 activeAnimation.stop();
         }
 
