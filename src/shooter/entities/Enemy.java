@@ -51,7 +51,7 @@ public class Enemy extends Entity{
         item.setInActive();
         level.getEntityManager().addEntity(item);
 
-        legAnimation = new Animation(Assets.enemy_legs, 200, 16, 16);
+        legAnimation = new Animation(Assets.enemy_legs, 50, 16, 16);
 
         walkAnimations = new Animation[]{
                 null,
@@ -72,7 +72,7 @@ public class Enemy extends Entity{
                 new Animation(Assets.enemy_attack_silencer, 100, 14, 12,true),
                 new Animation(Assets.enemy_attack_mp, 100,10, 12,true),
                 null,
-                new Animation(Assets.enemy_attack_shotgun,100, 12, 12,true),
+                new Animation(Assets.enemy_attack_shotgun,76, 12, 12,true),
                 null
         };
 
@@ -291,6 +291,7 @@ public class Enemy extends Entity{
         dir += 180;
         activeAnimation = deathAnimation_knife;
         activeAnimation.stop();
+        legAnimation.stop();
         //TODO: implement corpse texture
     }
     public boolean lineOfSight(){
@@ -360,6 +361,7 @@ public class Enemy extends Entity{
             activeAnimation = walkAnimations[(item==null)?0:item.getType()];
         }
         activeAnimation.tick();
+        legAnimation.tick();
     }
     @Override
     public void render(Graphics g) {

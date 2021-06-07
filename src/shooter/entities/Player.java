@@ -72,7 +72,7 @@ public class Player extends Entity{
                 new Animation(Assets.player_attack_silencer, 100, 9, 16),
                 new Animation(Assets.player_attack_uzi, 50, 10, 16),
                 new Animation(Assets.player_attack_mp,100,10,16),
-                new Animation(Assets.player_attack_shotgun, 77, 10, 16),
+                new Animation(Assets.player_attack_shotgun, 76, 10, 16),
                 null
         };
 
