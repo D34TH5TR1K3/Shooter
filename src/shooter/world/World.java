@@ -16,8 +16,8 @@ public class World {
     //this constructor initializes the values
     public World(Handler handler) {
         this.handler = handler;
-        levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler), Writer.loadLevel(3,handler)};
-        activeLevel = levels[2];
+        levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler), Writer.loadLevel(3,handler), Writer.loadLevel(4,handler), Writer.loadLevel(5,handler)};
+        activeLevel = levels[3];
     }
 
     //ticks the active Level
@@ -31,7 +31,7 @@ public class World {
 
     //reloads the Levels
     public void reloadLevels(){
-        levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler), Writer.loadLevel(3,handler)};
+        levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler), Writer.loadLevel(3,handler), Writer.loadLevel(4,handler), Writer.loadLevel(5,handler)};
          activeLevel = levels[activeLevel.getLevelNumber()];
     }
 
