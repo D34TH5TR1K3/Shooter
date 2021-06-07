@@ -33,18 +33,24 @@ public class Player extends Entity{
     public static float speed = new shooter.utils.Writer().getSettingValue("Player Movement Speed");
 
     //this constructor initializes the values
-    public Player(int posX, int posY, float dir, int item, int ammo, Handler handler, Level level) {
+    public Player(int posX, int posY, float dir, int itemType, int ammo, Handler handler, Level level) {
         super(posX, posY, 4,dir, handler, level);
         hitbox = new Rectangle(posX - 35, posY - 35, 70, 70);
-        this.item = new Item(posX,posY,item,handler,level);
-        this.item.setAmmo(ammo);
-        level.getEntityManager().addEntity(this.item);
+        if(itemType>0) {
+            item = new Item(posX, posY, itemType, handler, level);
+            item.setAmmo(ammo);
+            level.getEntityManager().addEntity(item);
+            item.pick_up(this);
+            ableToPickup = false;
+        }
+        /*
         for(int y = 0; y < 3; y++) {
             level.getEntityManager().addEntity(new Item(100, 100+50*y, 3, handler, level));
             level.getEntityManager().addEntity(new Item(150, 100+50*y, 5, handler, level));
             level.getEntityManager().addEntity(new Item(200, 100+50*y, 6, handler, level));
             level.getEntityManager().addEntity(new Item(250, 100+50*y, 7, handler, level));
         }
+        */
         legAnimation = new Animation(Assets.player_legs, 50, 16, 16);
 
         walkAnimations = new Animation[]{
@@ -75,7 +81,7 @@ public class Player extends Entity{
 
     //ticks input, animation and other logic
     @Override
-    public void tick() {
+    public void tick() {System.out.print("AAA"+posX+"\t");
         if(item != null) {
             if(handler.getMouseManager().isLeftPressed()&&item.getAmmo()!=0) {
                 item.activate(this);
