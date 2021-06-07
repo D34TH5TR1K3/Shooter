@@ -33,12 +33,12 @@ public class Player extends Entity{
     public static float speed = new shooter.utils.Writer().getSettingValue("Player Movement Speed");
 
     //this constructor initializes the values
-    public Player(int posX, int posY, float dir, Handler handler, Level level) {
+    public Player(int posX, int posY, float dir, int item, int ammo, Handler handler, Level level) {
         super(posX, posY, 4,dir, handler, level);
         hitbox = new Rectangle(posX - 35, posY - 35, 70, 70);
-        item = new Item(posX, posY, 3, handler, level); //temporary
-        item.setInActive();
-        level.getEntityManager().addEntity(item);
+        this.item = new Item(posX,posY,item,handler,level);
+        this.item.setAmmo(ammo);
+        level.getEntityManager().addEntity(this.item);
         for(int y = 0; y < 3; y++) {
             level.getEntityManager().addEntity(new Item(100, 100+50*y, 3, handler, level));
             level.getEntityManager().addEntity(new Item(150, 100+50*y, 5, handler, level));
@@ -94,6 +94,7 @@ public class Player extends Entity{
                 if (item != null) {
                     item.pick_up(this);
                     ableToPickup = false;
+                    activeAnimation = walkAnimations[item.getType()];
                 }
             }else if(!handler.getMouseManager().isRightPressed())
                 ableToPickup = true;
@@ -180,13 +181,14 @@ public class Player extends Entity{
 
     //lets the player die and resets the Level
     public void die() {
-        //alive = false;
-        //LoadingImage.renderDeathScreen();
+        alive = false;
+        LoadingImage.renderDeathScreen();
     }
 
     //getters and setters
     public Item getItem(){ return item; }
-    public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getAmmo()); }
+    public void setItem(Item item){ this.item = item; }
+    public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getType()+","+item.getAmmo()); }
     public Rectangle getHitbox(){ return hitbox; }
     public boolean isAlive(){ return alive; }
 }

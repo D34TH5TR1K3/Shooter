@@ -3,6 +3,7 @@ package shooter.utils;
 import shooter.Handler;
 import shooter.entities.Enemy;
 import shooter.entities.Entity;
+import shooter.entities.Item;
 import shooter.entities.Player;
 import shooter.gfx.ImageLoader;
 import shooter.world.Level;
@@ -129,8 +130,9 @@ public class Writer {
             Scanner scanner = new Scanner(new File("res" + path + "LevelData.txt"));
             int enemyCount = Integer.parseInt(scanner.nextLine());
             int[] playerData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
-            Player createdPlayer = new Player(playerData[0],playerData[1],(float)playerData[2],handler,level);
-            createdPlayer.getItem().setAmmo(playerData[3]);
+            Player createdPlayer = new Player(playerData[0],playerData[1],(float)playerData[2],playerData[3],playerData[4],handler,level);
+            createdPlayer.setItem(new Item(playerData[0],playerData[1],playerData[3],handler,level));
+            createdPlayer.getItem().setAmmo(playerData[4]);
             ArrayList<Entity> createdEnemies = new ArrayList<>();
             for(;enemyCount>0;enemyCount--){
                 int[] enemyData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
@@ -185,9 +187,7 @@ public class Writer {
             level.resetEntityManager();
             int enemyCount = Integer.parseInt(scanner.nextLine());
             int[] playerData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
-            Player createdPlayer = new Player(playerData[0],playerData[1],(float)playerData[2],handler,level);
-            if(playerData[3]!=0)
-                createdPlayer.getItem().setAmmo(playerData[3]);
+            Player createdPlayer = new Player(playerData[0],playerData[1],(float)playerData[2],playerData[3],playerData[4],handler,level);
             ArrayList<Entity> createdEnemies = new ArrayList<>();
             for(;enemyCount>0;enemyCount--){
                 int[] enemyData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
