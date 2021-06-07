@@ -126,8 +126,9 @@ public class Writer {
     public static Level loadLevel(int number,Handler handler){
         try{
             String path = "/levels/Level_"+number+"/";
-            Level level = new Level(number,new BufferedImage[]{ImageLoader.loadImage(path + "Map.png"), ImageLoader.loadImage(path + "Layout.png"), ImageLoader.loadImage(path + "Map2.png")},handler);
             Scanner scanner = new Scanner(new File("res" + path + "LevelData.txt"));
+            int[] coordinates = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
+            Level level = new Level(number,new BufferedImage[]{ImageLoader.loadImage(path + "Map.png"), ImageLoader.loadImage(path + "Layout.png"), ImageLoader.loadImage(path + "Map2.png")},handler, coordinates[0],coordinates[1]);
             int enemyCount = Integer.parseInt(scanner.nextLine());
             int[] playerData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
             Player createdPlayer = new Player(playerData[0],playerData[1],(float)playerData[2],playerData[3],playerData[4],handler,level);

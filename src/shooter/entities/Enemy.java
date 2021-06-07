@@ -395,5 +395,6 @@ public class Enemy extends Entity{
     //Getters
     public Rectangle getHitbox(){ return hitbox; }
     public Item getItem(){ return item; }
+    public boolean getActive(){return super.active;}
     public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getType()+","+item.getAmmo()); }
 }

@@ -22,21 +22,26 @@ public class Level {
     private EntityManager entityManager;
     //saves the map and its layout
     private final BufferedImage[] map;
+    //coordinates of the extraction point
+    private final int posX, posY;
 
     //this constructor initializes the values
-    public Level(int levelNumber, BufferedImage[] map, Handler handler) {
+    public Level(int levelNumber, BufferedImage[] map, Handler handler,int posX, int posY) {
         this.levelNumber = levelNumber;
         tiles = new Tile[64*mapsize][36*mapsize];
         this.handler = handler;
         entityManager = new EntityManager();
         this.map = map;
+        this.posX = posX;
+        this.posY = posY;
         fillTiles();
         fillHalfSolidTiles();
     }
 
-    //ticks the entityManager
+    //ticks the entityManager and checks the condition of the level
     public void tick() {
         entityManager.tick();
+        checkLevelCondition();
     }
     //renders the map and the entityManager
     public void render(Graphics g) {
@@ -98,6 +103,20 @@ public class Level {
         }
         return false;
     }
+    //method to check and load next level
+    public void checkLevelCondition(){
+        boolean nextLevel = true;
+    for (Entity e : getEntityManager().getEnemies()){
+        if(((Enemy) e).getActive()) {
+            nextLevel = false;
+            break;
+        }
+    }
+    if(nextLevel && Math.abs(entityManager.getPlayer().getX()-posX)<600&& Math.abs(entityManager.getPlayer().getY()-posY)<600)
+    if(nextLevel)
+        handler.getWorld().nextLevel();
+    }
+    //TODO: change distance to extractionpoint
     //method to check if the Rectangle collides with the Player
     public void checkPlayerCollision(Rectangle rect) {
         Player p = getEntityManager().getPlayer();

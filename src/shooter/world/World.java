@@ -12,12 +12,14 @@ public class World {
     private Level[] levels;
     //the active level gets ticked
     private Level activeLevel;
+    //the number of the current level
+    private int activeLevelNumber = 1;
 
     //this constructor initializes the values
     public World(Handler handler) {
         this.handler = handler;
         levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler), Writer.loadLevel(3,handler), Writer.loadLevel(4,handler), Writer.loadLevel(5,handler)};
-        activeLevel = levels[3];
+        activeLevel = levels[activeLevelNumber];
     }
 
     //ticks the active Level
@@ -33,6 +35,10 @@ public class World {
     public void reloadLevels(){
         levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler), Writer.loadLevel(3,handler), Writer.loadLevel(4,handler), Writer.loadLevel(5,handler)};
          activeLevel = levels[activeLevel.getLevelNumber()];
+    }
+    //sets the next level active
+    public void nextLevel(){
+        activeLevel=levels[(activeLevelNumber==0)?activeLevel.getLevelNumber()+1:++activeLevelNumber];
     }
 
     //getters and setters

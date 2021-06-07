@@ -81,7 +81,7 @@ public class Player extends Entity{
 
     //ticks input, animation and other logic
     @Override
-    public void tick() {System.out.print("AAA"+posX+"\t");
+    public void tick() {
         if(item != null) {
             if(handler.getMouseManager().isLeftPressed()&&item.getAmmo()!=0) {
                 item.activate(this);
