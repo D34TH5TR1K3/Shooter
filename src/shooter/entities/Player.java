@@ -43,14 +43,18 @@ public class Player extends Entity{
             item.pick_up(this);
             ableToPickup = false;
         }
-        /*
+
         for(int y = 0; y < 3; y++) {
-            level.getEntityManager().addEntity(new Item(100, 100+50*y, 3, handler, level));
-            level.getEntityManager().addEntity(new Item(150, 100+50*y, 5, handler, level));
-            level.getEntityManager().addEntity(new Item(200, 100+50*y, 6, handler, level));
-            level.getEntityManager().addEntity(new Item(250, 100+50*y, 7, handler, level));
+            level.getEntityManager().addEntity(new Item(100+700, 100+50*y, 1, handler, level));
+            level.getEntityManager().addEntity(new Item(150+700, 100+50*y, 2, handler, level));
+            level.getEntityManager().addEntity(new Item(200+700, 100+50*y, 3, handler, level));
+            level.getEntityManager().addEntity(new Item(250+700, 100+50*y, 4, handler, level));
+            level.getEntityManager().addEntity(new Item(300+700, 100+50*y, 5, handler, level));
+            level.getEntityManager().addEntity(new Item(350+700, 100+50*y, 6, handler, level));
+            level.getEntityManager().addEntity(new Item(400+700, 100+50*y, 7, handler, level));
+            level.getEntityManager().addEntity(new Item(450+700, 100+50*y, 8, handler, level));
         }
-        */
+
         legAnimation = new Animation(Assets.player_legs, 50, 16, 16);
 
         walkAnimations = new Animation[]{
@@ -178,11 +182,6 @@ public class Player extends Entity{
         g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-activeAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-activeAnimation.getyOffset()*3-handler.getyOffset()), activeAnimation.getWidth()*3, activeAnimation.getHeight()*3, null);
 
         g2d.setTransform(reset);
-        g.setFont(fraktur);
-        if(item!=null)
-            g.drawString(Integer.toString(item.getAmmo()),100,800);
-        else
-            g.drawString("No Weapon",100,800);
     }
 
     //lets the player die and resets the Level

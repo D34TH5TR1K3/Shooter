@@ -42,6 +42,7 @@ public class Enemy extends Entity{
     //provides a variable to change the distance to the player for Line Of Sight to work
     public static float LOSdist = new shooter.utils.Writer().getSettingValue("Enemy Line Of Sight") * 10;
 
+    public int diedByType = 0;
     //this constructor initializes the values
     public Enemy(int posX, int posY, int dir, int gunType, Handler handler, Level level) {  //im Konstruktor werden die Position und die Animation des Gegners initialisiert
         super(posX, posY, 4, dir, handler, level);
@@ -284,15 +285,19 @@ public class Enemy extends Entity{
             //System.out.println("LESS THAN 8 NEIGHBOURS");
         }
     }
-    public void die(){
+    //lets enemy die
+    public void die(int type){
+        diedByType = type;
         item.drop(this);
         this.hitbox = null;
         this.setInActive();
         dir += 180;
-        activeAnimation = deathAnimation_knife;
-        activeAnimation.stop();
+        if(type != 3) {
+            activeAnimation.stop();
+        }else{
+            activeAnimation = deathAnimation_knife;
+        }
         legAnimation.stop();
-        //TODO: implement corpse texture
     }
     public boolean lineOfSight(){
         if(Math.abs(level.getEntityManager().getPlayer().getX()-posX)>LOSdist||Math.abs(level.getEntityManager().getPlayer().getY()-posY)>LOSdist)
@@ -332,10 +337,13 @@ public class Enemy extends Entity{
         }
 
         if(item.getAmmo()==0&&this.active){
-            for(int i=(int)reloadspeed;i>0;i--)
+            for(int i=(int)reloadspeed;i>0;i--) {
+                legAnimation.stop();
                 item.reload();
+            }
             return;
-        }
+        }else
+            legAnimation.start();
         if(active) {
             hitbox.setLocation(((int) (posX - 35)), ((int) (posY - 35)));
             //System.out.println(hitbox);
@@ -373,13 +381,20 @@ public class Enemy extends Entity{
 //        }
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform reset = g2d.getTransform();
+        if(active) {
+            g2d.rotate(Math.toRadians(dir), posX - handler.getxOffset(), posY - handler.getyOffset());
+            g2d.drawImage(legAnimation.getCurrentFrame(), (int) (posX - legAnimation.getxOffset() * 3 - handler.getxOffset()), (int) (posY - legAnimation.getyOffset() * 3 - handler.getyOffset()), legAnimation.getWidth() * 3, legAnimation.getHeight() * 3, null);
+            g2d.setTransform(reset);
+            g2d.rotate(Math.toRadians(dir), posX - handler.getxOffset(), posY - handler.getyOffset());
+            g2d.drawImage(activeAnimation.getCurrentFrame(), (int) (posX - activeAnimation.getxOffset() * 3 - handler.getxOffset()), (int) (posY - activeAnimation.getyOffset() * 3 - handler.getyOffset()), activeAnimation.getWidth() * 3, activeAnimation.getHeight() * 3, null);
+        }else if(diedByType == 3){
+            g2d.rotate(Math.toRadians(dir), posX - handler.getxOffset(), posY - handler.getyOffset());
+            g2d.drawImage(activeAnimation.getCurrentFrame(), (int) (posX - activeAnimation.getxOffset() * 3 - handler.getxOffset()), (int) (posY - activeAnimation.getyOffset() * 3 - handler.getyOffset()), activeAnimation.getWidth() * 3, activeAnimation.getHeight() * 3, null);
+        }else{
+            g2d.rotate(Math.toRadians(dir), posX - handler.getxOffset(), posY - handler.getyOffset());
+            g2d.drawImage(Assets.enemy_die_shotgun, (int) (posX - 20 * 3 - handler.getxOffset()), (int) (posY - 16 * 3 - handler.getyOffset()), 50 * 3, 32 * 3, null);
 
-        g2d.rotate(Math.toRadians(dir), posX-handler.getxOffset(), posY-handler.getyOffset());
-        g2d.drawImage(legAnimation.getCurrentFrame(), (int)(posX-legAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-legAnimation.getyOffset()*3-handler.getyOffset()), legAnimation.getWidth()*3, legAnimation.getHeight()*3, null);
-        g2d.setTransform(reset);
-        g2d.rotate(Math.toRadians(dir), posX-handler.getxOffset(), posY-handler.getyOffset());
-        g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-activeAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-activeAnimation.getyOffset()*3-handler.getyOffset()), activeAnimation.getWidth()*3, activeAnimation.getHeight()*3, null);
-
+        }
 
 
         //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

@@ -5,10 +5,13 @@ import shooter.entities.Enemy;
 import shooter.entities.Entity;
 import shooter.entities.EntityManager;
 import shooter.entities.Player;
+import shooter.gfx.Assets;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import static shooter.gfx.Display.fraktur;
 
 public class Level {
     //indicates the number of the level
@@ -49,6 +52,56 @@ public class Level {
         //renderTiles(g);
         entityManager.render(g);
         g.drawImage(map[2],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
+        g.drawImage(Assets.overlay, 1920 - 239, 1080 - 92,null);
+        if(entityManager.getPlayer().getItem() != null) {
+            int x = 1820;
+            int y = 995;
+            int x1 = 1780;
+            int y1 = 1010;
+            switch (entityManager.getPlayer().getItem().getType()) {
+                case 1:
+                    g.drawImage(Assets.item_knife, x, y, 80, 80, null);
+                    break;
+                case 2:
+                    g.drawImage(Assets.item_machete, x, y, 70, 70, null);
+                    break;
+                case 3:
+                    g.drawImage(Assets.item_handgun, x, y, 100, 100, null);
+                    g.drawImage(Assets.bullet_img, x1, y1, null);
+                    break;
+                case 4:
+                    g.drawImage(Assets.item_silencer, x, y, 100, 100, null);
+                    g.drawImage(Assets.bullet_img, x1, y1, null);
+                    break;
+                case 5:
+                    g.drawImage(Assets.item_uzi_full, x, y, 100, 100, null);
+                    g.drawImage(Assets.bullet_img, x1, y1, null);
+                    break;
+                case 6:
+                    g.drawImage(Assets.item_rifle_full, x, y, 80, 80, null);
+                    g.drawImage(Assets.bullet_img, x1, y1, null);
+                    break;
+                case 7:
+                    g.drawImage(Assets.item_shotgun, x, y, 80, 80, null);
+                    g.drawImage(Assets.buckshot_img, x1, y1, null);
+                    break;
+                case 8:
+                    g.drawImage(Assets.item_rpg_full, x, y, 120, 120, null);
+                    break;
+                default:
+                    break;
+            }
+            float percentage = (float)entityManager.getPlayer().getItem().getAmmo() / (float)entityManager.getPlayer().getItem().getAmmoMax() * 69;
+            g.setColor(new Color(100, 67, 28));
+            g.fillRect(x1, y1, 46, (int) (69 - percentage));
+            g.setColor(Color.gray);
+            g.setFont(fraktur);
+            g.drawString(Integer.toString(entityManager.getPlayer().getItem().getAmmo()),1750,1070);
+        }else{
+            g.setColor(Color.gray);
+            g.setFont(fraktur);
+            g.drawString("unarmed",1750,1070);
+        }
     }
 
     //method to fill the world with information from a LevelFile
@@ -91,13 +144,13 @@ public class Level {
         return false;
     }
     //method to check if the Rectangle collides with an Enemy
-    public boolean checkEnemyCollision(Rectangle rect) {
+    public boolean checkEnemyCollision(Rectangle rect, int type) {
         for (Entity e : getEntityManager().getEnemies()) {
             //System.out.println("start");
             //System.out.println(rect);
             //System.out.println(((Enemy) e).getHitbox());
             if (((Enemy) e).getHitbox() != null && ((Enemy) e).getHitbox().intersects(rect)) {
-                ((Enemy) e).die();
+                ((Enemy) e).die(type);
                 return true;
             }
         }

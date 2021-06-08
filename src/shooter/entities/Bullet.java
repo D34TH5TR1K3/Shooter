@@ -44,27 +44,34 @@ public class Bullet extends Entity {
         if(animation != null)
             animation.tick();
 
-        if(type==2) {
-            posX = posX + (float) (Math.cos(Math.toRadians(dir) + Math.PI) * speed * enemyBulletSpeed / 50);
-            posY = posY + (float) (Math.sin(Math.toRadians(dir) + Math.PI) * speed * enemyBulletSpeed / 50);
-        } else {
-            posX = posX + (float) (Math.cos(Math.toRadians(dir) + Math.PI) * speed * playerBulletSpeed / 50);
-            posY = posY + (float) (Math.sin(Math.toRadians(dir) + Math.PI) * speed * playerBulletSpeed / 50);
-        }
-        //TODO implement directional movement
-        moveAbs(posX, posY);
-        if(level.collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10))||level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10))){
-            if(type == 0) {
-                Sound.play("RocketExplode");
-                level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, level));
-            }else if(type > 0)
-                level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, level));
+        if(type == 3){
+            System.out.println(posX +"   "+posY);
+            level.checkEnemyCollision(new Rectangle(((int) posX-50), ((int) posY-50), 100, 100), type);
             level.getEntityManager().removeEntity(this);
-        }
-        if(type == 2) {
-            level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
-            if(friendlyFire)
-                level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
+        }else {
+
+            if (type == 2) {
+                posX = posX + (float) (Math.cos(Math.toRadians(dir) + Math.PI) * speed * enemyBulletSpeed / 50);
+                posY = posY + (float) (Math.sin(Math.toRadians(dir) + Math.PI) * speed * enemyBulletSpeed / 50);
+            } else {
+                posX = posX + (float) (Math.cos(Math.toRadians(dir) + Math.PI) * speed * playerBulletSpeed / 50);
+                posY = posY + (float) (Math.sin(Math.toRadians(dir) + Math.PI) * speed * playerBulletSpeed / 50);
+            }
+
+            moveAbs(posX, posY);
+            if (level.collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10)) || level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10), type)) {
+                if (type == 0) {
+                    Sound.play("RocketExplode");
+                    level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, level));
+                } else if (type > 0)
+                    level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, level));
+                level.getEntityManager().removeEntity(this);
+            }
+            if (type == 2) {
+                //level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
+                if (friendlyFire)
+                    level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10), type);
+            }
         }
     }
     //renders the bullet
@@ -81,6 +88,9 @@ public class Bullet extends Entity {
             case 0:
                 g2.rotate(Math.toRadians(dir + 180), (int) (posX - handler.getGameCamera().getxOffset()), (int) (posY - handler.getGameCamera().getyOffset()));
                 g.drawImage(animation.getCurrentFrame(), (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), null);
+                break;
+            case 3:
+                //g.fillRect((int)(posX - 50 - handler.getGameCamera().getxOffset()), (int)(posY - 50 - handler.getGameCamera().getyOffset()), 100, 100);
                 break;
             default:
                 break;

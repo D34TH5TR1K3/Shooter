@@ -23,6 +23,7 @@ public class Item extends Entity{
     */
     //saves the ammo count
     private int ammo = 0;
+    private int ammoMax = 0;
     //saves the speed of a bullet and the rate of fire
     private short bulletSpeed;
     private float rpm;
@@ -32,7 +33,7 @@ public class Item extends Entity{
     //logical variable
     private long lastTime = 0;
     //saves the value of the offset between an item and a fired bullet
-    private short offset;
+    private short offset = 1;
     //indicates whether an item is melee
     private boolean melee = false;
 
@@ -46,15 +47,20 @@ public class Item extends Entity{
                 //Knife
                 melee = true;
                 rpm = 120;
+                ammoMax = 1;
+                ammo = ammoMax;
                 break;
             case 2:
                 //Machete
                 melee = true;
                 rpm = 60;
+                ammoMax = 1;
+                ammo = ammoMax;
                 break;
             case 3:
                 //Pistol
-                ammo = 17;
+                ammoMax = 17;
+                ammo = ammoMax;
                 bulletSpeed = 25;
                 rpm = 400;
                 reloadTime = 90;
@@ -62,7 +68,8 @@ public class Item extends Entity{
                 break;
             case 4:
                 //Silenced Pistol
-                ammo = 8;
+                ammoMax = 8;
+                ammo = ammoMax;
                 bulletSpeed = 35;
                 rpm = 85;
                 reloadTime = 120;
@@ -70,7 +77,8 @@ public class Item extends Entity{
                 break;
             case 5:
                 //Machine Pistol
-                ammo = 25;
+                ammoMax = 25;
+                ammo = ammoMax;
                 bulletSpeed = 20;
                 rpm = 600;
                 reloadTime = 120;
@@ -78,7 +86,8 @@ public class Item extends Entity{
                 break;
             case 6:
                 //Rifle
-                ammo = 30;
+                ammoMax = 30;
+                ammo = ammoMax;
                 bulletSpeed = 35;
                 rpm = 120;
                 reloadTime = 180;
@@ -86,7 +95,8 @@ public class Item extends Entity{
                 break;
             case 7:
                 //Shotgun
-                ammo = 6;
+                ammoMax = 6;
+                ammo = ammoMax;
                 bulletSpeed = 20;
                 rpm = 60;
                 reloadTime = 320;
@@ -94,7 +104,8 @@ public class Item extends Entity{
                 break;
             case 8:
                 //Rocket Launcher
-                ammo = 1;
+                ammoMax = 1;
+                ammo = ammoMax;
                 bulletSpeed = 25;
                 rpm = 1;
                 reloadTime = 320;
@@ -113,17 +124,38 @@ public class Item extends Entity{
     public void render(Graphics g) {
         if(active){
             switch(type) {
+                case 1:
+                    g.drawImage(Assets.item_knife, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 80, 80, null);
+                    break;
+                case 2:
+                    g.drawImage(Assets.item_machete, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 70, 70, null);
+                    break;
                 case 3:
-                    g.drawImage(Assets.item_pistol, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 30, 30, null);
+                    g.drawImage(Assets.item_handgun, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 100, 100, null);
+                    break;
+                case 4:
+                    g.drawImage(Assets.item_silencer, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 100, 100, null);
                     break;
                 case 5:
-                    g.drawImage(Assets.item_mp, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    if(ammo == 0)
+                        g.drawImage(Assets.item_uzi_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 100, 100, null);
+                    else
+                        g.drawImage(Assets.item_uzi_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 100, 100, null);
+                    break;
+                case 6:
+                    if(ammo == 0)
+                        g.drawImage(Assets.item_rifle_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 80, 80, null);
+                    else
+                        g.drawImage(Assets.item_rifle_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 80, 80, null);
                     break;
                 case 7:
-                    g.drawImage(Assets.item_shotgun_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    g.drawImage(Assets.item_shotgun, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 80, 80, null);
                     break;
                 case 8:
-                    g.drawImage(Assets.item_rpg_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    if(ammo == 0)
+                    g.drawImage(Assets.item_rpg_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    else
+                        g.drawImage(Assets.item_rpg_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
                     break;
                 default:
                     break;
@@ -200,6 +232,24 @@ public class Item extends Entity{
             lastTime = now;
             ammo--;
             switch(type) {
+                case 1:
+                    ammo++;
+                    Sound.play("Uzi");
+                    //level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
+
+                    buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
+                    buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
+                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 3, handler, level));
+                    break;
+                case 2:
+                    ammo++;
+                    Sound.play("Uzi");
+                    //level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
+
+                    buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
+                    buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
+                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 3, handler, level));
+                    break;
                 case 3:
                     Sound.play("Uzi");
                     level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
@@ -261,4 +311,7 @@ public class Item extends Entity{
     public void setAmmo(int ammo){ this.ammo = ammo; }
     public String getData(){ return ""; }
     public boolean isMelee(){ return melee; }
+    public int getAmmoMax() {
+        return ammoMax;
+    }
 }
