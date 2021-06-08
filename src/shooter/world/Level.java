@@ -8,9 +8,11 @@ import shooter.entities.Player;
 import shooter.gfx.Assets;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import static shooter.entities.Enemy.LOSdist;
 import static shooter.gfx.Display.fraktur;
 
 public class Level {
@@ -40,11 +42,17 @@ public class Level {
         fillTiles();
         fillHalfSolidTiles();
     }
-
     //ticks the entityManager and checks the condition of the level
     public void tick() {
         entityManager.tick();
         checkLevelCondition();
+        if((entityManager.getPlayer().isMoveA() || entityManager.getPlayer().isMoveD() || entityManager.getPlayer().isMoveS() || entityManager.getPlayer().isMoveW())
+                && Math.abs(entityManager.getPlayer().getX()-posX)>100&& Math.abs(entityManager.getPlayer().getY()-posY)>100){
+            entityManager.getPlayer().resetMove();
+            handler.getWorld().nextLevel();
+        }else{
+
+        }
     }
     //renders the map and the entityManager
     public void render(Graphics g) {
@@ -103,7 +111,12 @@ public class Level {
             g.drawString("unarmed",1750,1070);
         }
     }
+    //makes player animation to walk to another level
+    public void vanish(){
 
+        entityManager.getPlayer().setMoveTrue("A");
+
+    }
     //method to fill the world with information from a LevelFile
     public void fillWorld(Player player, ArrayList<Entity> enemies) {
         entityManager.setPlayer(player);
@@ -156,6 +169,32 @@ public class Level {
         }
         return false;
     }
+    public boolean lineCollision(int x1, int y1, int x2, int y2){
+        ArrayList<Tile> tempTiles = new ArrayList<>();
+        //world.setAllTiles(Color.green);
+        Line2D line = new Line2D.Float(x1,y1,x2,y2);
+        //System.out.println(Math.toDegrees(Math.PI + Math.atan2(world.getPlayer().getY() - posY, world.getPlayer().getX() - posX)));
+        float tempDir = (float) (Math.PI + Math.atan2(y1 - y2, x1 - x2));
+        float tempX = x2;
+        float tempY = y2;
+        while(Math.abs(x1 - tempX) > 40 || Math.abs(y1 - tempY) > 40) {
+            tempX = tempX + (float) (Math.cos(tempDir + Math.PI) * 30);
+            tempY = tempY + (float) (Math.sin(tempDir + Math.PI) * 30);
+            for(int x = 0; x < 3; x++){
+                for(int y = 0; y < 3; y++){
+                    Tile tempT = getTiles((int) (x+tempX / 30 - 1), (int) (y+tempY / 30 - 1));
+                    if(!tempTiles.contains(tempT))
+                        tempTiles.add(tempT);
+                }
+            }
+
+        }
+        for(Tile t : tempTiles){
+            if(line.intersects(t.getHitbox()) && t.isSolid())
+                return true;
+        }
+        return false;
+    }
     //method to check and load next level
     public void checkLevelCondition(){
         boolean nextLevel = true;
@@ -167,7 +206,7 @@ public class Level {
     }
     if(nextLevel && Math.abs(entityManager.getPlayer().getX()-posX)<600&& Math.abs(entityManager.getPlayer().getY()-posY)<600)
     if(nextLevel)
-        handler.getWorld().nextLevel();
+        vanish();
     }
     //TODO: change distance to extractionpoint
     //method to check if the Rectangle collides with the Player
@@ -176,13 +215,13 @@ public class Level {
         if(p.getHitbox().intersects(rect))
             p.die();
     }
-
     //Getters
     public Tile getTiles(int x, int y) {
         if(x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize)
             return tiles[x][y];
         return tiles[0][0];
     }
+    //debugging
     public void renderTiles(Graphics g){
         for(int x = 0; x < 64 * mapsize; x++){
             for(int y = 0; y < 36 * mapsize; y++){

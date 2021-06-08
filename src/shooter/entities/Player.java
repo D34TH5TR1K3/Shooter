@@ -29,6 +29,8 @@ public class Player extends Entity{
     //required for player weapon interaction
     private boolean ableToPickup = true;
     private boolean ableToDrop = true;
+    //required for moving to other level
+    boolean moveW = false, moveA = false, moveS = false, moveD = false;
     //provides a variable to change Player speed
     public static float speed = new shooter.utils.Writer().getSettingValue("Player Movement Speed");
 
@@ -117,19 +119,19 @@ public class Player extends Entity{
         legAnimation.tick();
         dir = (float) (180 + Math.toDegrees(Math.atan2(posY - handler.getMouseManager().getMouseY() - handler.getGameCamera().getyOffset(), posX - handler.getMouseManager().getMouseX() - handler.getGameCamera().getxOffset())));
         float velXmax = speed / 5f + 5f,velYmax = speed / 5f + 5f;
-        if(handler.getKeyManager().left && velX > -velXmax)
+        if((handler.getKeyManager().left || moveA) && velX > -velXmax)
             velX--;
-        else if(!handler.getKeyManager().right && !handler.getKeyManager().left)
+        else if((!handler.getKeyManager().right || moveD) && !handler.getKeyManager().left)
             velX = 0;
-        if(handler.getKeyManager().right && velX < velXmax)
+        if((handler.getKeyManager().right || moveD) && velX < velXmax)
             velX++;
         else if(!handler.getKeyManager().right && !handler.getKeyManager().left)
             velX = 0;
-        if(handler.getKeyManager().up && velY > -velYmax)
+        if((handler.getKeyManager().up || moveW) && velY > -velYmax)
             velY--;
         else if(!handler.getKeyManager().down && !handler.getKeyManager().up)
             velY = 0;
-        if(handler.getKeyManager().down && velY < velYmax)
+        if((handler.getKeyManager().down || moveS) && velY < velYmax)
             velY++;
         else if(!handler.getKeyManager().down && !handler.getKeyManager().up)
             velY = 0;
@@ -193,7 +195,57 @@ public class Player extends Entity{
     //getters and setters
     public Item getItem(){ return item; }
     public void setItem(Item item){ this.item = item; }
-    public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getType()+","+item.getAmmo()); }
+    public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+((item != null) ? item.getType()+","+item.getAmmo() : 0+","+0)); }
     public Rectangle getHitbox(){ return hitbox; }
     public boolean isAlive(){ return alive; }
+    public void setMoveTrue(String dir) {
+        switch(dir){
+            case "W":
+                moveW = true;
+                break;
+            case "A":
+                moveA = true;
+                break;
+            case "S":
+                moveS = true;
+                break;
+            case "D":
+                moveD = true;
+                break;
+        }
+    }
+    public void setMoveFalse(String dir) {
+        switch(dir){
+            case "W":
+                moveW = false;
+                break;
+            case "A":
+                moveA = false;
+                break;
+            case "S":
+                moveS = false;
+                break;
+            case "D":
+                moveD = false;
+                break;
+        }
+    }
+    public boolean isMoveW() {
+        return moveW;
+    }
+    public boolean isMoveA() {
+        return moveA;
+    }
+    public boolean isMoveS() {
+        return moveS;
+    }
+    public boolean isMoveD() {
+        return moveD;
+    }
+    public void resetMove(){
+        moveW = false;
+        moveA = false;
+        moveS = false;
+        moveD = false;
+    }
 }

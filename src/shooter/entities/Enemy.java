@@ -323,10 +323,8 @@ public class Enemy extends Entity{
         }
         for(Tile t : tempTiles){
             if(line.intersects(t.getHitbox()) && t.isSolid())
-//                System.out.println("false");
                 return false;
         }
-//        System.out.println("true");
         return true;
     }
     @Override

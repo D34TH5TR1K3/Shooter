@@ -64,7 +64,7 @@ public class Item extends Entity{
                 bulletSpeed = 25;
                 rpm = 400;
                 reloadTime = 90;
-                offset = 70;
+                offset = 100;
                 break;
             case 4:
                 //Silenced Pistol
@@ -235,36 +235,34 @@ public class Item extends Entity{
                 case 1:
                     ammo++;
                     Sound.play("Uzi");
-                    //level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
-
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
-                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 3, handler, level));
+                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
+                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 3, handler, level));
                     break;
                 case 2:
                     ammo++;
                     Sound.play("Uzi");
-                    //level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
-
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
-                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 3, handler, level));
+                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
+                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 3, handler, level));
                     break;
                 case 3:
                     Sound.play("Uzi");
-                    level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
-
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
+                    level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
+                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
+                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class) ? 2 : 1), handler, level));
                     break;
                 case 4:
                     Sound.play("Uzi");
                     level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
-
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
+                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
+                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
                     break;
                 case 5:
                     Sound.play("Uzi");
@@ -273,7 +271,8 @@ public class Item extends Entity{
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI -2)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI -2)) * offset);
                     float dirOffset_uzi = (float) (Math.random() * 8);
-                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
+                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
+                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
                     break;
                 case 6:
                     Sound.play("Ak");
@@ -281,7 +280,8 @@ public class Item extends Entity{
 
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
+                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
+                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
 
                     break;
                 case 7:
@@ -290,9 +290,11 @@ public class Item extends Entity{
 
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    for (int i = 0; i < 6; i++) {
-                        float dirOffset_shotgun = (float) (Math.random() * 20);
-                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180 - 10 + dirOffset_shotgun, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
+                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY)) {
+                        for (int i = 0; i < 6; i++) {
+                            float dirOffset_shotgun = (float) (Math.random() * 20);
+                            level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180 - 10 + dirOffset_shotgun, bulletSpeed, (activator.getClass().equals(Enemy.class) ? 2 : 1), handler, level));
+                        }
                     }
                     break;
                 case 8:
