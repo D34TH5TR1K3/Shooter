@@ -135,9 +135,22 @@ public class Player extends Entity{
             velY++;
         else if(!handler.getKeyManager().down && !handler.getKeyManager().up)
             velY = 0;
-        if(velX != 0 || velY != 0) {
+        if(velX != 0 || velY != 0 ||moveW || moveA || moveS || moveD) {
+            if(moveA) {
+                velY = 0;
+                velX = -2;
+            }else if(moveD){
+                velY = 0;
+                velX = 2;
+            }else if(moveS){
+                velY = 2;
+                velX = 0;
+            }else if(moveW){
+                velY = -2;
+                velX = 0;
+            }
             hitbox.setLocation(((int) (posX - 35 + velX)), ((int) (posY - 35 + velY)));
-            if (!level.collisionCheck(hitbox)) {
+            if (!level.collisionCheck(hitbox) || moveW || moveA || moveS || moveD) {
                 move(velX, velY);
                 moveDir = (float) (Math.toDegrees(Math.atan2(velY , velX)));
                 if(Arrays.asList(walkAnimations).contains(activeAnimation))
@@ -167,8 +180,8 @@ public class Player extends Entity{
             if(Arrays.asList(walkAnimations).contains(activeAnimation))
                 activeAnimation.stop();
         }
-
-        handler.getGameCamera().centerOnEntity(this);
+        if(!moveW && !moveA && !moveS && !moveD)
+            handler.getGameCamera().centerOnEntity(this);
     }
     //renders the Player
     @Override
@@ -248,4 +261,5 @@ public class Player extends Entity{
         moveS = false;
         moveD = false;
     }
+
 }

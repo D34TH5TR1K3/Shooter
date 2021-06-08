@@ -91,4 +91,10 @@ public abstract class Entity {
     public float getDir() { return dir; }
     public void setDir(float dir) { this.dir = dir; }
     public abstract String getData();
+    public void setPosX(float posX) {
+        this.posX = posX;
+    }
+    public void setPosY(float posY) {
+        this.posY = posY;
+    }
 }

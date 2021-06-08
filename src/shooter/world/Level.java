@@ -29,9 +29,16 @@ public class Level {
     private final BufferedImage[] map;
     //coordinates of the extraction point
     private final int posX, posY;
-
+    //coordinates of the start point
+    private final int xs, ys;
+    //activity of starting sequence
+    private boolean started = false;
+    //activity of extraction sequence
+    private boolean ended = false;
     //this constructor initializes the values
     public Level(int levelNumber, BufferedImage[] map, Handler handler,int posX, int posY) {
+        this.xs = 200;
+        this.ys = 200;
         this.levelNumber = levelNumber;
         tiles = new Tile[64*mapsize][36*mapsize];
         this.handler = handler;
@@ -45,13 +52,15 @@ public class Level {
     //ticks the entityManager and checks the condition of the level
     public void tick() {
         entityManager.tick();
-        checkLevelCondition();
-        if((entityManager.getPlayer().isMoveA() || entityManager.getPlayer().isMoveD() || entityManager.getPlayer().isMoveS() || entityManager.getPlayer().isMoveW())
-                && Math.abs(entityManager.getPlayer().getX()-posX)>100&& Math.abs(entityManager.getPlayer().getY()-posY)>100){
+        if(ended && (entityManager.getPlayer().isMoveA() || entityManager.getPlayer().isMoveD() || entityManager.getPlayer().isMoveS() || entityManager.getPlayer().isMoveW())
+                && (Math.abs(entityManager.getPlayer().getX()-posX)>300|| Math.abs(entityManager.getPlayer().getY()-posY)>300)){
             entityManager.getPlayer().resetMove();
             handler.getWorld().nextLevel();
-        }else{
-
+        } else if(!entityManager.getPlayer().isMoveA() && !entityManager.getPlayer().isMoveD() && !entityManager.getPlayer().isMoveS() && !entityManager.getPlayer().isMoveW())
+            checkLevelCondition();
+        if(entityManager.getPlayer().getX() == xs && entityManager.getPlayer().getY() == ys && !started){
+            entityManager.getPlayer().resetMove();
+            started = true;
         }
     }
     //renders the map and the entityManager
@@ -60,6 +69,36 @@ public class Level {
         //renderTiles(g);
         entityManager.render(g);
         g.drawImage(map[2],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
+
+        if(ended) {
+            if (entityManager.getPlayer().isMoveA()) {
+                g.setColor(new Color(238, 238, 238));
+                g.fillRect(960 - 600, 540 - 200, 400, 400);
+            } else if (entityManager.getPlayer().isMoveD()) {
+                g.setColor(new Color(238, 238, 238));
+                g.fillRect(960 + 200, 540 - 200, 400, 400);
+            } else if (entityManager.getPlayer().isMoveS()) {
+                g.setColor(new Color(238, 238, 238));
+                g.fillRect(960 - 200, 540 + 200, 400, 400);
+            } else if (entityManager.getPlayer().isMoveW()) {
+                g.setColor(new Color(238, 238, 238));
+                g.fillRect(960 - 200, 540 - 600, 400, 400);
+            }
+        }else if(!started) {
+            if (entityManager.getPlayer().isMoveD()) {
+                g.setColor(new Color(238, 238, 238));
+                g.fillRect(960 - 600, 540 - 200, 400, 400);
+            } else if (entityManager.getPlayer().isMoveA()) {
+                g.setColor(new Color(238, 238, 238));
+                g.fillRect(960 + 200, 540 - 200, 400, 400);
+            } else if (entityManager.getPlayer().isMoveW()) {
+                g.setColor(new Color(238, 238, 238));
+                g.fillRect(960 - 200, 540 + 200, 400, 400);
+            } else if (entityManager.getPlayer().isMoveS()) {
+                g.setColor(new Color(238, 238, 238));
+                g.fillRect(960 - 200, 540 - 600, 400, 400);
+            }
+        }
         g.drawImage(Assets.overlay, 1920 - 239, 1080 - 92,null);
         if(entityManager.getPlayer().getItem() != null) {
             int x = 1820;
@@ -111,11 +150,42 @@ public class Level {
             g.drawString("unarmed",1750,1070);
         }
     }
+    //makes the player enter the level
+    public void start(){
+        String dir = "S";
+        entityManager.getPlayer().setPosX(xs);
+        entityManager.getPlayer().setPosY(ys);
+        handler.getGameCamera().centerOnEntity(entityManager.getPlayer());
+        switch(dir){
+            case "W":
+                entityManager.getPlayer().setPosX(xs);
+                entityManager.getPlayer().setPosY(ys+300);
+                entityManager.getPlayer().setMoveTrue("W");
+                break;
+            case "A":
+                entityManager.getPlayer().setPosX(xs+300);
+                entityManager.getPlayer().setPosY(ys);
+                entityManager.getPlayer().setMoveTrue("A");
+                break;
+            case "S":
+                entityManager.getPlayer().setPosX(xs);
+                entityManager.getPlayer().setPosY(ys-300);
+                entityManager.getPlayer().setMoveTrue("S");
+                break;
+            case "D":
+                entityManager.getPlayer().setPosX(xs-300);
+                entityManager.getPlayer().setPosY(ys);
+                entityManager.getPlayer().setMoveTrue("D");
+                break;
+        }
+    }
     //makes player animation to walk to another level
     public void vanish(){
-
-        entityManager.getPlayer().setMoveTrue("A");
-
+        entityManager.getPlayer().setPosX(posX);
+        entityManager.getPlayer().setPosY(posY);
+        handler.getGameCamera().centerOnEntity(entityManager.getPlayer());
+        entityManager.getPlayer().setMoveTrue("D");
+        ended = true;
     }
     //method to fill the world with information from a LevelFile
     public void fillWorld(Player player, ArrayList<Entity> enemies) {
@@ -198,15 +268,14 @@ public class Level {
     //method to check and load next level
     public void checkLevelCondition(){
         boolean nextLevel = true;
-    for (Entity e : getEntityManager().getEnemies()){
-        if(((Enemy) e).getActive()) {
-            nextLevel = false;
-            break;
+        for (Entity e : getEntityManager().getEnemies()){
+            if(((Enemy) e).getActive()) {
+                nextLevel = false;
+                break;
+            }
         }
-    }
-    if(nextLevel && Math.abs(entityManager.getPlayer().getX()-posX)<600&& Math.abs(entityManager.getPlayer().getY()-posY)<600)
-    if(nextLevel)
-        vanish();
+        if(nextLevel && Math.abs(entityManager.getPlayer().getX()-posX)<600&& Math.abs(entityManager.getPlayer().getY()-posY)<600)
+            vanish();
     }
     //TODO: change distance to extractionpoint
     //method to check if the Rectangle collides with the Player

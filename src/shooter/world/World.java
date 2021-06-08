@@ -39,6 +39,7 @@ public class World {
     //sets the next level active
     public void nextLevel(){
         activeLevel=levels[(activeLevelNumber==0)?activeLevel.getLevelNumber()+1:++activeLevelNumber];
+        activeLevel.start();
     }
 
     //getters and setters
