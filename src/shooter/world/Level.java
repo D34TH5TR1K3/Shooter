@@ -30,15 +30,18 @@ public class Level {
     //coordinates of the extraction point
     private final int posX, posY;
     //coordinates of the start point
-    private final int xs, ys;
+    private int xs;
+    private int ys;
     //activity of starting sequence
     private boolean started = false;
     //activity of extraction sequence
     private boolean ended = false;
+    //from which way the player enters the map
+    int extractionDir, startDir;
     //this constructor initializes the values
-    public Level(int levelNumber, BufferedImage[] map, Handler handler,int posX, int posY) {
-        this.xs = 200;
-        this.ys = 200;
+    public Level(int levelNumber, BufferedImage[] map, Handler handler,int posX, int posY, int extractionDir, int startDir) {
+        this.extractionDir = extractionDir;
+        this.startDir = startDir;
         this.levelNumber = levelNumber;
         tiles = new Tile[64*mapsize][36*mapsize];
         this.handler = handler;
@@ -70,7 +73,7 @@ public class Level {
         entityManager.render(g);
         g.drawImage(map[2],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
 
-        if(ended) {
+        if(ended && levelNumber != 3) {
             if (entityManager.getPlayer().isMoveA()) {
                 g.setColor(new Color(238, 238, 238));
                 g.fillRect(960 - 600, 540 - 200, 400, 400);
@@ -152,31 +155,30 @@ public class Level {
     }
     //makes the player enter the level
     public void start(){
-        String dir = "S";
         entityManager.getPlayer().setPosX(xs);
         entityManager.getPlayer().setPosY(ys);
         handler.getGameCamera().centerOnEntity(entityManager.getPlayer());
-        switch(dir){
-            case "W":
+        switch (startDir) {
+            case 1 -> {
                 entityManager.getPlayer().setPosX(xs);
-                entityManager.getPlayer().setPosY(ys+300);
-                entityManager.getPlayer().setMoveTrue("W");
-                break;
-            case "A":
-                entityManager.getPlayer().setPosX(xs+300);
+                entityManager.getPlayer().setPosY(ys + 300);
+                entityManager.getPlayer().setMoveTrue(1);
+            }
+            case 2 -> {
+                entityManager.getPlayer().setPosX(xs + 300);
                 entityManager.getPlayer().setPosY(ys);
-                entityManager.getPlayer().setMoveTrue("A");
-                break;
-            case "S":
+                entityManager.getPlayer().setMoveTrue(2);
+            }
+            case 3 -> {
                 entityManager.getPlayer().setPosX(xs);
-                entityManager.getPlayer().setPosY(ys-300);
-                entityManager.getPlayer().setMoveTrue("S");
-                break;
-            case "D":
-                entityManager.getPlayer().setPosX(xs-300);
+                entityManager.getPlayer().setPosY(ys - 300);
+                entityManager.getPlayer().setMoveTrue(3);
+            }
+            case 4 -> {
+                entityManager.getPlayer().setPosX(xs - 300);
                 entityManager.getPlayer().setPosY(ys);
-                entityManager.getPlayer().setMoveTrue("D");
-                break;
+                entityManager.getPlayer().setMoveTrue(4);
+            }
         }
     }
     //makes player animation to walk to another level
@@ -184,12 +186,14 @@ public class Level {
         entityManager.getPlayer().setPosX(posX);
         entityManager.getPlayer().setPosY(posY);
         handler.getGameCamera().centerOnEntity(entityManager.getPlayer());
-        entityManager.getPlayer().setMoveTrue("D");
+        entityManager.getPlayer().setMoveTrue(extractionDir);
         ended = true;
     }
     //method to fill the world with information from a LevelFile
     public void fillWorld(Player player, ArrayList<Entity> enemies) {
         entityManager.setPlayer(player);
+        xs = (int)player.getX();
+        ys = (int)player.getY();
         for(Entity e:enemies) {
             entityManager.addEntity(e);
         }

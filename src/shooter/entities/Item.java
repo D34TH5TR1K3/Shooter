@@ -220,6 +220,10 @@ public class Item extends Entity{
     }
     //method to pick an item up
     public void pick_up(Entity activator){
+        if(type > 2)
+            Sound.play("LoadGun");
+        else if(type == 1 || type == 2)
+            Sound.play("DrawKnife");
         active = false;
         posX = activator.getX();
         posY = activator.getY();
@@ -234,7 +238,7 @@ public class Item extends Entity{
             switch(type) {
                 case 1:
                     ammo++;
-                    Sound.play("Uzi");
+                    Sound.play("Knife");
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
@@ -242,7 +246,7 @@ public class Item extends Entity{
                     break;
                 case 2:
                     ammo++;
-                    Sound.play("Uzi");
+                    Sound.play("Machete");
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))

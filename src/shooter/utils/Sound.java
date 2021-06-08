@@ -16,12 +16,23 @@ public class Sound {
     //indicates whether Background music is active
     private static boolean BgActive = false;
     //sounds distributes the Files with SFX
-    private static final Map<String,File> sounds = Map.of(
-            "Shotgun", new File("res/sound/Shotgun.wav"),
-            "RocketExplode", new File("res/sound/RocketExplode.wav"),
-            "RocketLaunch", new File("res/sound/RocketLaunch.wav"),
-            "Uzi", new File("res/sound/Uzi.wav"),
-            "Ak", new File("res/sound/AK.wav")
+    private static final Map<String,File> sounds = Map.ofEntries(
+        Map.entry("Shotgun", new File("res/sound/Shotgun.wav")),
+        Map.entry("RocketExplode", new File("res/sound/RocketExplode.wav")),
+        Map.entry("RocketLaunch", new File("res/sound/RocketLaunch.wav")),
+        Map.entry("Uzi", new File("res/sound/Uzi.wav")),
+        Map.entry("Ak", new File("res/sound/AK.wav")),
+        Map.entry("Machete", new File("res/sound/sound_machete.wav")),
+        Map.entry("Knife", new File("res/sound/sound_knife.wav")),
+        Map.entry("LoadGun", new File("res/sound/sound_loadGun.wav")),
+        Map.entry("InsertShell", new File("res/sound/sound_insertShell.wav")),
+        Map.entry("Hit1", new File("res/sound/sound_hit_1.wav")),
+        Map.entry("Hit2", new File("res/sound/sound_hit_2.wav")),
+        Map.entry("Hit3", new File("res/sound/sound_hit_3.wav")),
+        Map.entry("Hit4", new File("res/sound/sound_hit_4.wav")),
+        Map.entry("Hit5", new File("res/sound/sound_hit_5.wav")),
+        Map.entry("DrawKnife", new File("res/sound/sound_drawKnife.wav"))
+
     );
     //songs distributes the Files with Background music
     private static final File[] songs = {

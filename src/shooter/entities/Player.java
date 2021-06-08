@@ -164,7 +164,7 @@ public class Player extends Entity{
                         activeAnimation.start();
                     legAnimation.start();
                 } else {
-                    hitbox.setLocation(((int) (posX - 35)), ((int) (posY - 35)));
+                    hitbox.setLocation(((int) (posX - 35)), ((int) (posY - 35 + velY)));
                     if (!level.collisionCheck(hitbox)) {
                         move(0, velY);
                         if(Arrays.asList(walkAnimations).contains(activeAnimation))
@@ -197,6 +197,8 @@ public class Player extends Entity{
         g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-activeAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-activeAnimation.getyOffset()*3-handler.getyOffset()), activeAnimation.getWidth()*3, activeAnimation.getHeight()*3, null);
 
         g2d.setTransform(reset);
+        //g.setColor(Color.cyan);
+        //g.fillRect((int)(hitbox.getX() - handler.getxOffset()), (int)(hitbox.getY()-handler.getyOffset()), (int)hitbox.getWidth(), (int)hitbox.getHeight());
     }
 
     //lets the player die and resets the Level
@@ -211,18 +213,18 @@ public class Player extends Entity{
     public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+((item != null) ? item.getType()+","+item.getAmmo() : 0+","+0)); }
     public Rectangle getHitbox(){ return hitbox; }
     public boolean isAlive(){ return alive; }
-    public void setMoveTrue(String dir) {
+    public void setMoveTrue(int dir) {
         switch(dir){
-            case "W":
+            case 1:
                 moveW = true;
                 break;
-            case "A":
+            case 2:
                 moveA = true;
                 break;
-            case "S":
+            case 3:
                 moveS = true;
                 break;
-            case "D":
+            case 4:
                 moveD = true;
                 break;
         }
