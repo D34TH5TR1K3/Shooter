@@ -18,7 +18,17 @@ public class World {
     //this constructor initializes the values
     public World(Handler handler) {
         this.handler = handler;
-        levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler), Writer.loadLevel(3,handler), Writer.loadLevel(4,handler), Writer.loadLevel(5,handler)};
+        levels = new Level[]{
+                Writer.loadGameSave(handler),
+                Writer.loadLevel(1,handler),
+                Writer.loadLevel(2,handler),
+                Writer.loadLevel(3,handler),
+                Writer.loadLevel(4,handler),
+                Writer.loadLevel(5,handler),
+                Writer.loadLevel(6,handler),
+                Writer.loadLevel(7,handler),
+                Writer.loadLevel(8,handler)
+        };
         activeLevel = levels[activeLevelNumber];
     }
 
@@ -33,16 +43,27 @@ public class World {
 
     //reloads the Levels
     public void reloadLevels(){
-        levels = new Level[]{Writer.loadGameSave(handler), Writer.loadLevel(1,handler), Writer.loadLevel(2,handler), Writer.loadLevel(3,handler), Writer.loadLevel(4,handler), Writer.loadLevel(5,handler)};
-         activeLevel = levels[activeLevel.getLevelNumber()];
+        levels = new Level[]{
+                Writer.loadGameSave(handler),
+                Writer.loadLevel(1,handler),
+                Writer.loadLevel(2,handler),
+                Writer.loadLevel(3,handler),
+                Writer.loadLevel(4,handler),
+                Writer.loadLevel(5,handler),
+                Writer.loadLevel(6,handler),
+                Writer.loadLevel(7,handler),
+                Writer.loadLevel(8,handler)
+        };
+        activeLevel = levels[activeLevel.getLevelNumber()];
     }
     //sets the next level active
     public void nextLevel(){
-        activeLevel=levels[(activeLevelNumber==0)?activeLevel.getLevelNumber()+1:++activeLevelNumber];
+        activeLevel=levels[(activeLevelNumber==0)?activeLevel.getLevelNumber()+1:activeLevelNumber+1];
+        activeLevelNumber++;
         activeLevel.start();
     }
 
     //getters and setters
     public Level getActiveLevel() { return activeLevel; }
-    public void setLevel(int num) { activeLevel = levels[num]; }
+    public void setLevel(int num) { activeLevel = levels[num]; activeLevelNumber = num; }
 }

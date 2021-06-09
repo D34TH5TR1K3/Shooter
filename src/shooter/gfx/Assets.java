@@ -128,7 +128,7 @@ public class Assets {
         for(int x = 0; x < 8; x++)
             enemy_walk_mp[x] = sprite_24.crop(x * 32, 0 * 24, 32, 24);
         for(int x = 0; x < 8; x++)
-            enemy_walk_silencer[x] = sprite_24.crop(x * 45, 0 * 24, 45, 24);
+            enemy_walk_silencer[x] = sprite_24.crop(x * 45, 2 * 24, 45, 24);
 
         for(int x = 0; x < 9; x++)
             enemy_attack_knife[x] = sprite_45.crop(x * 45, 5 * 45, 45, 45);
@@ -137,7 +137,7 @@ public class Assets {
         for(int x = 0; x < 2; x++)
             enemy_attack_mp[x] = sprite_24.crop(8*32 + x * 40, 0 * 24, 40, 24);
         for(int x = 0; x < 2; x++)
-            enemy_attack_silencer[x] = sprite_24.crop(x * 45, 2 * 24, 45, 24);
+            enemy_attack_silencer[x] = sprite_24.crop((8+x) * 45, 2 * 24, 45, 24);
         for(int x = 0; x < 6; x++)
             enemy_die_knife[x] = sprite_40.crop(x * 60, 0 * 40, 60, 40);
 

@@ -7,6 +7,6 @@ SFX Volume,93.0
 Player Movement Speed,63.0
 Player Bullet Speed,77.0
 Enemy Movement Speed,50.0
-Enemy Bullet Speed,5.0
+Enemy Bullet Speed,30.0
 Enemy Reload Speed,10.0
-Enemy Line Of Sight,50.0
+Enemy Line Of Sight,100.0

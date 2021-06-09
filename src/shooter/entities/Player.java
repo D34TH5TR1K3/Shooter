@@ -198,7 +198,7 @@ public class Player extends Entity{
             g2d.drawImage(activeAnimation.getCurrentFrame(), (int) (posX - activeAnimation.getxOffset() * 3 - handler.getxOffset()), (int) (posY - activeAnimation.getyOffset() * 3 - handler.getyOffset()), activeAnimation.getWidth() * 3, activeAnimation.getHeight() * 3, null);
         }else{
             g2d.rotate(Math.toRadians(dir+180), posX - handler.getxOffset(), posY - handler.getyOffset());
-            System.out.println(deathImage);
+            //System.out.println(deathImage);
             g2d.drawImage(Assets.player_die[deathImage], (int) (posX - 25 * 3 - handler.getxOffset()), (int) (posY - 16 * 3 - handler.getyOffset()), 60 * 3, 32 * 3, null);
         }
         g2d.setTransform(reset);
@@ -207,6 +207,9 @@ public class Player extends Entity{
     }
     //lets the player die and resets the Level
     public void die() {
+        if (item == null) return;
+        else if (getItem().getType() == 1&&Math.random()>0.2) return;
+        else if (getItem().getType() == 2&&Math.random()>0.1) return;
         alive = false;
         deathImage = (int)(Math.random() * 4);
         LoadingImage.renderDeathScreen();
