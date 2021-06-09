@@ -4,7 +4,7 @@ SFX,1.0
 Music,1.0
 Music Volume,100.0
 SFX Volume,100.0
-Player Movement Speed,50.0
+Player Movement Speed,100.0
 Player Bullet Speed,50.0
 Enemy Movement Speed,50.0
 Enemy Bullet Speed,20.0

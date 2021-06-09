@@ -194,12 +194,15 @@ public class Player extends Entity{
     }
     //lets the player die and resets the Level
     public void die() {
+        /*
         if (item == null) return;
         else if (getItem().getType() == 1&&Math.random()>0.2) return;
         else if (getItem().getType() == 2&&Math.random()>0.1) return;
         alive = false;
         deathImage = (int)(Math.random() * 4);
         LoadingImage.renderDeathScreen();
+
+         */
     }
     //getters and setters
     public Item getItem(){ return item; }

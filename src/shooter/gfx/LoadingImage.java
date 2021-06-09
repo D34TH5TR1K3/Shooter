@@ -8,7 +8,7 @@ public class LoadingImage {
     //loadingImage saves the Image to be rendered while the game is starting
     private static final BufferedImage loadingImage = ImageLoader.loadImage("/textures/loadingImage.png");
     private static final BufferedImage deathScreenImage = ImageLoader.loadImage("/textures/deathScreenImage.png");
-    private static final BufferedImage specialThanksImage = ImageLoader.loadImage("/textures/specialThanksImage.png");
+    private static final BufferedImage creditsImage = ImageLoader.loadImage("/textures/Credits.png");
     private static Display display;
 
     //render renders the loadingImage to the Screen
@@ -44,7 +44,7 @@ public class LoadingImage {
         }
     }
     //renders the Special Thanks scene
-    public static void renderSpecialThanks() {
+    public static void renderCredits() {
         for(int i = 0; i < 3 ; i++) {
             BufferStrategy bs = display.getCanvas().getBufferStrategy();
             if (bs == null){
@@ -52,7 +52,7 @@ public class LoadingImage {
                 return;
             }
             Graphics g = bs.getDrawGraphics();
-            g.drawImage(specialThanksImage,0,0,null);
+            g.drawImage(creditsImage,0,0,null);
             bs.show();
             g.dispose();
         }
