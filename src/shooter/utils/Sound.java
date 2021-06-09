@@ -36,12 +36,8 @@ public class Sound {
     );
     //songs distributes the Files with Background music
     private static final File[] songs = {
-            new File("res/sound/110.wav"),
-            new File("res/sound/Abyss.wav"),
-            new File("res/sound/HotlineTheme.wav"),
-            new File("res/sound/Reihe.wav"),
-            new File("res/sound/sxtn.wav"),
-            new File("res/sound/Vermissen.wav")
+            new File("res/sound/benesound-house.mp3"),
+            new File("res/sound/benesound-scifi.mp3"),
     };
 
     //empty constructor
