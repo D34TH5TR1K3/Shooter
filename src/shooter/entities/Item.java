@@ -3,9 +3,12 @@ package shooter.entities;
 import shooter.Handler;
 import shooter.gfx.Assets;
 import shooter.utils.Sound;
+import shooter.utils.Timer;
 import shooter.world.Level;
 
 import java.awt.*;
+
+import static shooter.gfx.Display.fraktur;
 
 public class Item extends Entity{
     //indicates whether an item is visible
@@ -36,7 +39,10 @@ public class Item extends Entity{
     private short offset = 1;
     //indicates whether an item is melee
     private boolean melee = false;
-
+    //times how long melee attack does damage
+    private Timer meeleTimer;
+    //entity that activated the item
+    private Entity activator;
     //this constructor initializes the values
     public Item(float posX, float posY, int type, Handler handler, Level level) {
         super(posX,posY,2, handler, level);
@@ -118,7 +124,19 @@ public class Item extends Entity{
 
     //ticks nothing
     @Override
-    public void tick() { }
+    public void tick() {
+        if(activator != null) {
+            float buX, buY;
+            buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
+            buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
+            if (meeleTimer != null && meeleTimer.valid() && !level.lineCollision((int) activator.getX(), (int) activator.getY(), (int) buX, (int) buY)) {
+                level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 3, handler, level));
+            } else {
+                meeleTimer = null;
+            }
+        }
+
+    }
     //renders the item if it is active
     @Override
     public void render(Graphics g) {
@@ -230,6 +248,7 @@ public class Item extends Entity{
     }
     //method to use an item
     public void activate(Entity activator) {
+        this.activator = activator;
         float buX, buY;
         long now = System.currentTimeMillis();
         if(ammo!=0&&now-lastTime>bulletDelay) {
@@ -241,8 +260,9 @@ public class Item extends Entity{
                     Sound.play("Knife");
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
-                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
-                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 3, handler, level));
+                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY)) {
+                        meeleTimer = new Timer(600);
+                    }
                     break;
                 case 2:
                     ammo++;
@@ -250,7 +270,7 @@ public class Item extends Entity{
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
-                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, 3, handler, level));
+                        meeleTimer = new Timer(600);
                     break;
                 case 3:
                     Sound.play("Uzi");
