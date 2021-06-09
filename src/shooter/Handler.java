@@ -16,12 +16,35 @@ public class Handler {
     }
 
     //Getters und Setters
-    public Game getGame() { return game; }
-    public void setWorld(World world) { this.world = world; }
-    public World getWorld() { return world; }
-    public KeyManager getKeyManager() { return game.getKeyManager(); }
-    public MouseManager getMouseManager() { return game.getMouseManager(); }
-    public GameCamera getGameCamera() { return game.getGameCamera(); }
-    public float getxOffset(){ return game.getGameCamera().getxOffset(); }
-    public float getyOffset(){ return game.getGameCamera().getyOffset(); }
+    public Game getGame() {
+        return game;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    public KeyManager getKeyManager() {
+        return game.getKeyManager();
+    }
+
+    public MouseManager getMouseManager() {
+        return game.getMouseManager();
+    }
+
+    public GameCamera getGameCamera() {
+        return game.getGameCamera();
+    }
+
+    public float getxOffset() {
+        return game.getGameCamera().getxOffset();
+    }
+
+    public float getyOffset() {
+        return game.getGameCamera().getyOffset();
+    }
 }
