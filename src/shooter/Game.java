@@ -10,6 +10,7 @@ import shooter.states.GameState;
 import shooter.states.MenuState;
 import shooter.states.State;
 import shooter.utils.Sound;
+import shooter.utils.Timer;
 import shooter.utils.Writer;
 
 import java.awt.*;
@@ -31,7 +32,8 @@ public class Game implements Runnable {
     private final MouseManager mouseManager;
     //gameCamera is responsible for the users viewport
     private final GameCamera gameCamera;
-
+    //timer for deleting text
+    private Timer timer_save;
     //this constructor initializes the values
     public Game() {
         keyManager = new KeyManager();
@@ -60,8 +62,10 @@ public class Game implements Runnable {
             handler.getWorld().reloadLevels();
         State.getState().tick();
         Sound.tick();
-        if(keyManager.save)
+        if(keyManager.save) {
             Writer.writeGameSave(handler.getWorld().getActiveLevel());
+            timer_save = new Timer(2000);
+        }
         if(keyManager.load)
             handler.getWorld().setLevel(0);
         if(keyManager.wipe)
@@ -89,6 +93,12 @@ public class Game implements Runnable {
     public GameCamera getGameCamera() { return gameCamera; }
     public KeyManager getKeyManager() { return keyManager; }
     public MouseManager getMouseManager() { return mouseManager; }
+    public Timer getTimer_save() {
+        return timer_save;
+    }
+    public void setTimer_save(Timer timer_save) {
+        this.timer_save = timer_save;
+    }
 
     //methods required for the Thread logic to work properly
     public void run() {

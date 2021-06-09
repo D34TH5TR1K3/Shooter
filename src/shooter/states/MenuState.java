@@ -5,10 +5,13 @@ import shooter.Handler;
 import shooter.gfx.Assets;
 import shooter.gfx.Menu;
 import shooter.utils.Sound;
+import shooter.utils.Timer;
 import shooter.utils.Writer;
 import shooter.world.World;
 
 import java.awt.*;
+
+import static shooter.gfx.Display.fraktur;
 
 public class MenuState extends State {
     //instances of menus
@@ -17,7 +20,8 @@ public class MenuState extends State {
     private Menu activeMenu;
     //saves the World to access Saves and Levels
     private final World world;
-
+    //timer to make text disappear
+    Timer timer_save;
     //this constructor initializes the values
     public MenuState(Game game, Handler handler){
         super(game,handler);
@@ -45,6 +49,7 @@ public class MenuState extends State {
             activeMenu = menu2;
         } else if(activeMenu.funcActive("Save Game")) {
             Writer.writeGameSave(world.getActiveLevel());
+            timer_save = new Timer(2000);
         } else if(activeMenu.funcActive("Exit")) {
             System.exit(0);
         } else if(activeMenu.funcActive("Back")) {
@@ -76,6 +81,8 @@ public class MenuState extends State {
             shooter.entities.Enemy.reloadspeed = menu2.getSliderValue("Enemy Reload Speed") / 10;
         } else if(activeMenu.funcActive("Enemy Line Of Sight")) {
             shooter.entities.Enemy.LOSdist = menu2.getSliderValue("Enemy Line Of Sight") * 10;
+        } else{
+            return;
         }
         menu2.saveSettings();
     }
@@ -83,5 +90,19 @@ public class MenuState extends State {
     @Override
     public void render(Graphics g){
         activeMenu.render(g);
+        if(timer_save != null && timer_save.valid()){
+            g.setColor(Color.cyan);
+            g.setFont(fraktur);
+            g.drawString("Current level saved",1550,300);
+        }else{
+            timer_save = null;
+        }
+        if(game.getTimer_save() != null && game.getTimer_save().valid()){
+            g.setColor(Color.cyan);
+            g.setFont(fraktur);
+            g.drawString("Current level saved",1550,300);
+        }else{
+            game.setTimer_save(null);
+        }
     }
 }
