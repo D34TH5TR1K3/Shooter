@@ -8,13 +8,12 @@ import shooter.world.Level;
 
 import java.awt.*;
 
-import static shooter.gfx.Display.fraktur;
-
-public class Item extends Entity{
-    //indicates whether an item is visible
-    private boolean visible = true;
+public class Item extends Entity {
     //saves the type of the item
     private final int type;
+    private final float bulletDelay;
+    //indicates whether an item is visible
+    private boolean visible = true;
     /*
     type in Form von Integern
     type 1: Handgun
@@ -32,7 +31,6 @@ public class Item extends Entity{
     private float rpm;
     //saves the time it takes to reload or use an item
     private short reloadTime;
-    private final float bulletDelay;
     //logical variable
     private long lastTime = 0;
     //saves the value of the offset between an item and a fired bullet
@@ -45,12 +43,13 @@ public class Item extends Entity{
     private Entity activator;
     //loudness of gun
     private int loudness = 0;
+
     //this constructor initializes the values
     public Item(float posX, float posY, int type, Handler handler, Level level) {
-        super(posX,posY,2, handler, level);
+        super(posX, posY, 2, handler, level);
         this.type = type;
         active = true;
-        switch(type) {
+        switch (type) {
             case 1:
                 //Knife
                 melee = true;
@@ -132,7 +131,7 @@ public class Item extends Entity{
     //ticks nothing
     @Override
     public void tick() {
-        if(activator != null) {
+        if (activator != null) {
             float buX, buY;
             buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
             buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
@@ -144,43 +143,44 @@ public class Item extends Entity{
         }
 
     }
+
     //renders the item if it is active
     @Override
     public void render(Graphics g) {
-        if(active){
-            switch(type) {
+        if (active) {
+            switch (type) {
                 case 1:
-                    g.drawImage(Assets.item_knife, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 80, 80, null);
+                    g.drawImage(Assets.item_knife, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 80, 80, null);
                     break;
                 case 2:
-                    g.drawImage(Assets.item_machete, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 70, 70, null);
+                    g.drawImage(Assets.item_machete, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 70, 70, null);
                     break;
                 case 3:
-                    g.drawImage(Assets.item_handgun, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 100, 100, null);
+                    g.drawImage(Assets.item_handgun, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 100, 100, null);
                     break;
                 case 4:
-                    g.drawImage(Assets.item_silencer, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 100, 100, null);
+                    g.drawImage(Assets.item_silencer, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 100, 100, null);
                     break;
                 case 5:
-                    if(ammo == 0)
-                        g.drawImage(Assets.item_uzi_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 100, 100, null);
+                    if (ammo == 0)
+                        g.drawImage(Assets.item_uzi_empty, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 100, 100, null);
                     else
-                        g.drawImage(Assets.item_uzi_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 100, 100, null);
+                        g.drawImage(Assets.item_uzi_full, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 100, 100, null);
                     break;
                 case 6:
-                    if(ammo == 0)
-                        g.drawImage(Assets.item_rifle_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 80, 80, null);
+                    if (ammo == 0)
+                        g.drawImage(Assets.item_rifle_empty, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 80, 80, null);
                     else
-                        g.drawImage(Assets.item_rifle_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 80, 80, null);
+                        g.drawImage(Assets.item_rifle_full, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 80, 80, null);
                     break;
                 case 7:
-                    g.drawImage(Assets.item_shotgun, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 80, 80, null);
+                    g.drawImage(Assets.item_shotgun, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 80, 80, null);
                     break;
                 case 8:
-                    if(ammo == 0)
-                    g.drawImage(Assets.item_rpg_empty, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                    if (ammo == 0)
+                        g.drawImage(Assets.item_rpg_empty, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 120, 120, null);
                     else
-                        g.drawImage(Assets.item_rpg_full, (int) (posX-handler.getxOffset()), (int) (posY-handler.getyOffset()), 120, 120, null);
+                        g.drawImage(Assets.item_rpg_full, (int) (posX - handler.getxOffset()), (int) (posY - handler.getyOffset()), 120, 120, null);
                     break;
                 default:
                     break;
@@ -190,45 +190,45 @@ public class Item extends Entity{
 
     //method to reload ammo (usage in a tick method required)
     public void reload() {
-        switch(type) {
+        switch (type) {
             case 3:
                 reloadTime--;
-                if(reloadTime == 0){
+                if (reloadTime == 0) {
                     ammo = 17;
                     reloadTime = 90;
                 }
                 break;
             case 4:
                 reloadTime--;
-                if(reloadTime == 0){
+                if (reloadTime == 0) {
                     ammo = 8;
                     reloadTime = 120;
                 }
                 break;
             case 5:
                 reloadTime--;
-                if(reloadTime == 0){
+                if (reloadTime == 0) {
                     ammo = 25;
                     reloadTime = 120;
                 }
                 break;
             case 6:
                 reloadTime--;
-                if(reloadTime == 0){
+                if (reloadTime == 0) {
                     ammo = 30;
                     reloadTime = 180;
                 }
                 break;
             case 7:
                 reloadTime--;
-                if(reloadTime == 0){
+                if (reloadTime == 0) {
                     ammo = 6;
                     reloadTime = 320;
                 }
                 break;
             case 8:
                 reloadTime--;
-                if(reloadTime == 0){
+                if (reloadTime == 0) {
                     ammo = 1;
                     reloadTime = 320;
                 }
@@ -237,15 +237,17 @@ public class Item extends Entity{
                 break;
         }
     }
+
     //method to drop an item
-    public void drop(Entity activator){
+    public void drop(Entity activator) {
         active = true;
         posX = activator.getX();
         posY = activator.getY();
     }
+
     //method to pick an item up
-    public void pick_up(Entity activator, boolean sound){
-        if(sound) {
+    public void pick_up(Entity activator, boolean sound) {
+        if (sound) {
             if (type > 2)
                 Sound.play("LoadGun");
             else if (type == 1 || type == 2)
@@ -255,21 +257,22 @@ public class Item extends Entity{
         posX = activator.getX();
         posY = activator.getY();
     }
+
     //method to use an item
     public void activate(Entity activator) {
         this.activator = activator;
         float buX, buY;
         long now = System.currentTimeMillis();
-        if(ammo!=0&&now-lastTime>bulletDelay) {
+        if (ammo != 0 && now - lastTime > bulletDelay) {
             lastTime = now;
             ammo--;
-            switch(type) {
+            switch (type) {
                 case 1:
                     ammo++;
                     Sound.play("Knife");
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
-                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY)) {
+                    if (!level.lineCollision((int) activator.getX(), (int) activator.getY(), (int) buX, (int) buY)) {
                         meeleTimer = new Timer(600);
                     }
                     break;
@@ -278,7 +281,7 @@ public class Item extends Entity{
                     Sound.play("Machete");
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * 60);
-                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
+                    if (!level.lineCollision((int) activator.getX(), (int) activator.getY(), (int) buX, (int) buY))
                         meeleTimer = new Timer(600);
                     break;
                 case 3:
@@ -286,7 +289,7 @@ public class Item extends Entity{
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
-                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
+                    if (!level.lineCollision((int) activator.getX(), (int) activator.getY(), (int) buX, (int) buY))
                         level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class) ? 2 : 1), handler, level));
                     break;
                 case 4:
@@ -294,18 +297,18 @@ public class Item extends Entity{
                     level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
-                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
+                    if (!level.lineCollision((int) activator.getX(), (int) activator.getY(), (int) buX, (int) buY))
+                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class) ? 2 : 1), handler, level));
                     break;
                 case 5:
                     Sound.play("Uzi");
                     level.getEntityManager().addEntity(new Particle(((int) (activator.getX())), ((int) (activator.getY())), activator.getDir(), Assets.shell, handler, level, 600));
 
-                    buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI -2)) * offset);
-                    buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI -2)) * offset);
+                    buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI - 2)) * offset);
+                    buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI - 2)) * offset);
                     float dirOffset_uzi = (float) (Math.random() * 8);
-                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
-                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
+                    if (!level.lineCollision((int) activator.getX(), (int) activator.getY(), (int) buX, (int) buY))
+                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180f - 4f + dirOffset_uzi, bulletSpeed, (activator.getClass().equals(Enemy.class) ? 2 : 1), handler, level));
                     break;
                 case 6:
                     Sound.play("Ak");
@@ -313,8 +316,8 @@ public class Item extends Entity{
 
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY))
-                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class)?2:1), handler, level));
+                    if (!level.lineCollision((int) activator.getX(), (int) activator.getY(), (int) buX, (int) buY))
+                        level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180, bulletSpeed, (activator.getClass().equals(Enemy.class) ? 2 : 1), handler, level));
 
                     break;
                 case 7:
@@ -323,7 +326,7 @@ public class Item extends Entity{
 
                     buX = activator.getX() + (float) (Math.cos(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
                     buY = activator.getY() + (float) (Math.sin(Math.toRadians(activator.dir + Math.PI + 0)) * offset);
-                    if(!level.lineCollision((int)activator.getX(), (int)activator.getY(), (int)buX, (int)buY)) {
+                    if (!level.lineCollision((int) activator.getX(), (int) activator.getY(), (int) buX, (int) buY)) {
                         for (int i = 0; i < 6; i++) {
                             float dirOffset_shotgun = (float) (Math.random() * 20);
                             level.getEntityManager().addEntity(new Bullet(buX, buY, activator.getDir() + 180 - 10 + dirOffset_shotgun, bulletSpeed, (activator.getClass().equals(Enemy.class) ? 2 : 1), handler, level));
@@ -341,14 +344,30 @@ public class Item extends Entity{
     }
 
     //getters and setters
-    public int getType() { return type; }
-    public int getAmmo(){ return ammo; }
-    public void setAmmo(int ammo){ this.ammo = ammo; }
-    public String getData(){ return ""; }
-    public boolean isMelee(){ return melee; }
+    public int getType() {
+        return type;
+    }
+
+    public int getAmmo() {
+        return ammo;
+    }
+
+    public void setAmmo(int ammo) {
+        this.ammo = ammo;
+    }
+
+    public String getData() {
+        return "";
+    }
+
+    public boolean isMelee() {
+        return melee;
+    }
+
     public int getAmmoMax() {
         return ammoMax;
     }
+
     public int getLoudness() {
         return loudness;
     }

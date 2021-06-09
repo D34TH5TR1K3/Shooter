@@ -11,7 +11,9 @@ public class KeyManager implements KeyListener {
     public boolean esc, reload;
 
     //this constructor initializes the values
-    public KeyManager() { keys = new boolean[256]; }
+    public KeyManager() {
+        keys = new boolean[256];
+    }
 
     //ticks the values of the functional keys
     public void tick() {
@@ -26,14 +28,17 @@ public class KeyManager implements KeyListener {
     //methods required for the KeyListener logic to work properly
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() >= 0 && e.getKeyCode() <=255)
+        if (e.getKeyCode() >= 0 && e.getKeyCode() <= 255)
             keys[e.getKeyCode()] = true;
     }
+
     @Override
     public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() >= 0 && e.getKeyCode() <=255)
+        if (e.getKeyCode() >= 0 && e.getKeyCode() <= 255)
             keys[e.getKeyCode()] = false;
     }
+
     @Override
-    public void keyTyped(KeyEvent e) { }
+    public void keyTyped(KeyEvent e) {
+    }
 }

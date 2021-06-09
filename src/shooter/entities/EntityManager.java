@@ -21,13 +21,23 @@ public class EntityManager {
     public void tick() {
         player.tick();
         entities.addAll(tempEntities);
-        tempEntities.forEach((entity)->{if(entity.getClass().equals(Enemy.class))enemies.add(entity);});
+        tempEntities.forEach((entity) -> {
+            if (entity.getClass().equals(Enemy.class)) enemies.add(entity);
+        });
         tempEntities.clear();
         entities.removeAll(removeEntities);
-        tempEntities.forEach((entity)->{if(entity.getClass().equals(Enemy.class))enemies.remove(entity);});
+        tempEntities.forEach((entity) -> {
+            if (entity.getClass().equals(Enemy.class)) enemies.remove(entity);
+        });
         removeEntities.clear();
         entities.forEach(Entity::tick);
-        entities.forEach(entity->{if(entity.getClass().equals(Particle.class)){Particle p = (Particle) entity;if(p.getType()==0&&p.getAnimParticle().lastFrame()||p.getTimeLeftToLive()<1)removeEntity(entity);}});
+        entities.forEach(entity -> {
+            if (entity.getClass().equals(Particle.class)) {
+                Particle p = (Particle) entity;
+                if (p.getType() == 0 && p.getAnimParticle().lastFrame() || p.getTimeLeftToLive() < 1)
+                    removeEntity(entity);
+            }
+        });
     }
 
     //renders all entities
@@ -37,16 +47,30 @@ public class EntityManager {
         player.render(g);
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     //adds, removes and getters
-    public void setPlayer(Player player) { this.player = player; }
-    public Player getPlayer() { return player; }
-    public void addEntity(Entity entity) { tempEntities.add(entity); }
-    public void removeEntity(Entity entity) { removeEntities.add(entity); }
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void addEntity(Entity entity) {
+        tempEntities.add(entity);
+    }
+
+    public void removeEntity(Entity entity) {
+        removeEntities.add(entity);
+    }
+
     public Entity getClosestItem(float x, float y) {    //eine Methode um zu berechenen, welches Item am neahsten zum Spieler liegt
         float lowestDistance = 0;
         Entity closestEntity = null;
         ArrayList<Entity> items = new ArrayList<>();
-        entities.forEach((entity)->{if(entity.getClass().equals(Item.class))items.add(entity);});
+        entities.forEach((entity) -> {
+            if (entity.getClass().equals(Item.class)) items.add(entity);
+        });
         for (Entity item : items) {
             float dx = x - item.getX();
             float dy = y - item.getY();
@@ -61,5 +85,8 @@ public class EntityManager {
         else
             return null;
     }
-    public ArrayList<Entity> getEnemies() { return enemies; }
+
+    public ArrayList<Entity> getEnemies() {
+        return enemies;
+    }
 }

@@ -12,7 +12,7 @@ public class GameState extends State {
 
     //this constructor initializes the values
     public GameState(Game game, Handler handler) {
-        super(game,handler);
+        super(game, handler);
         world = new World(handler);
     }
 
@@ -21,6 +21,7 @@ public class GameState extends State {
     public void tick() {
         world.tick();
     }
+
     //renders the world
     @Override
     public void render(Graphics g) {
@@ -28,5 +29,7 @@ public class GameState extends State {
     }
 
     //getters and setters
-    public World getWorld(){ return world; }
+    public World getWorld() {
+        return world;
+    }
 }
