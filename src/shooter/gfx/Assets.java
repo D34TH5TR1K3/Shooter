@@ -5,15 +5,15 @@ import java.awt.image.BufferedImage;
 public class Assets {
     //saves the textures
     public static BufferedImage Map1_walls, shell, item_pistol, item_mp, item_shotgun_empty, item_shotgun_full, item_ak_empty, item_ak_full, enemy, map_temp, menu1, menu_layout1, menu2, menu_layout2, sliderKnob, player, map_1, map_1layout, Bullet;
-    public static BufferedImage player_die_shotgun, player_die_blunt, player_die_rifle, player_die_knife,
-                                enemy_die_shotgun, overlay, bullet_img, buckshot_img,
+    public static BufferedImage enemy_die_shotgun, overlay, bullet_img, buckshot_img,
                                 item_knife, item_machete, item_handgun, item_silencer, item_uzi_full, item_uzi_empty, item_rifle_empty, item_rifle_full, item_shotgun, item_rpg_empty, item_rpg_full;
     //saves the animations
-    public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1;//olds stuff
+    public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1;//old stuff
     public static BufferedImage[]
             player_legs, player_walk, player_walk_handgun, player_walk_uzi, player_walk_knife, player_walk_shotgun, player_walk_mp, player_walk_silencer, player_walk_machete,
             player_attack_unarmed, player_attack_handgun, player_attack_uzi, player_attack_knife, player_attack_shotgun, player_attack_mp, player_attack_silencer, player_attack_machete,
-            enemy_legs, enemy_walk_knife, enemy_walk_shotgun, enemy_walk_mp, enemy_walk_silencer, enemy_attack_knife, enemy_attack_shotgun, enemy_attack_silencer, enemy_attack_mp, enemy_die_knife;
+            enemy_legs, enemy_walk_knife, enemy_walk_shotgun, enemy_walk_mp, enemy_walk_silencer, enemy_attack_knife, enemy_attack_shotgun, enemy_attack_silencer, enemy_attack_mp, enemy_die_knife,
+            player_die;
     //saves the maps and their layouts
     public static BufferedImage[] maps = new BufferedImage[2];
 
@@ -40,6 +40,7 @@ public class Assets {
         item_rpg_empty = sprite_32.crop(7 * 32, 12 * 32, 160, 32);
         item_rpg_full = sprite_32.crop(7 * 32, 11 * 32, 160, 32);
 
+        player_die =                new BufferedImage[4];
         player_legs =               new BufferedImage[16];
 
         player_walk =               new BufferedImage[8];
@@ -60,10 +61,10 @@ public class Assets {
         player_attack_mp =          new BufferedImage[2];
         player_attack_silencer =    new BufferedImage[2];
 
-        player_die_blunt =          sprite_32.crop(0*60, 7*32, 60, 32);
-        player_die_knife =          sprite_32.crop(1*60, 7*32, 60, 32);
-        player_die_rifle =          sprite_32.crop(2*60, 7*32, 60, 32);
-        player_die_shotgun =        sprite_32.crop(3*60, 7*32, 60, 32);
+        player_die[0] =             sprite_32.crop(0*32*3, 7*32, 60, 32);
+        player_die[1] =             sprite_32.crop(1*32*3, 7*32, 60, 32);
+        player_die[2] =             sprite_32.crop(2*32*3, 7*32, 60, 32);
+        player_die[3] =             sprite_32.crop(3*32*3, 7*32, 60, 32);
 
         for(int x = 0; x < 16; x++)
             player_legs[x] = sprite_32.crop(x * 32, 0 * 32, 32, 32);

@@ -33,7 +33,8 @@ public class Player extends Entity{
     boolean moveW = false, moveA = false, moveS = false, moveD = false;
     //provides a variable to change Player speed
     public static float speed = new shooter.utils.Writer().getSettingValue("Player Movement Speed");
-
+    //which death image?
+    public int deathImage;
     //this constructor initializes the values
     public Player(int posX, int posY, float dir, int itemType, int ammo, Handler handler, Level level) {
         super(posX, posY, 4,dir, handler, level);
@@ -189,24 +190,27 @@ public class Player extends Entity{
         Graphics2D g2d = (Graphics2D)g;
         //g.fillRect((int)(posX-handler.getxOffset()), (int)(posY-handler.getyOffset()), 5, 5);//debugging player pos
         AffineTransform reset = g2d.getTransform();
-
-        g2d.rotate(Math.toRadians(moveDir), posX-handler.getxOffset(), posY-handler.getyOffset());
-        g2d.drawImage(legAnimation.getCurrentFrame(), (int)(posX-legAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-legAnimation.getyOffset()*3-handler.getyOffset()), legAnimation.getWidth()*3, legAnimation.getHeight()*3, null);
-        g2d.setTransform(reset);
-        g2d.rotate(Math.toRadians(dir), posX-handler.getxOffset(), posY-handler.getyOffset());
-        g2d.drawImage(activeAnimation.getCurrentFrame(), (int)(posX-activeAnimation.getxOffset()*3-handler.getxOffset()), (int)(posY-activeAnimation.getyOffset()*3-handler.getyOffset()), activeAnimation.getWidth()*3, activeAnimation.getHeight()*3, null);
-
+        if(alive) {
+            g2d.rotate(Math.toRadians(moveDir), posX - handler.getxOffset(), posY - handler.getyOffset());
+            g2d.drawImage(legAnimation.getCurrentFrame(), (int) (posX - legAnimation.getxOffset() * 3 - handler.getxOffset()), (int) (posY - legAnimation.getyOffset() * 3 - handler.getyOffset()), legAnimation.getWidth() * 3, legAnimation.getHeight() * 3, null);
+            g2d.setTransform(reset);
+            g2d.rotate(Math.toRadians(dir), posX - handler.getxOffset(), posY - handler.getyOffset());
+            g2d.drawImage(activeAnimation.getCurrentFrame(), (int) (posX - activeAnimation.getxOffset() * 3 - handler.getxOffset()), (int) (posY - activeAnimation.getyOffset() * 3 - handler.getyOffset()), activeAnimation.getWidth() * 3, activeAnimation.getHeight() * 3, null);
+        }else{
+            g2d.rotate(Math.toRadians(dir+180), posX - handler.getxOffset(), posY - handler.getyOffset());
+            System.out.println(deathImage);
+            g2d.drawImage(Assets.player_die[deathImage], (int) (posX - 25 * 3 - handler.getxOffset()), (int) (posY - 16 * 3 - handler.getyOffset()), 60 * 3, 32 * 3, null);
+        }
         g2d.setTransform(reset);
         //g.setColor(Color.cyan);
         //g.fillRect((int)(hitbox.getX() - handler.getxOffset()), (int)(hitbox.getY()-handler.getyOffset()), (int)hitbox.getWidth(), (int)hitbox.getHeight());
     }
-
     //lets the player die and resets the Level
     public void die() {
         alive = false;
+        deathImage = (int)(Math.random() * 4);
         LoadingImage.renderDeathScreen();
     }
-
     //getters and setters
     public Item getItem(){ return item; }
     public void setItem(Item item){ this.item = item; }

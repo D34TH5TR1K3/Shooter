@@ -4,6 +4,7 @@ import shooter.Handler;
 import shooter.gfx.Animation;
 import shooter.gfx.Assets;
 import shooter.utils.Sound;
+import shooter.utils.Timer;
 import shooter.world.Level;
 
 import java.awt.*;
@@ -19,7 +20,8 @@ public class Bullet extends Entity {
     public static boolean friendlyFire = new shooter.utils.Writer().getSettingValue("Friendly Fire") > 0;
     //provides variables to change the speed of the bullets
     public static float playerBulletSpeed = new shooter.utils.Writer().getSettingValue("Player Bullet Speed"), enemyBulletSpeed = new shooter.utils.Writer().getSettingValue("Enemy Bullet Speed");
-
+    //times how long melee attack does damage
+    private Timer meeleTimer;
     //this constructor initializes the values
     public Bullet(float posX, float posY, float dir, int speed, int type, Handler handler, Level level) {
         super(posX, posY,3, dir, handler, level);
@@ -33,6 +35,9 @@ public class Bullet extends Entity {
             case 0:
                 animation = new Animation(Assets.rocket,20);
                 break;
+            case 3:
+                meeleTimer = new Timer(1500);
+                break;
             default:
                 break;
         }
@@ -45,7 +50,6 @@ public class Bullet extends Entity {
             animation.tick();
 
         if(type == 3){
-            System.out.println(posX +"   "+posY);
             level.checkEnemyCollision(new Rectangle(((int) posX-50), ((int) posY-50), 100, 100), type);
             level.getEntityManager().removeEntity(this);
         }else {
@@ -68,7 +72,7 @@ public class Bullet extends Entity {
                 level.getEntityManager().removeEntity(this);
             }
             if (type == 2) {
-                //level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
+                level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10));
                 if (friendlyFire)
                     level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10), type);
             }
