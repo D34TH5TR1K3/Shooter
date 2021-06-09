@@ -82,6 +82,8 @@ public class Enemy extends Entity{
 
         this.alive = alive;
         if(this.alive==0) die(3);
+
+        legAnimation.stop();
     }
     //method to follow the trace found by pathfinding
     public void followTrace(ArrayList<Tile> trace){
@@ -283,7 +285,7 @@ public class Enemy extends Entity{
                 item.reload();
             }
             return;
-        }else
+        }else if(playerSpotted&&!lineOfSight())
             legAnimation.start();
         if(active) {
             hitbox.setLocation(((int) (posX - 35)), ((int) (posY - 35)));

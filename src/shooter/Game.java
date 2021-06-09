@@ -34,6 +34,8 @@ public class Game implements Runnable {
     private final GameCamera gameCamera;
     //timer for deleting text
     private Timer timer_save;
+    //toggles whether to display the credits
+    public boolean credits;
     //this constructor initializes the values
     public Game() {
         keyManager = new KeyManager();
@@ -54,8 +56,10 @@ public class Game implements Runnable {
     //tick is responsible for the logic of the game. all tick methods get called here
     public void tick() {
         keyManager.tick();
-        if(handler.getKeyManager().esc)
+        if(handler.getKeyManager().esc) {
             State.setState(handler.getGame().menuState);
+            credits = false;
+        }
         if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&!keyManager.reload&&State.getState().equals(gameState))
             return;
         else if(keyManager.reload)
@@ -73,7 +77,8 @@ public class Game implements Runnable {
         g.dispose();
         if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&State.getState().equals(gameState)){
             LoadingImage.renderDeathScreen();
-        }
+        } else if(credits)
+            LoadingImage.renderCredits();
     }
 
     //getters and setters

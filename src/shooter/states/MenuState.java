@@ -52,6 +52,8 @@ public class MenuState extends State {
             timer_save = new Timer(2000);
         } else if(activeMenu.funcActive("Exit")) {
             System.exit(0);
+        } else if(activeMenu.funcActive("Credits")){
+            handler.getGame().credits = true;
         } else if(activeMenu.funcActive("Back")) {
             activeMenu = menu1;
         } else if(activeMenu.funcActive("Friendly Fire")) {
