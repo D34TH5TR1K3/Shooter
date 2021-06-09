@@ -13,7 +13,9 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import static shooter.entities.Enemy.LOSdist;
 import static shooter.gfx.Display.fraktur;
+import static shooter.gfx.Display.frakturBig;
 
 public class Level {
     //indicates the number of the level
@@ -23,14 +25,12 @@ public class Level {
     private final byte mapsize = 2;
     //handler distributes variables
     private final Handler handler;
+    //entityManager organizes the Entities
+    private EntityManager entityManager;
     //saves the map and its layout
     private final BufferedImage[] map;
     //coordinates of the extraction point
     private final int posX, posY;
-    //from which way the player enters the map
-    int extractionDir, startDir;
-    //entityManager organizes the Entities
-    private EntityManager entityManager;
     //coordinates of the start point
     private int xs;
     private int ys;
@@ -40,13 +40,14 @@ public class Level {
     private boolean ended = false;
     //are enemies dead?
     private boolean enemiesDead;
-
+    //from which way the player enters the map
+    int extractionDir, startDir;
     //this constructor initializes the values
-    public Level(int levelNumber, BufferedImage[] map, Handler handler, int posX, int posY, int extractionDir, int startDir) {
+    public Level(int levelNumber, BufferedImage[] map, Handler handler,int posX, int posY, int extractionDir, int startDir) {
         this.extractionDir = extractionDir;
         this.startDir = startDir;
         this.levelNumber = levelNumber;
-        tiles = new Tile[64 * mapsize][36 * mapsize];
+        tiles = new Tile[64*mapsize][36*mapsize];
         this.handler = handler;
         entityManager = new EntityManager();
         this.map = map;
@@ -55,38 +56,36 @@ public class Level {
         fillTiles();
         fillHalfSolidTiles();
     }
-
     //ticks the entityManager and checks the condition of the level
     public void tick() {
         entityManager.tick();
-        if (ended && (entityManager.getPlayer().isMoveA() || entityManager.getPlayer().isMoveD() || entityManager.getPlayer().isMoveS() || entityManager.getPlayer().isMoveW())
-                && (Math.abs(entityManager.getPlayer().getX() - posX) > 300 || Math.abs(entityManager.getPlayer().getY() - posY) > 300)) {
+        if(ended && (entityManager.getPlayer().isMoveA() || entityManager.getPlayer().isMoveD() || entityManager.getPlayer().isMoveS() || entityManager.getPlayer().isMoveW())
+                && (Math.abs(entityManager.getPlayer().getX()-posX)>300|| Math.abs(entityManager.getPlayer().getY()-posY)>300)){
             entityManager.getPlayer().resetMove();
             handler.getWorld().nextLevel();
-        } else if (!entityManager.getPlayer().isMoveA() && !entityManager.getPlayer().isMoveD() && !entityManager.getPlayer().isMoveS() && !entityManager.getPlayer().isMoveW())
+        } else if(!entityManager.getPlayer().isMoveA() && !entityManager.getPlayer().isMoveD() && !entityManager.getPlayer().isMoveS() && !entityManager.getPlayer().isMoveW())
             checkLevelCondition();
-        if (entityManager.getPlayer().getX() == xs && entityManager.getPlayer().getY() == ys && !started) {
+        if(entityManager.getPlayer().getX() == xs && entityManager.getPlayer().getY() == ys && !started){
             entityManager.getPlayer().resetMove();
             started = true;
         }
     }
-
     //renders the map and the entityManager
     public void render(Graphics g) {
-        if (ended && levelNumber == 8) {
+        if(ended&&levelNumber==8){
             LoadingImage.renderCredits();
             return;
         }
-        g.drawImage(map[0], (int) (0 - handler.getGameCamera().getxOffset()), (int) (0 - handler.getGameCamera().getyOffset()), null);
+        g.drawImage(map[0],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
         //renderTiles(g);
         entityManager.render(g);
-        g.drawImage(map[2], (int) (0 - handler.getGameCamera().getxOffset()), (int) (0 - handler.getGameCamera().getyOffset()), null);
-        if (enemiesDead) {
+        g.drawImage(map[2],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
+        if(enemiesDead){
             g.setColor(Color.red);
             g.setFont(fraktur);
-            g.drawString("go here", (int) (posX - handler.getxOffset() - g.getFontMetrics(fraktur).stringWidth("go here") / 2), (int) (posY - handler.getyOffset()));
+            g.drawString("go here",(int)(posX- handler.getxOffset()-g.getFontMetrics(fraktur).stringWidth("go here")/2),(int)(posY- handler.getyOffset()));
         }
-        if (ended && levelNumber != 4) {
+        if(ended && levelNumber != 4) {
             if (entityManager.getPlayer().isMoveA()) {
                 g.setColor(new Color(238, 238, 238));
                 g.fillRect(960 - 600, 540 - 200, 400, 400);
@@ -100,7 +99,7 @@ public class Level {
                 g.setColor(new Color(238, 238, 238));
                 g.fillRect(960 - 200, 540 - 600, 400, 400);
             }
-        } else if (!started && levelNumber != 6) {
+        }else if(!started && levelNumber != 6) {
             if (entityManager.getPlayer().isMoveD()) {
                 g.setColor(new Color(238, 238, 238));
                 g.fillRect(960 - 600, 540 - 200, 400, 400);
@@ -115,8 +114,8 @@ public class Level {
                 g.fillRect(960 - 200, 540 - 600, 400, 400);
             }
         }
-        g.drawImage(Assets.overlay, 1920 - 239, 1080 - 92, null);
-        if (entityManager.getPlayer().getItem() != null) {
+        g.drawImage(Assets.overlay, 1920 - 239, 1080 - 92,null);
+        if(entityManager.getPlayer().getItem() != null) {
             int x = 1820;
             int y = 995;
             int x1 = 1780;
@@ -154,21 +153,20 @@ public class Level {
                 default:
                     break;
             }
-            float percentage = (float) entityManager.getPlayer().getItem().getAmmo() / (float) entityManager.getPlayer().getItem().getAmmoMax() * 69;
+            float percentage = (float)entityManager.getPlayer().getItem().getAmmo() / (float)entityManager.getPlayer().getItem().getAmmoMax() * 69;
             g.setColor(new Color(100, 67, 28));
             g.fillRect(x1, y1, 46, (int) (69 - percentage));
             g.setColor(Color.gray);
             g.setFont(fraktur);
-            g.drawString(Integer.toString(entityManager.getPlayer().getItem().getAmmo()), 1750, 1070);
-        } else {
+            g.drawString(Integer.toString(entityManager.getPlayer().getItem().getAmmo()),1750,1070);
+        }else{
             g.setColor(Color.gray);
             g.setFont(fraktur);
-            g.drawString("unarmed", 1750, 1070);
+            g.drawString("unarmed",1750,1070);
         }
     }
-
     //makes the player enter the level
-    public void start() {
+    public void start(){
         entityManager.getPlayer().setPosX(xs);
         entityManager.getPlayer().setPosY(ys);
         handler.getGameCamera().centerOnEntity(entityManager.getPlayer());
@@ -195,61 +193,55 @@ public class Level {
             }
         }
     }
-
     //makes player animation to walk to another level
-    public void vanish() {
+    public void vanish(){
         entityManager.getPlayer().setPosX(posX);
         entityManager.getPlayer().setPosY(posY);
         handler.getGameCamera().centerOnEntity(entityManager.getPlayer());
         entityManager.getPlayer().setMoveTrue(extractionDir);
         ended = true;
     }
-
     //method to fill the world with information from a LevelFile
     public void fillWorld(Player player, ArrayList<Entity> enemies) {
         entityManager.setPlayer(player);
-        xs = (int) player.getX();
-        ys = (int) player.getY();
-        for (Entity e : enemies) {
+        xs = (int)player.getX();
+        ys = (int)player.getY();
+        for(Entity e:enemies) {
             entityManager.addEntity(e);
         }
     }
-
     //method to create the Tiles and set whether they are solid
     public void fillTiles() {
-        for (short x = 0; x < 64 * mapsize; x++)
-            for (short y = 0; y < 36 * mapsize; y++) {
-                Color myColor = new Color(map[1].getRGB(x, y));
+        for(short x=0;x<64*mapsize;x++)
+            for(short y=0;y<36*mapsize;y++){
+                Color myColor = new Color(map[1].getRGB(x,y));
                 int red = myColor.getRed();
                 int green = myColor.getGreen();
                 int blue = myColor.getBlue();
-                tiles[x][y] = new Tile(x, y, red < 200 && green < 200 && blue < 200);
+                tiles[x][y] = new Tile(x,y,red < 200 && green < 200 && blue < 200);
             }
     }
-
     //method to make Tiles half solid
     public void fillHalfSolidTiles() {
-        for (int x = 0; x < 64 * mapsize; x++)
+        for(int x = 0; x < 64 * mapsize; x++)
             for (int y = 0; y < 36 * mapsize; y++)
-                if (tiles[x][y].isSolid())
-                    for (int X = -1; X < 2; X++)
-                        for (int Y = -1; Y < 2; Y++)
-                            if (x + X >= 0 && x + X < 64 * mapsize && y + Y >= 0 && y + Y < 36 * mapsize)
-                                tiles[x + X][y + Y].setHalfSolid(true);
+                if(tiles[x][y].isSolid())
+                    for(int X = -1; X < 2; X++)
+                        for(int Y = -1; Y < 2; Y++)
+                            if(x+X >= 0 && x+X < 64 * mapsize && y+Y >= 0 && y+Y < 36 * mapsize)
+                                tiles[x+X][y+Y].setHalfSolid(true);
     }
-
     //method to check if the Rectangle collides with a Tile
     public boolean collisionCheck(Rectangle rect) {
-        for (int y = (int) (0 + rect.getY() / 30); y < 4 + rect.getY() / 30; y++)
-            for (int x = (int) (0 + rect.getX() / 30); x < 4 + rect.getX() / 30; x++)
-                if (x >= 0 && x < getTiles().length && y >= 0 && y < getTiles()[0].length) {
-                    Tile temptile = getTiles(x, y);
-                    if (temptile.isSolid() && temptile.getHitbox().intersects(rect))
+        for(int y = (int) (0 + rect.getY()/30); y < 4 + rect.getY()/30; y++)
+            for(int x = (int) (0 + rect.getX()/30); x < 4 + rect.getX()/30; x++)
+                if(x >= 0 && x < getTiles().length && y >= 0 && y < getTiles()[0].length){
+                    Tile temptile = getTiles(x,y);
+                    if(temptile.isSolid() && temptile.getHitbox().intersects(rect))
                         return true;
                 }
         return false;
     }
-
     //method to check if the Rectangle collides with an Enemy
     public boolean checkEnemyCollision(Rectangle rect, int type) {
         for (Entity e : getEntityManager().getEnemies()) {
@@ -263,116 +255,96 @@ public class Level {
         }
         return false;
     }
-
-    public boolean lineCollision(int x1, int y1, int x2, int y2) {
+    public boolean lineCollision(int x1, int y1, int x2, int y2){
         ArrayList<Tile> tempTiles = new ArrayList<>();
         //world.setAllTiles(Color.green);
-        Line2D line = new Line2D.Float(x1, y1, x2, y2);
+        Line2D line = new Line2D.Float(x1,y1,x2,y2);
         //System.out.println(Math.toDegrees(Math.PI + Math.atan2(world.getPlayer().getY() - posY, world.getPlayer().getX() - posX)));
         float tempDir = (float) (Math.PI + Math.atan2(y1 - y2, x1 - x2));
         float tempX = x2;
         float tempY = y2;
-        while (Math.abs(x1 - tempX) > 40 || Math.abs(y1 - tempY) > 40) {
+        while(Math.abs(x1 - tempX) > 40 || Math.abs(y1 - tempY) > 40) {
             tempX = tempX + (float) (Math.cos(tempDir + Math.PI) * 30);
             tempY = tempY + (float) (Math.sin(tempDir + Math.PI) * 30);
-            for (int x = 0; x < 3; x++) {
-                for (int y = 0; y < 3; y++) {
-                    Tile tempT = getTiles((int) (x + tempX / 30 - 1), (int) (y + tempY / 30 - 1));
-                    if (!tempTiles.contains(tempT))
+            for(int x = 0; x < 3; x++){
+                for(int y = 0; y < 3; y++){
+                    Tile tempT = getTiles((int) (x+tempX / 30 - 1), (int) (y+tempY / 30 - 1));
+                    if(!tempTiles.contains(tempT))
                         tempTiles.add(tempT);
                 }
             }
 
         }
-        for (Tile t : tempTiles) {
-            if (line.intersects(t.getHitbox()) && t.isSolid())
+        for(Tile t : tempTiles){
+            if(line.intersects(t.getHitbox()) && t.isSolid())
                 return true;
         }
         return false;
     }
-
     //method to check and load next level
-    public void checkLevelCondition() {
+    public void checkLevelCondition(){
         boolean nextLevel = true;
-        for (Entity e : getEntityManager().getEnemies()) {
-            if (((Enemy) e).getActive()) {
+        for (Entity e : getEntityManager().getEnemies()){
+            if(((Enemy) e).getActive()) {
                 nextLevel = false;
                 break;
             }
         }
         enemiesDead = true;
-        if (nextLevel && Math.abs(entityManager.getPlayer().getX() - posX) < 100 && Math.abs(entityManager.getPlayer().getY() - posY) < 100) {
+        if(nextLevel && Math.abs(entityManager.getPlayer().getX()-posX)<100&& Math.abs(entityManager.getPlayer().getY()-posY)<100) {
             vanish();
 
-        } else if (nextLevel && levelNumber == 8)
+        }
+        else if(nextLevel&&levelNumber==8)
             vanish();
 
     }
-
     //TODO: change distance to extractionpoint
     //method to check if the Rectangle collides with the Player
     public boolean checkPlayerCollision(Rectangle rect) {
         Player p = getEntityManager().getPlayer();
-        if (p.getHitbox().intersects(rect)) {
+        if(p.getHitbox().intersects(rect)) {
             p.die();
             return true;
         }
         return false;
     }
-
     //Getters
     public Tile getTiles(int x, int y) {
-        if (x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize)
+        if(x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize)
             return tiles[x][y];
         return tiles[0][0];
     }
-
     //alert nearby getEnemies
-    public void alertEnemies(int x, int y, int distance) {
+    public void alertEnemies(int x, int y, int distance){
         int dx, dy;
         for (Entity e : getEntityManager().getEnemies()) {
             dx = (int) (e.getX() - x);                      //pythagoras
             dy = (int) (e.getY() - y);                      //pythagoras
-            if ((Math.sqrt((dx * dx) + (dy * dy))) <= distance) {
+            if((Math.sqrt((dx * dx) + (dy * dy)))  <= distance){
                 ((Enemy) e).setLastCoords();
                 ((Enemy) e).setPlayerSpotted(false);
                 ((Enemy) e).setPathfindingDelay(0);
             }
         }
     }
-
     //debugging
-    public void renderTiles(Graphics g) {
-        for (int x = 0; x < 64 * mapsize; x++) {
-            for (int y = 0; y < 36 * mapsize; y++) {
-                if (tiles[x][y].isHalfSolid()) {
+    public void renderTiles(Graphics g){
+        for(int x = 0; x < 64 * mapsize; x++){
+            for(int y = 0; y < 36 * mapsize; y++){
+                if(tiles[x][y].isHalfSolid()){
                     g.setColor(Color.red);
-                } else if (tiles[x][y].isSolid()) {
+                }else if(tiles[x][y].isSolid()){
                     g.setColor(Color.green);
                 }
                 g.setColor(tiles[x][y].getColor());
-                g.fillRect(((int) (30 * x - handler.getxOffset())), ((int) (30 * y - handler.getyOffset())), 30 * x + 30, 30 * y + 30);
+                g.fillRect(((int) (30 * x - handler.getxOffset())), ((int) (30 * y - handler.getyOffset())), 30*x+30, 30*y+30);
             }
         }
     }
-
-    public Tile[][] getTiles() {
-        return tiles;
-    }
-
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    public void resetEntityManager() {
-        this.entityManager = new EntityManager();
-    }
-
-    public int getMapsize() {
-        return mapsize;
-    }
-
-    public int getLevelNumber() {
-        return levelNumber;
-    }
+    public Tile[][] getTiles() { return tiles; }
+    public EntityManager getEntityManager() { return entityManager; }
+    public void resetEntityManager() { this.entityManager = new EntityManager(); }
+    public int getMapsize() { return mapsize; }
+    public int getLevelNumber() { return levelNumber; }
 }

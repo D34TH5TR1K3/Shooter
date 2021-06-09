@@ -14,35 +14,34 @@ import java.util.Arrays;
 
 import static java.lang.Math.abs;
 
-public class Enemy extends Entity {
-    public static float speed = new shooter.utils.Writer().getSettingValue("Enemy Movement Speed") / 10;
-    //provides a variable to change the reloadspeed of the enemy
-    public static float reloadspeed = new shooter.utils.Writer().getSettingValue("Enemy Reload Speed") / 10;
-    //provides a variable to change the distance to the player for Line Of Sight to work
-    public static float LOSdist = new shooter.utils.Writer().getSettingValue("Enemy Line Of Sight") * 10;
+public class Enemy extends Entity{
     //PATHFINDING
     private final ArrayList<Tile> openlist = new ArrayList<>();     //tiles that need to be visited next
     private final ArrayList<Tile> closedlist = new ArrayList<>();   //tiles that have been visited previously
     private final ArrayList<Tile> neighbors = new ArrayList<>();    //tiles that are next to the current tile
-    private final Animation legAnimation;
-    private final Animation[] walkAnimations;
-    private final Animation[] attackAnimations;
-    private final Animation deathAnimation_knife;
-    public ArrayList<Tile> trace = new ArrayList<>();               //saved the found path
-    //saves how the enemy died
-    public int diedByType = 0;
-    //saves whether the enemy is alive
-    public int alive;
     private int addGCost, dx, dy;                                   //GCost is the distance from start to the current tile
     private int tempHCost, tempGCost;                               //HCost is the heuristic distance from current tile to end tile
+    public ArrayList<Tile> trace = new ArrayList<>();               //saved the found path
     private Tile current = null;                                    //saves current tile of the pathfinding process
     private int pathfindingDelay = 30;                              //delay between calling the pathfinding functions
     private boolean playerSpotted = false;                          //can the enemy look directly at the player?
     private int[] lastCoords = new int[2];                          //last coordinates the player was spottet at
     //END PATHFINDING
     private Rectangle hitbox;
-    private final Item item;
-
+    public static float speed = new shooter.utils.Writer().getSettingValue("Enemy Movement Speed") / 10;
+    private Item item;
+    private final Animation legAnimation;
+    private final Animation[] walkAnimations;
+    private final Animation[] attackAnimations;
+    private final Animation deathAnimation_knife;
+    //provides a variable to change the reloadspeed of the enemy
+    public static float reloadspeed = new shooter.utils.Writer().getSettingValue("Enemy Reload Speed") / 10;
+    //provides a variable to change the distance to the player for Line Of Sight to work
+    public static float LOSdist = new shooter.utils.Writer().getSettingValue("Enemy Line Of Sight") * 10;
+    //saves how the enemy died
+    public int diedByType = 0;
+    //saves whether the enemy is alive
+    public int alive;
     //this constructor initializes the values
     public Enemy(int posX, int posY, int dir, int gunType, Handler handler, Level level, int alive) {
         super(posX, posY, 4, dir, handler, level);
@@ -59,10 +58,10 @@ public class Enemy extends Entity {
                 new Animation(Assets.enemy_walk_knife, 100, 16, 16),
                 null,
                 null,
-                new Animation(Assets.enemy_walk_silencer, 100, 14, 12),
-                new Animation(Assets.enemy_walk_mp, 100, 10, 12),
+                new Animation(Assets.enemy_walk_silencer,100,14, 12),
+                new Animation(Assets.enemy_walk_mp,100, 10, 12),
                 null,
-                new Animation(Assets.enemy_walk_shotgun, 100, 12, 12),
+                new Animation(Assets.enemy_walk_shotgun,100, 12, 12),
                 null
         };
         attackAnimations = new Animation[]{
@@ -70,57 +69,54 @@ public class Enemy extends Entity {
                 new Animation(Assets.enemy_attack_knife, 100, 18, 16, true),
                 null,
                 null,
-                new Animation(Assets.enemy_attack_silencer, 353, 14, 12, true),
-                new Animation(Assets.enemy_attack_rifle, 250, 10, 12, true),
+                new Animation(Assets.enemy_attack_silencer, 353, 14, 12,true),
+                new Animation(Assets.enemy_attack_rifle, 250,10, 12,true),
                 null,
-                new Animation(Assets.enemy_attack_shotgun, 76, 12, 12, true),
+                new Animation(Assets.enemy_attack_shotgun,76, 12, 12,true),
                 null
         };
 
-        deathAnimation_knife = new Animation(Assets.enemy_die_knife, 100, 30, 20);
+        deathAnimation_knife = new Animation(Assets.enemy_die_knife, 100, 30 ,20);
 
         activeAnimation = walkAnimations[1];
 
         this.alive = alive;
-        if (this.alive == 0) die(3);
+        if(this.alive==0) die(3);
 
         legAnimation.stop();
     }
-
     //method to follow the trace found by pathfinding
-    public void followTrace(ArrayList<Tile> trace) {
-        if (!trace.isEmpty() && trace.size() > 1) {
+    public void followTrace(ArrayList<Tile> trace){
+        if(!trace.isEmpty() && trace.size() > 1){
             Tile currentTarget = trace.get(trace.size() - 2);   //Get next tile
             //if close to target tile get next target
-            if (Math.abs(posX - currentTarget.getTposX() * 30 - 15) < 20 && Math.abs(posY - currentTarget.getTposY() * 30 - 15) < 20) {
+            if(Math.abs(posX - currentTarget.getTposX()*30-15) < 20 && Math.abs(posY - currentTarget.getTposY()*30-15) < 20){
                 trace.remove(currentTarget);
             }
             //look at next tile
-            dir = (float) (180 + Math.toDegrees(Math.atan2(posY - currentTarget.getTposY() * 30 - 15, posX - currentTarget.getTposX() * 30 - 15)));
+            dir = (float) (180 + Math.toDegrees(Math.atan2(posY - currentTarget.getTposY()*30-15, posX - currentTarget.getTposX()*30-15)));
             //move to next tile
-            posX += (float) (Math.cos(Math.toRadians(dir + 180) + Math.PI) * speed);
-            posY += (float) (Math.sin(Math.toRadians(dir + 180) + Math.PI) * speed);
+            posX += (float) (Math.cos(Math.toRadians(dir+180) + Math.PI) * speed);
+            posY += (float) (Math.sin(Math.toRadians(dir+180) + Math.PI) * speed);
         }
 
     }
-
     //method to create the trace by using the tiles parent tiles
-    public void drawtrace(Tile end, Tile start) {
-        if (trace.isEmpty()) {
+    public void drawtrace(Tile end, Tile start){
+        if(trace.isEmpty()){
             trace.add(end);
         }
-        if (end != start) {
+        if(end != start) {
             trace.add(end.getParent());
             //end.getParent().setColor(Color.orange); //Uncomment to mark path
             drawtrace(end.getParent(), start);
         }
 
     }
-
     //resets values of the tiles for next pathfinding
-    public void resettiles() {
-        for (int i = 0; i < 64 * level.getMapsize(); i++) {
-            for (int j = 0; j < 36 * level.getMapsize(); j++) {
+    public void resettiles(){
+        for(int i = 0; i < 64 * level.getMapsize(); i++){
+            for(int j = 0; j < 36 * level.getMapsize(); j++){
                 //level.getTiles()[i][j].setColor(Color.green);
                 //if(level.getTiles()[i][j].isSolid())
                 //    level.getTiles()[i][j].setColor(Color.black);
@@ -132,9 +128,8 @@ public class Enemy extends Entity {
             }
         }
     }
-
     //find path from one tile to another
-    public void findpath(Tile start, Tile end) {
+    public void findpath(Tile start, Tile end){
         resettiles();
         //clear lists
         closedlist.clear();
@@ -147,12 +142,12 @@ public class Enemy extends Entity {
         openlist.add(start);
         start.setVisited(true);
         //repeat until the path is completed
-        while (!openlist.isEmpty()) {
+        while(!openlist.isEmpty()){
             //current tile is cheapest tile of open list
             //GCost + HCost = FCost;
             current = openlist.get(0);
-            for (Tile t : openlist) {
-                if (t.getfCost() < current.getfCost()) {
+            for(Tile t : openlist){
+                if(t.getfCost() < current.getfCost()){
                     current = t;
                 }
             }
@@ -160,7 +155,7 @@ public class Enemy extends Entity {
             openlist.remove(current);
             closedlist.add(current);
             //if end is reached stop pathfinding
-            if (current == end) {
+            if(current == end){
                 trace.clear();
                 drawtrace(current, start);
                 break;
@@ -169,31 +164,31 @@ public class Enemy extends Entity {
             neighbors.clear();
             neighborsadd(current.getTposX() - 1, current.getTposY());
             neighborsadd(current.getTposX() + 1, current.getTposY());
-            neighborsadd(current.getTposX(), current.getTposY() - 1);
-            neighborsadd(current.getTposX(), current.getTposY() + 1);
-            if (current.getTposX() - 1 >= 0 && current.getTposY() - 1 >= 0) {
+            neighborsadd(current.getTposX(),        current.getTposY() -1);
+            neighborsadd(current.getTposX(),        current.getTposY() +1);
+            if(current.getTposX()-1 >= 0 && current.getTposY()-1 >= 0) {
                 if (!level.getTiles()[current.getTposX()][current.getTposY() - 1].isHalfSolid() || !level.getTiles()[current.getTposX() - 1][current.getTposY()].isHalfSolid()) {
                     neighborsadd(current.getTposX() - 1, current.getTposY() - 1);// LINKS OBEN
                 }
             }
-            if (current.getTposX() + 1 < 36 * level.getMapsize() && current.getTposY() - 1 >= 0) {
+            if(current.getTposX()+1 <36 * level.getMapsize() && current.getTposY()-1 >= 0) {
                 if (!level.getTiles()[current.getTposX()][current.getTposY() - 1].isHalfSolid() || !level.getTiles()[current.getTposX() + 1][current.getTposY()].isHalfSolid()) {
                     neighborsadd(current.getTposX() + 1, current.getTposY() - 1);// RECHTS OBEN
                 }
             }
-            if (current.getTposX() - 1 >= 0 && current.getTposY() + 1 < 36 * level.getMapsize()) {
+            if(current.getTposX()-1 >= 0 && current.getTposY()+1 < 36 * level.getMapsize()) {
                 if (!level.getTiles()[current.getTposX()][current.getTposY() + 1].isHalfSolid() || !level.getTiles()[current.getTposX() - 1][current.getTposY()].isHalfSolid()) {
                     neighborsadd(current.getTposX() - 1, current.getTposY() + 1);// LINKS UNTEN
                 }
             }
-            if (current.getTposX() + 1 < 36 * level.getMapsize() && current.getTposY() + 1 < 36 * level.getMapsize()) {
+            if(current.getTposX()+1 < 36 * level.getMapsize() && current.getTposY()+1 < 36 * level.getMapsize()) {
                 if (!level.getTiles()[current.getTposX()][current.getTposY() + 1].isHalfSolid() || !level.getTiles()[current.getTposX() + 1][current.getTposY()].isHalfSolid()) {
                     neighborsadd(current.getTposX() + 1, current.getTposY() + 1);// RECHTS UNTEN
                 }
             }
             //calculate cost of every neighbor
             for (Tile temptile : neighbors) {
-                if (!temptile.isClosed() && !temptile.isHalfSolid()) {
+                if (!temptile.isClosed() && !temptile.isHalfSolid()){
                     if (current.getTposX() == temptile.getTposX() || current.getTposY() == temptile.getTposY()) {
                         addGCost = 10;
                     } else {
@@ -227,127 +222,121 @@ public class Enemy extends Entity {
             }
         }
     }
-
     //check if neighbors are within the map boundaries
-    public void neighborsadd(int x, int y) {
-        if (x < 64 * level.getMapsize() && x > -1 && y < 36 * level.getMapsize() && y > -1) {
+    public void neighborsadd(int x, int y){
+        if(x < 64 * level.getMapsize() && x > -1 && y < 36 * level.getMapsize() && y > -1){
             neighbors.add(level.getTiles()[x][y]);
         }
     }
-
     //lets enemy die
-    public void die(int type) {
+    public void die(int type){
         alive = 0;
         diedByType = type;
         item.drop(this);
         this.hitbox = null;
         this.setInActive();
         dir += 180;
-        if (type != 3) {
+        if(type != 3) {
             activeAnimation.stop();
-        } else {
+        }else{
             activeAnimation = deathAnimation_knife;
         }
         legAnimation.stop();
     }
-
     //starts pathfinding
-    public void goToPlayer() {
-        findpath(level.getTiles(((int) ((posX) / 30)), ((int) ((posY) / 30))), level.getTiles((int) level.getEntityManager().getPlayer().getX(), (int) level.getEntityManager().getPlayer().getY()));
+    public void goToPlayer(){
+        findpath(level.getTiles(((int) ((posX) / 30)), ((int) ((posY) / 30))), level.getTiles((int)level.getEntityManager().getPlayer().getX(), (int)level.getEntityManager().getPlayer().getY()));
         playerSpotted = false;
     }
-
     //checks it the enemy can see the player
-    public boolean lineOfSight() {
-        if (Math.abs(level.getEntityManager().getPlayer().getX() - posX) > LOSdist || Math.abs(level.getEntityManager().getPlayer().getY() - posY) > LOSdist)
+    public boolean lineOfSight(){
+        if(Math.abs(level.getEntityManager().getPlayer().getX()-posX)>LOSdist||Math.abs(level.getEntityManager().getPlayer().getY()-posY)>LOSdist)
             return false;
         ArrayList<Tile> tempTiles = new ArrayList<>();
         //world.setAllTiles(Color.green);
-        Line2D line = new Line2D.Float(level.getEntityManager().getPlayer().getX(), level.getEntityManager().getPlayer().getY(), posX, posY);
+        Line2D line = new Line2D.Float(level.getEntityManager().getPlayer().getX(),level.getEntityManager().getPlayer().getY(),posX,posY);
         //System.out.println(Math.toDegrees(Math.PI + Math.atan2(world.getPlayer().getY() - posY, world.getPlayer().getX() - posX)));
         float tempDir = (float) (Math.PI + Math.atan2(level.getEntityManager().getPlayer().getY() - posY, level.getEntityManager().getPlayer().getX() - posX));
         float tempX = posX;
         float tempY = posY;
-        while (Math.abs(level.getEntityManager().getPlayer().getX() - tempX) > 40 || Math.abs(level.getEntityManager().getPlayer().getY() - tempY) > 40) {
+        while(Math.abs(level.getEntityManager().getPlayer().getX() - tempX) > 40 || Math.abs(level.getEntityManager().getPlayer().getY() - tempY) > 40) {
             tempX = tempX + (float) (Math.cos(tempDir + Math.PI) * 30);
             tempY = tempY + (float) (Math.sin(tempDir + Math.PI) * 30);
-            for (int x = 0; x < 3; x++) {
-                for (int y = 0; y < 3; y++) {
-                    Tile tempT = level.getTiles((int) (x + tempX / 30 - 1), (int) (y + tempY / 30 - 1));
-                    if (!tempTiles.contains(tempT))
+            for(int x = 0; x < 3; x++){
+                for(int y = 0; y < 3; y++){
+                    Tile tempT = level.getTiles((int) (x+tempX / 30 - 1), (int) (y+tempY / 30 - 1));
+                    if(!tempTiles.contains(tempT))
                         tempTiles.add(tempT);
                 }
             }
 
         }
-        for (Tile t : tempTiles) {
-            if (line.intersects(t.getHitbox()) && t.isSolid())
+        for(Tile t : tempTiles){
+            if(line.intersects(t.getHitbox()) && t.isSolid())
                 return false;
         }
         return true;
     }
-
     @Override
     public void tick() {
-        System.out.println(lastCoords[0] + "  " + lastCoords[1]);
+        System.out.println(lastCoords[0] +"  "+lastCoords[1]);
         System.out.println(active);
-        if (pathfindingDelay < 1) {
+        if(pathfindingDelay<1) {
             findpath(level.getTiles(((int) ((posX) / 30)), ((int) ((posY) / 30))), level.getTiles(lastCoords[0], lastCoords[1]));
             System.out.println("helOOOOOOOOOOOOOOOOOOOOOO");
             playerSpotted = false;
         }
 
-        if (item.getAmmo() == 0 && this.active) {
-            for (int i = (int) reloadspeed; i > 0; i--) {
+        if(item.getAmmo()==0&&this.active){
+            for(int i=(int)reloadspeed;i>0;i--) {
                 legAnimation.stop();
                 item.reload();
             }
             return;
-        } else if (playerSpotted && !lineOfSight())
+        }else if(playerSpotted&&!lineOfSight())
             legAnimation.start();
-        if (active) {
+        if(active) {
             hitbox.setLocation(((int) (posX - 35)), ((int) (posY - 35)));
             //System.out.println(hitbox);
             if (lineOfSight()) {
                 trace.clear();
                 playerSpotted = true;
                 pathfindingDelay = 30;
-                dir = (float) (180 + Math.toDegrees(Math.atan2(posY - level.getEntityManager().getPlayer().getY(), posX - level.getEntityManager().getPlayer().getX())));
-                if (item != null && item.getAmmo() != 0) {
+                dir = (float) (180 + Math.toDegrees(Math.atan2(posY - level.getEntityManager().getPlayer().getY(), posX - level.getEntityManager().getPlayer().getX() )));
+                if (item != null&&item.getAmmo()!=0) {
                     item.activate(this);
                     activeAnimation = attackAnimations[item.getType()];
                 }
-            } else {
+            }else{
                 System.out.println(trace);
                 followTrace(trace);
-                if (playerSpotted) {
+                if(playerSpotted) {
                     lastCoords = new int[]{(int) ((level.getEntityManager().getPlayer().getX()) / 30), (int) ((level.getEntityManager().getPlayer().getY()) / 30)};
                     pathfindingDelay--;
                 }
             }
         }
-        if (activeAnimation.lastFrame() && Arrays.asList(attackAnimations).contains(activeAnimation)) {
+        if(activeAnimation.lastFrame()&&Arrays.asList(attackAnimations).contains(activeAnimation)) {
             activeAnimation.tick();
-            activeAnimation = walkAnimations[(item == null) ? 0 : item.getType()];
+            activeAnimation = walkAnimations[(item==null)?0:item.getType()];
         }
         activeAnimation.tick();
         legAnimation.tick();
     }
-
     @Override
     public void render(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D)g;
         AffineTransform reset = g2d.getTransform();
-        if (active) {
+        if(active) {
             g2d.rotate(Math.toRadians(dir), posX - handler.getxOffset(), posY - handler.getyOffset());
             g2d.drawImage(legAnimation.getCurrentFrame(), (int) (posX - legAnimation.getxOffset() * 3 - handler.getxOffset()), (int) (posY - legAnimation.getyOffset() * 3 - handler.getyOffset()), legAnimation.getWidth() * 3, legAnimation.getHeight() * 3, null);
             g2d.setTransform(reset);
             g2d.rotate(Math.toRadians(dir), posX - handler.getxOffset(), posY - handler.getyOffset());
             g2d.drawImage(activeAnimation.getCurrentFrame(), (int) (posX - activeAnimation.getxOffset() * 3 - handler.getxOffset()), (int) (posY - activeAnimation.getyOffset() * 3 - handler.getyOffset()), activeAnimation.getWidth() * 3, activeAnimation.getHeight() * 3, null);
-        } else if (diedByType == 3) {
+        }else if(diedByType == 3){
             g2d.rotate(Math.toRadians(dir), posX - handler.getxOffset(), posY - handler.getyOffset());
             g2d.drawImage(activeAnimation.getCurrentFrame(), (int) (posX - activeAnimation.getxOffset() * 3 - handler.getxOffset()), (int) (posY - activeAnimation.getyOffset() * 3 - handler.getyOffset()), activeAnimation.getWidth() * 3, activeAnimation.getHeight() * 3, null);
-        } else {
+        }else{
             g2d.rotate(Math.toRadians(dir), posX - handler.getxOffset(), posY - handler.getyOffset());
             g2d.drawImage(Assets.enemy_die_shotgun, (int) (posX - 20 * 3 - handler.getxOffset()), (int) (posY - 16 * 3 - handler.getyOffset()), 50 * 3, 32 * 3, null);
 
@@ -356,30 +345,16 @@ public class Enemy extends Entity {
     }
 
     //Getters
-    public Rectangle getHitbox() {
-        return hitbox;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public boolean getActive() {
-        return super.active;
-    }
-
-    public String getData() {
-        return ((int) posX + "," + (int) posY + "," + (int) dir + "," + item.getType() + "," + item.getAmmo() + "," + alive);
-    }
-
+    public Rectangle getHitbox(){ return hitbox; }
+    public Item getItem(){ return item; }
+    public boolean getActive(){return super.active;}
+    public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getType()+","+item.getAmmo()+","+alive); }
     public void setLastCoords() {
         lastCoords = new int[]{(int) ((level.getEntityManager().getPlayer().getX()) / 30), (int) ((level.getEntityManager().getPlayer().getY()) / 30)};
     }
-
     public void setPlayerSpotted(boolean playerSpotted) {
         this.playerSpotted = playerSpotted;
     }
-
     public void setPathfindingDelay(int pathfindingDelay) {
         this.pathfindingDelay = pathfindingDelay;
     }
