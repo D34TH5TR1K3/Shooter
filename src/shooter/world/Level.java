@@ -6,6 +6,7 @@ import shooter.entities.Entity;
 import shooter.entities.EntityManager;
 import shooter.entities.Player;
 import shooter.gfx.Assets;
+import shooter.gfx.LoadingImage;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -68,6 +69,10 @@ public class Level {
     }
     //renders the map and the entityManager
     public void render(Graphics g) {
+        if(ended&&levelNumber==8){
+            LoadingImage.renderCredits();
+            return;
+        }
         g.drawImage(map[0],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
         //renderTiles(g);
         entityManager.render(g);
