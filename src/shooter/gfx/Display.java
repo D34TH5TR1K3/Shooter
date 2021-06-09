@@ -10,29 +10,30 @@ import java.io.File;
 import java.io.IOException;
 
 public class Display {
-    //saves a static font to be used with everything
-    public static Font fraktur, frakturBig;
     //saves the JFrame and Canvas for further distribution
     private JFrame frame;
     private Canvas canvas;
+    //saves a static font to be used with everything
+    public static Font fraktur, frakturBig;
 
     //this constructor initializes the values
-    public Display(KeyManager keyManager, MouseManager mouseManager) {
+    public Display(KeyManager keyManager,MouseManager mouseManager) {
         createDisplay();
         addManagers(keyManager, mouseManager);
-        try {
+        try{
             fraktur = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")).deriveFont(30f);
             frakturBig = Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")).deriveFont(130f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("res/fonts/fraktur.ttf")));
-        } catch (IOException | FontFormatException e) {
+        }
+        catch(IOException | FontFormatException e){
             System.exit(2);
         }
     }
 
     //method to create a Display
     public void createDisplay() {
-        if (new Writer().getScale() != 1)
+        if(new Writer().getScale() != 1)
             System.setProperty("sun.java2d.uiScale", String.valueOf(new Writer().getScale()));
         frame = new JFrame("Shooter");
         int width = 1920, height = 1080;
@@ -55,7 +56,6 @@ public class Display {
         frame.add(canvas);
         frame.pack();
     }
-
     //method to add the Managers to the Display
     public void addManagers(KeyManager keyManager, MouseManager mouseManager) {
         frame.addKeyListener(keyManager);
@@ -66,11 +66,6 @@ public class Display {
     }
 
     //getters
-    public JFrame getFrame() {
-        return frame;
-    }
-
-    public Canvas getCanvas() {
-        return canvas;
-    }
+    public JFrame getFrame() { return frame; }
+    public Canvas getCanvas() { return canvas; }
 }

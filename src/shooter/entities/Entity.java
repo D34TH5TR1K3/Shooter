@@ -9,11 +9,11 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 
 public abstract class Entity {
-    public static final short CREATURESIZE = 180;
-    private final int posZ;
     //saves the entities position and default size
     protected float posX;
     protected float posY;
+    private final int posZ;
+    public static final short CREATURESIZE = 180;
     /*
     posZ in Form von Integern
     posZ 0: Level
@@ -42,7 +42,6 @@ public abstract class Entity {
         this.posZ = posZ;
         this.handler = handler;
     }
-
     public Entity(float posX, float posY, int posZ, float dir, Handler handler, Level level) {
         this.level = level;
         this.posX = posX;
@@ -54,80 +53,47 @@ public abstract class Entity {
 
     //abstract tick and render without bodies
     public abstract void tick();
-
     public abstract void render(Graphics g);
 
     //method to check if a line of sight is clear
-    public boolean checkLineOfSight(Line2D.Float line) {
-        for (int x = 0; x < 64 * level.getMapsize(); x++)
-            for (int y = 0; y < 36 * level.getMapsize(); y++) {
-                Tile temptile = level.getTiles(x, y);
-                if (line.intersects(temptile.getHitbox()) && temptile.isSolid())
+    public boolean checkLineOfSight(Line2D.Float line){
+        for(int x=0;x<64*level.getMapsize();x++)
+            for(int y=0;y<36*level.getMapsize();y++){
+                Tile temptile = level.getTiles(x,y);
+                if(line.intersects(temptile.getHitbox())&& temptile.isSolid())
                     return true;
             }
         return false;
     }
-
     //method to move a certain amount
     public void move(float amtX, float amtY) {
         posX += amtX;
         posY += amtY;
     }
-
     //method to move to a certain position
     public void moveAbs(float amtX, float amtY) {
         posX = amtX;
         posY = amtY;
     }
-
     //method to face a certain direction
     public void face(float amt) {
         dir = amt;
     }
 
     //getters and setters
-    public void setInActive() {
-        active = false;
-    }
-
-    public void setActive() {
-        active = true;
-    }
-
-    public boolean isSolid() {
-        return solid;
-    }
-
-    public float getX() {
-        return posX;
-    }
-
-    public float getY() {
-        return posY;
-    }
-
-    public int getZ() {
-        return posZ;
-    }
-
-    public float facing() {
-        return dir;
-    }
-
-    public float getDir() {
-        return dir;
-    }
-
-    public void setDir(float dir) {
-        this.dir = dir;
-    }
-
+    public void setInActive() { active = false; }
+    public void setActive() { active = true; }
+    public boolean isSolid() { return solid; }
+    public float getX() { return posX; }
+    public float getY() { return posY; }
+    public int getZ() { return posZ; }
+    public float facing() { return dir; }
+    public float getDir() { return dir; }
+    public void setDir(float dir) { this.dir = dir; }
     public abstract String getData();
-
     public void setPosX(float posX) {
         this.posX = posX;
     }
-
     public void setPosY(float posY) {
         this.posY = posY;
     }
