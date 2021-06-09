@@ -41,7 +41,7 @@ public class Player extends Entity{
             item = new Item(posX, posY, itemType, handler, level);
             item.setAmmo(ammo);
             level.getEntityManager().addEntity(item);
-            item.pick_up(this);
+            item.pick_up(this, false);
             ableToPickup = false;
         }
 
@@ -79,6 +79,7 @@ public class Player extends Entity{
         if(item != null) {
             if(handler.getMouseManager().isLeftPressed()&&item.getAmmo()!=0) {
                 item.activate(this);
+                level.alertEnemies((int)posX, (int)posY, item.getLoudness());
                 activeAnimation = attackAnimations[item.getType()];
             }
             if(handler.getMouseManager().isRightPressed() && ableToDrop){
@@ -92,7 +93,7 @@ public class Player extends Entity{
             if(handler.getMouseManager().isRightPressed() && ableToPickup) {
                 item = (Item) (level.getEntityManager().getClosestItem(posX, posY));
                 if (item != null) {
-                    item.pick_up(this);
+                    item.pick_up(this, true);
                     ableToPickup = false;
                     activeAnimation = walkAnimations[item.getType()];
                 }
@@ -194,7 +195,7 @@ public class Player extends Entity{
     }
     //lets the player die and resets the Level
     public void die() {
-        if (item == null) return;
+        if (item == null &&Math.random()>0.5) return;
         else if (getItem().getType() == 1&&Math.random()>0.2) return;
         else if (getItem().getType() == 2&&Math.random()>0.1) return;
         alive = false;

@@ -43,6 +43,8 @@ public class Item extends Entity{
     private Timer meeleTimer;
     //entity that activated the item
     private Entity activator;
+    //loudness of gun
+    private int loudness = 0;
     //this constructor initializes the values
     public Item(float posX, float posY, int type, Handler handler, Level level) {
         super(posX,posY,2, handler, level);
@@ -71,6 +73,7 @@ public class Item extends Entity{
                 rpm = 400;
                 reloadTime = 90;
                 offset = 100;
+                loudness = 300;
                 break;
             case 4:
                 //Silenced Pistol
@@ -80,6 +83,7 @@ public class Item extends Entity{
                 rpm = 85;
                 reloadTime = 120;
                 offset = 70;
+                loudness = 100;
                 break;
             case 5:
                 //Machine Pistol
@@ -89,6 +93,7 @@ public class Item extends Entity{
                 rpm = 600;
                 reloadTime = 120;
                 offset = 80;
+                loudness = 300;
                 break;
             case 6:
                 //Rifle
@@ -98,6 +103,7 @@ public class Item extends Entity{
                 rpm = 120;
                 reloadTime = 180;
                 offset = 50;
+                loudness = 400;
                 break;
             case 7:
                 //Shotgun
@@ -107,6 +113,7 @@ public class Item extends Entity{
                 rpm = 60;
                 reloadTime = 320;
                 offset = 70;
+                loudness = 400;
                 break;
             case 8:
                 //Rocket Launcher
@@ -237,11 +244,13 @@ public class Item extends Entity{
         posY = activator.getY();
     }
     //method to pick an item up
-    public void pick_up(Entity activator){
-        if(type > 2)
-            Sound.play("LoadGun");
-        else if(type == 1 || type == 2)
-            Sound.play("DrawKnife");
+    public void pick_up(Entity activator, boolean sound){
+        if(sound) {
+            if (type > 2)
+                Sound.play("LoadGun");
+            else if (type == 1 || type == 2)
+                Sound.play("DrawKnife");
+        }
         active = false;
         posX = activator.getX();
         posY = activator.getY();
@@ -339,5 +348,8 @@ public class Item extends Entity{
     public boolean isMelee(){ return melee; }
     public int getAmmoMax() {
         return ammoMax;
+    }
+    public int getLoudness() {
+        return loudness;
     }
 }

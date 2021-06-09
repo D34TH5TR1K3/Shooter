@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import static shooter.entities.Enemy.LOSdist;
 import static shooter.gfx.Display.fraktur;
+import static shooter.gfx.Display.frakturBig;
 
 public class Level {
     //indicates the number of the level
@@ -37,6 +38,8 @@ public class Level {
     private boolean started = false;
     //activity of extraction sequence
     private boolean ended = false;
+    //are enemies dead?
+    private boolean enemiesDead;
     //from which way the player enters the map
     int extractionDir, startDir;
     //this constructor initializes the values
@@ -77,8 +80,12 @@ public class Level {
         //renderTiles(g);
         entityManager.render(g);
         g.drawImage(map[2],(int)(0-handler.getGameCamera().getxOffset()),(int)(0-handler.getGameCamera().getyOffset()),null);
-
-        if(ended && levelNumber != 3) {
+        if(enemiesDead){
+            g.setColor(Color.red);
+            g.setFont(fraktur);
+            g.drawString("go here",(int)(posX- handler.getxOffset()-g.getFontMetrics(fraktur).stringWidth("go here")/2),(int)(posY- handler.getyOffset()));
+        }
+        if(ended && levelNumber != 4) {
             if (entityManager.getPlayer().isMoveA()) {
                 g.setColor(new Color(238, 238, 238));
                 g.fillRect(960 - 600, 540 - 200, 400, 400);
@@ -92,7 +99,7 @@ public class Level {
                 g.setColor(new Color(238, 238, 238));
                 g.fillRect(960 - 200, 540 - 600, 400, 400);
             }
-        }else if(!started) {
+        }else if(!started && levelNumber != 6) {
             if (entityManager.getPlayer().isMoveD()) {
                 g.setColor(new Color(238, 238, 238));
                 g.fillRect(960 - 600, 540 - 200, 400, 400);
@@ -283,8 +290,10 @@ public class Level {
                 break;
             }
         }
-        if(nextLevel && Math.abs(entityManager.getPlayer().getX()-posX)<600&& Math.abs(entityManager.getPlayer().getY()-posY)<600)
+        enemiesDead = true;
+        if(nextLevel && Math.abs(entityManager.getPlayer().getX()-posX)<100&& Math.abs(entityManager.getPlayer().getY()-posY)<100) {
             vanish();
+        }
     }
     //TODO: change distance to extractionpoint
     //method to check if the Rectangle collides with the Player
@@ -301,6 +310,19 @@ public class Level {
         if(x >= 0 && x < 64 * mapsize && y >= 0 && y < 36 * mapsize)
             return tiles[x][y];
         return tiles[0][0];
+    }
+    //alert nearby getEnemies
+    public void alertEnemies(int x, int y, int distance){
+        int dx, dy;
+        for (Entity e : getEntityManager().getEnemies()) {
+            dx = (int) (e.getX() - x);                      //pythagoras
+            dy = (int) (e.getY() - y);                      //pythagoras
+            if((Math.sqrt((dx * dx) + (dy * dy)))  <= distance){
+                ((Enemy) e).setLastCoords();
+                ((Enemy) e).setPlayerSpotted(false);
+                ((Enemy) e).setPathfindingDelay(0);
+            }
+        }
     }
     //debugging
     public void renderTiles(Graphics g){

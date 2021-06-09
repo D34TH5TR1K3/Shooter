@@ -241,6 +241,11 @@ public class Enemy extends Entity{
         }
         legAnimation.stop();
     }
+    //starts pathfinding
+    public void goToPlayer(){
+        findpath(level.getTiles(((int) ((posX) / 30)), ((int) ((posY) / 30))), level.getTiles((int)level.getEntityManager().getPlayer().getX(), (int)level.getEntityManager().getPlayer().getY()));
+        playerSpotted = false;
+    }
     //checks it the enemy can see the player
     public boolean lineOfSight(){
         if(Math.abs(level.getEntityManager().getPlayer().getX()-posX)>LOSdist||Math.abs(level.getEntityManager().getPlayer().getY()-posY)>LOSdist)
@@ -272,8 +277,11 @@ public class Enemy extends Entity{
     }
     @Override
     public void tick() {
+        System.out.println(lastCoords[0] +"  "+lastCoords[1]);
+        System.out.println(active);
         if(pathfindingDelay<1) {
             findpath(level.getTiles(((int) ((posX) / 30)), ((int) ((posY) / 30))), level.getTiles(lastCoords[0], lastCoords[1]));
+            System.out.println("helOOOOOOOOOOOOOOOOOOOOOO");
             playerSpotted = false;
         }
 
@@ -298,6 +306,7 @@ public class Enemy extends Entity{
                     activeAnimation = attackAnimations[item.getType()];
                 }
             }else{
+                System.out.println(trace);
                 followTrace(trace);
                 if(playerSpotted) {
                     lastCoords = new int[]{(int) ((level.getEntityManager().getPlayer().getX()) / 30), (int) ((level.getEntityManager().getPlayer().getY()) / 30)};
@@ -338,4 +347,13 @@ public class Enemy extends Entity{
     public Item getItem(){ return item; }
     public boolean getActive(){return super.active;}
     public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getType()+","+item.getAmmo()+","+alive); }
+    public void setLastCoords() {
+        lastCoords = new int[]{(int) ((level.getEntityManager().getPlayer().getX()) / 30), (int) ((level.getEntityManager().getPlayer().getY()) / 30)};
+    }
+    public void setPlayerSpotted(boolean playerSpotted) {
+        this.playerSpotted = playerSpotted;
+    }
+    public void setPathfindingDelay(int pathfindingDelay) {
+        this.pathfindingDelay = pathfindingDelay;
+    }
 }

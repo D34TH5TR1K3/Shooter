@@ -9,4 +9,4 @@ Player Bullet Speed,50.0
 Enemy Movement Speed,50.0
 Enemy Bullet Speed,20.0
 Enemy Reload Speed,10.0
-Enemy Line Of Sight,50.0
+Enemy Line Of Sight,1.0
