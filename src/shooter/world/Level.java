@@ -285,6 +285,8 @@ public class Level {
         }
         if(nextLevel && Math.abs(entityManager.getPlayer().getX()-posX)<600&& Math.abs(entityManager.getPlayer().getY()-posY)<600)
             vanish();
+        else if(nextLevel&&levelNumber==8)
+            vanish();
     }
     //TODO: change distance to extractionpoint
     //method to check if the Rectangle collides with the Player
