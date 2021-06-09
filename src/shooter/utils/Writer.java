@@ -139,7 +139,7 @@ public class Writer {
             ArrayList<Entity> createdEnemies = new ArrayList<>();
             for(;enemyCount>0;enemyCount--){
                 int[] enemyData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
-                Enemy createdEnemy = new Enemy(enemyData[0],enemyData[1],enemyData[2],enemyData[3],handler,level);
+                Enemy createdEnemy = new Enemy(enemyData[0],enemyData[1],enemyData[2],enemyData[3],handler,level,1);
                 createdEnemy.getItem().setAmmo(enemyData[4]);
                 createdEnemies.add(createdEnemy);
             }
@@ -194,7 +194,7 @@ public class Writer {
             ArrayList<Entity> createdEnemies = new ArrayList<>();
             for(;enemyCount>0;enemyCount--){
                 int[] enemyData = Arrays.stream(scanner.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
-                Enemy createdEnemy = new Enemy(enemyData[0],enemyData[1],enemyData[2],enemyData[3],handler,level);
+                Enemy createdEnemy = new Enemy(enemyData[0],enemyData[1],enemyData[2],enemyData[3],handler,level,enemyData[5]);
                 createdEnemy.getItem().setAmmo(enemyData[4]);
                 createdEnemies.add(createdEnemy);
             }

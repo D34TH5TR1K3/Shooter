@@ -56,10 +56,18 @@ public class World {
         };
         activeLevel = levels[activeLevel.getLevelNumber()];
     }
+    //reloads a specific level
+    public void reloadLevel(int levelNumber) {
+        if(levelNumber==0) levels[levelNumber] = Writer.loadGameSave(handler);
+        else levels[levelNumber] = Writer.loadLevel(levelNumber,handler);
+        activeLevel = levels[levelNumber];
+    }
     //sets the next level active
     public void nextLevel(){
-        activeLevel=levels[(activeLevelNumber==0)?activeLevel.getLevelNumber()+1:activeLevelNumber+1];
-        activeLevelNumber++;
+        int levelNumber = (activeLevelNumber==0)?activeLevel.getLevelNumber()+1:activeLevelNumber+1;
+        reloadLevel(levelNumber);
+        activeLevel=levels[levelNumber];
+        activeLevelNumber = activeLevel.getLevelNumber();
         activeLevel.start();
     }
 

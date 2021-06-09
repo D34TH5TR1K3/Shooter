@@ -47,17 +47,6 @@ public class Player extends Entity{
             ableToPickup = false;
         }
 
-        for(int y = 0; y < 3; y++) {
-            level.getEntityManager().addEntity(new Item(100+700, 100+50*y, 1, handler, level));
-            level.getEntityManager().addEntity(new Item(150+700, 100+50*y, 2, handler, level));
-            level.getEntityManager().addEntity(new Item(200+700, 100+50*y, 3, handler, level));
-            level.getEntityManager().addEntity(new Item(250+700, 100+50*y, 4, handler, level));
-            level.getEntityManager().addEntity(new Item(300+700, 100+50*y, 5, handler, level));
-            level.getEntityManager().addEntity(new Item(350+700, 100+50*y, 6, handler, level));
-            level.getEntityManager().addEntity(new Item(400+700, 100+50*y, 7, handler, level));
-            level.getEntityManager().addEntity(new Item(450+700, 100+50*y, 8, handler, level));
-        }
-
         legAnimation = new Animation(Assets.player_legs, 50, 16, 16);
 
         walkAnimations = new Animation[]{
