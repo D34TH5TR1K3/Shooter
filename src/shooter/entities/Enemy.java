@@ -67,8 +67,8 @@ public class Enemy extends Entity{
                 new Animation(Assets.enemy_attack_knife, 100, 18, 16, true),
                 null,
                 null,
-                new Animation(Assets.enemy_attack_silencer, 100, 14, 12,true),
-                new Animation(Assets.enemy_attack_mp, 100,10, 12,true),
+                new Animation(Assets.enemy_attack_silencer, 353, 14, 12,true),
+                new Animation(Assets.enemy_attack_rifle, 250,10, 12,true),
                 null,
                 new Animation(Assets.enemy_attack_shotgun,76, 12, 12,true),
                 null

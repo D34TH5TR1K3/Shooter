@@ -10,9 +10,9 @@ public class Assets {
     //saves the animations
     public static BufferedImage[] enemy_walk, enemy_walk_ak, rocket, explosion, particles1;//old stuff
     public static BufferedImage[]
-            player_legs, player_walk, player_walk_handgun, player_walk_uzi, player_walk_knife, player_walk_shotgun, player_walk_mp, player_walk_silencer, player_walk_machete,
-            player_attack_unarmed, player_attack_handgun, player_attack_uzi, player_attack_knife, player_attack_shotgun, player_attack_mp, player_attack_silencer, player_attack_machete,
-            enemy_legs, enemy_walk_knife, enemy_walk_shotgun, enemy_walk_mp, enemy_walk_silencer, enemy_attack_knife, enemy_attack_shotgun, enemy_attack_silencer, enemy_attack_mp, enemy_die_knife,
+            player_legs, player_walk, player_walk_handgun, player_walk_uzi, player_walk_knife, player_walk_shotgun, player_walk_rifle, player_walk_silencer, player_walk_machete,
+            player_attack_unarmed, player_attack_handgun, player_attack_uzi, player_attack_knife, player_attack_shotgun, player_attack_rifle, player_attack_silencer, player_attack_machete,
+            enemy_legs, enemy_walk_knife, enemy_walk_shotgun, enemy_walk_mp, enemy_walk_silencer, enemy_attack_knife, enemy_attack_shotgun, enemy_attack_silencer, enemy_attack_rifle, enemy_die_knife,
             player_die;
     //saves the maps and their layouts
     public static BufferedImage[] maps = new BufferedImage[2];
@@ -49,7 +49,7 @@ public class Assets {
         player_walk_handgun =       new BufferedImage[8];
         player_walk_uzi =           new BufferedImage[8];
         player_walk_shotgun =       new BufferedImage[8];
-        player_walk_mp =            new BufferedImage[8];
+        player_walk_rifle =            new BufferedImage[8];
         player_walk_silencer =      new BufferedImage[8];
 
         player_attack_unarmed =     new BufferedImage[7];
@@ -58,7 +58,7 @@ public class Assets {
         player_attack_handgun =     new BufferedImage[2];
         player_attack_uzi =         new BufferedImage[2];
         player_attack_shotgun =     new BufferedImage[13];
-        player_attack_mp =          new BufferedImage[2];
+        player_attack_rifle =       new BufferedImage[2];
         player_attack_silencer =    new BufferedImage[2];
 
         player_die[0] =             sprite_32.crop(0*32*3, 7*32, 60, 32);
@@ -82,7 +82,7 @@ public class Assets {
         for(int x = 0; x < 8; x++)
             player_walk_shotgun[x] = sprite_32.crop(x * 45, 2 * 32, 45, 32);
         for(int x = 0; x < 8; x++)
-            player_walk_mp[x] = sprite_32.crop(x * 45, 5 * 32, 45, 32);
+            player_walk_rifle[x] = sprite_32.crop(x * 45, 5 * 32, 45, 32);
         for(int x = 0; x < 8; x++)
             player_walk_silencer[x] = sprite_32.crop(x * 45, 6 * 32, 45, 32);
 
@@ -99,7 +99,7 @@ public class Assets {
         for(int x = 0; x < 13; x++)
             player_attack_shotgun[x] = sprite_32.crop(x * 45+8*45, 2 * 32, 45, 32);
         for(int x = 0; x < 2; x++)
-            player_attack_mp[x] = sprite_32.crop(x * 45+8*45, 5 * 32, 45, 32);
+            player_attack_rifle[x] = sprite_32.crop(x * 45+8*45, 5 * 32, 45, 32);
         for(int x = 0; x < 2; x++)
             player_attack_silencer[x] = sprite_32.crop(x * 48+8*45, 6 * 32, 48, 32);
 
@@ -112,7 +112,7 @@ public class Assets {
 
         enemy_attack_knife =       new BufferedImage[9];
         enemy_attack_shotgun =     new BufferedImage[13];
-        enemy_attack_mp =          new BufferedImage[2];
+        enemy_attack_rifle =          new BufferedImage[2];
         enemy_attack_silencer =    new BufferedImage[2];
 
         enemy_die_knife =          new BufferedImage[6];
@@ -135,7 +135,7 @@ public class Assets {
         for(int x = 0; x < 13; x++)
             enemy_attack_shotgun[x] = sprite_24.crop(8*36 + x * 45, 1 * 24, 45, 24);
         for(int x = 0; x < 2; x++)
-            enemy_attack_mp[x] = sprite_24.crop(8*32 + x * 40, 0 * 24, 40, 24);
+            enemy_attack_rifle[x] = sprite_24.crop(8*32 + x * 40, 0 * 24, 40, 24);
         for(int x = 0; x < 2; x++)
             enemy_attack_silencer[x] = sprite_24.crop((8+x) * 45, 2 * 24, 45, 24);
         for(int x = 0; x < 6; x++)

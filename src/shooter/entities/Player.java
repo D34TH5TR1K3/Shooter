@@ -10,8 +10,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 
-import static shooter.gfx.Display.fraktur;
-
 public class Player extends Entity{
     private float moveDir;
     //saves the players hitbox
@@ -67,7 +65,7 @@ public class Player extends Entity{
                 new Animation(Assets.player_walk_handgun, 100, 9, 16),
                 new Animation(Assets.player_walk_silencer, 100, 9, 16),
                 new Animation(Assets.player_walk_uzi, 100, 10, 16),
-                new Animation(Assets.player_walk_mp,100,10,16),
+                new Animation(Assets.player_walk_rifle,100,10,16),
                 new Animation(Assets.player_walk_shotgun, 100, 10, 16),
                 null
         };
@@ -75,10 +73,10 @@ public class Player extends Entity{
                 new Animation(Assets.player_attack_unarmed,100, 15, 16),
                 new Animation(Assets.player_attack_knife,100, 14, 15),
                 new Animation(Assets.player_attack_machete, 100, 17, 22),
-                new Animation(Assets.player_attack_handgun, 150, 9, 16),
-                new Animation(Assets.player_attack_silencer, 100, 9, 16),
+                new Animation(Assets.player_attack_handgun, 75, 9, 16),
+                new Animation(Assets.player_attack_silencer, 353, 9, 16),
                 new Animation(Assets.player_attack_uzi, 50, 10, 16),
-                new Animation(Assets.player_attack_mp,100,10,16),
+                new Animation(Assets.player_attack_rifle,250,10,16),
                 new Animation(Assets.player_attack_shotgun, 76, 10, 16),
                 null
         };
