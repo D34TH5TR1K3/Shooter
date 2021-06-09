@@ -59,21 +59,9 @@ public class Game implements Runnable {
         if(!handler.getWorld().getActiveLevel().getEntityManager().getPlayer().isAlive()&&!keyManager.reload&&State.getState().equals(gameState))
             return;
         else if(keyManager.reload)
-            handler.getWorld().reloadLevels();
+            handler.getWorld().reloadLevel(handler.getWorld().getActiveLevel().getLevelNumber());
         State.getState().tick();
         Sound.tick();
-        if(keyManager.save) {
-            Writer.writeGameSave(handler.getWorld().getActiveLevel());
-            timer_save = new Timer(2000);
-        }
-        if(keyManager.load)
-            handler.getWorld().setLevel(0);
-        if(keyManager.wipe)
-            Writer.wipeGame();
-        if(keyManager.level1)
-            handler.getWorld().setLevel(1);
-        if(keyManager.level2)
-            handler.getWorld().setLevel(2);
     }
     //render is responsible for the graphics of the game. all render methods get called here
     public void render() {

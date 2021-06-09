@@ -38,12 +38,14 @@ public class Enemy extends Entity{
     public static float reloadspeed = new shooter.utils.Writer().getSettingValue("Enemy Reload Speed") / 10;
     //provides a variable to change the distance to the player for Line Of Sight to work
     public static float LOSdist = new shooter.utils.Writer().getSettingValue("Enemy Line Of Sight") * 10;
-
+    //saves how the enemy died
     public int diedByType = 0;
+    //saves whether the enemy is alive
+    public int alive;
     //this constructor initializes the values
-    public Enemy(int posX, int posY, int dir, int gunType, Handler handler, Level level) {
+    public Enemy(int posX, int posY, int dir, int gunType, Handler handler, Level level, int alive) {
         super(posX, posY, 4, dir, handler, level);
-        this.setActive();
+        setActive();
         hitbox = new Rectangle(posX - 35, posY - 35, 70, 70);
         item = new Item(posX, posY, gunType, handler, level);
         item.setInActive();
@@ -77,6 +79,9 @@ public class Enemy extends Entity{
         deathAnimation_knife = new Animation(Assets.enemy_die_knife, 100, 30 ,20);
 
         activeAnimation = walkAnimations[1];
+
+        this.alive = alive;
+        if(this.alive==0) die(3);
     }
     //method to follow the trace found by pathfinding
     public void followTrace(ArrayList<Tile> trace){
@@ -223,6 +228,7 @@ public class Enemy extends Entity{
     }
     //lets enemy die
     public void die(int type){
+        alive = 0;
         diedByType = type;
         item.drop(this);
         this.hitbox = null;
@@ -331,5 +337,5 @@ public class Enemy extends Entity{
     public Rectangle getHitbox(){ return hitbox; }
     public Item getItem(){ return item; }
     public boolean getActive(){return super.active;}
-    public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getType()+","+item.getAmmo()); }
+    public String getData(){ return ((int)posX+","+(int)posY+","+(int)dir+","+item.getType()+","+item.getAmmo()+","+alive); }
 }

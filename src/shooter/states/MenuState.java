@@ -38,11 +38,11 @@ public class MenuState extends State {
         activeMenu.tick();
         if(activeMenu.funcActive("New Game")) {
             Writer.wipeGame();
-            world.reloadLevels();
+            world.reloadLevel(1);
             world.setLevel(1);
             State.setState(game.gameState);
         } else if(activeMenu.funcActive("Load Game")) {
-            world.reloadLevels();
+            world.reloadLevel(0);
             world.setLevel(0);
             State.setState(game.gameState);
         } else if(activeMenu.funcActive("Options")) {
