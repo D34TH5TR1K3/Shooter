@@ -283,10 +283,13 @@ public class Level {
     }
     //TODO: change distance to extractionpoint
     //method to check if the Rectangle collides with the Player
-    public void checkPlayerCollision(Rectangle rect) {
+    public boolean checkPlayerCollision(Rectangle rect) {
         Player p = getEntityManager().getPlayer();
-        if(p.getHitbox().intersects(rect))
+        if(p.getHitbox().intersects(rect)) {
             p.die();
+            return true;
+        }
+        return false;
     }
     //Getters
     public Tile getTiles(int x, int y) {
