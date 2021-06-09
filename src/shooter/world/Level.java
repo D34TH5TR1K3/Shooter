@@ -293,7 +293,11 @@ public class Level {
         enemiesDead = true;
         if(nextLevel && Math.abs(entityManager.getPlayer().getX()-posX)<100&& Math.abs(entityManager.getPlayer().getY()-posY)<100) {
             vanish();
+
         }
+        else if(nextLevel&&levelNumber==8)
+            vanish();
+
     }
     //TODO: change distance to extractionpoint
     //method to check if the Rectangle collides with the Player

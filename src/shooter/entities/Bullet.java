@@ -73,7 +73,7 @@ public class Bullet extends Entity {
             }
             if (type == 2) {
                 if(level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10)))
-                    level.getEntityManager().removeEntity(this);
+                  level.getEntityManager().removeEntity(this);
                 if (friendlyFire)
                     level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10), type);
             }
