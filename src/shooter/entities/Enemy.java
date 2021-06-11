@@ -279,11 +279,11 @@ public class Enemy extends Entity{
     }
     @Override
     public void tick() {
-        System.out.println(lastCoords[0] +"  "+lastCoords[1]);
-        System.out.println(active);
+        //System.out.println(lastCoords[0] +"  "+lastCoords[1]);
+        //System.out.println(active);
         if(pathfindingDelay<1) {
             findpath(level.getTiles(((int) ((posX) / 30)), ((int) ((posY) / 30))), level.getTiles(lastCoords[0], lastCoords[1]));
-            System.out.println("helOOOOOOOOOOOOOOOOOOOOOO");
+            //System.out.println("helOOOOOOOOOOOOOOOOOOOOOO");
             playerSpotted = false;
         }
 
@@ -308,7 +308,7 @@ public class Enemy extends Entity{
                     activeAnimation = attackAnimations[item.getType()];
                 }
             }else{
-                System.out.println(trace);
+                //System.out.println(trace);
                 followTrace(trace);
                 if(playerSpotted) {
                     lastCoords = new int[]{(int) ((level.getEntityManager().getPlayer().getX()) / 30), (int) ((level.getEntityManager().getPlayer().getY()) / 30)};

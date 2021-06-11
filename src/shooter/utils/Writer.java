@@ -74,7 +74,7 @@ public class Writer {
             scanner.close();
             if(print) {
                 for(Setting setting : settings){ //print out each setting
-                    System.out.println(setting.getName() + "   " + setting.getValue());
+                    //System.out.println(setting.getName() + "   " + setting.getValue());
                 }
             }
         } catch (FileNotFoundException e) {
