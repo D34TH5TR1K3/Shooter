@@ -151,7 +151,6 @@ public class Assets {
         SpriteSheet sprite_rpg = new SpriteSheet(ImageLoader.loadImage("/textures/200xSprite.png"));
         SpriteSheet sprite_particles1 = new SpriteSheet(ImageLoader.loadImage("/textures/particles1.png"));
 
-        Map1_walls = ImageLoader.loadImage("/textures/Map1_walls.png");
         item_ak_empty = sprite1.crop(8*60, 0, 60, 60);
         item_ak_full = sprite1.crop(9*60, 0, 60, 60);
         item_shotgun_empty = sprite1.crop(8*60, 60, 60, 60);
@@ -159,9 +158,7 @@ public class Assets {
         item_mp = sprite1.crop(9*60, 60*3, 60, 60);
         shell = ImageLoader.loadImage("/textures/shell.png");
         item_pistol = sprite1.crop(9*60, 60*2, 60, 60);
-        map_1 = ImageLoader.loadImage("/textures/Map1.png");
         enemy = ImageLoader.loadImage("/textures/player_1.png");
-        map_1layout = ImageLoader.loadImage("/textures/Map1_layout.png");
         menu1 = ImageLoader.loadImage("/textures/menuNeu_main.png");
         menu_layout1 = ImageLoader.loadImage("/textures/menu_layout_main.png");
         menu2 = ImageLoader.loadImage("/textures/menuNeu.png");
@@ -195,7 +192,5 @@ public class Assets {
         for(int i = 0; i < 5 ; i++)
             rocket[i] = sheetRocket.crop(80 * i,  0, 80,  10);
 
-        maps[0] = ImageLoader.loadImage("/textures/Map1.png");
-        maps[1] = ImageLoader.loadImage("/textures/Map1_layout.png");
     }
 }
