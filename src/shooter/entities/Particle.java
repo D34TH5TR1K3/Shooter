@@ -22,19 +22,21 @@ public class Particle extends Entity{
     private byte type = 0;
     //saves the particles speed
     private byte speedFactor = 10;
+    private int gun;
 
     //these constructors initialize the values
     public Particle(int x, int y, int speed, BufferedImage[] frames, Handler handler, Level level){
         super(x,y,4,handler, level);
         AnimParticle = new Animation(frames,speed, 666, 666);
     }
-    public Particle(int x, int y, float dir, BufferedImage texture, Handler handler, Level level, int timeLeftToLive){
+    public Particle(int x, int y, float dir, BufferedImage texture, Handler handler, Level level, int timeLeftToLive, int type){
         super(x,y,4,dir,handler, level);
         this.xNew = x;
         this.yNew = y;
         this.texture = texture;
         this.timeLeftToLive = timeLeftToLive;
-        type = 1;
+        this.gun = type;
+        this.type = 1;
     }
     public Particle(int x, int y, int width, int height, int speed, BufferedImage[] frames, Handler handler, Level level){
         super(x,y,4,handler, level);
@@ -49,8 +51,12 @@ public class Particle extends Entity{
         if(type == 0)
             AnimParticle.tick();
         else if(type == 1){
-            if(!level.collisionCheck(new Rectangle((int)posX+27, (int)posY+21+speedFactor, 3, 3)))
-                yNew += speedFactor;
+            if(!level.collisionCheck(new Rectangle((int)posX+27, (int)posY+21+speedFactor, 3, 3))){
+                if(gun == 6 || gun == 7)
+                    yNew += speedFactor;
+                else
+                    yNew -= speedFactor;
+            }
             if(speedFactor > 0)
                 speedFactor--;
         }

@@ -66,8 +66,10 @@ public class World {
     //sets the next level active
     public void nextLevel(){
         int levelNumber = (activeLevelNumber==0)?activeLevel.getLevelNumber()+1:activeLevelNumber+1;
-        if(levelNumber > 8)
+        if(levelNumber > 8) {
             State.setState(handler.getGame().menuState);
+            levelNumber = 1;
+        }
         reloadLevel(levelNumber);
         activeLevel=levels[levelNumber];
         activeLevelNumber = activeLevel.getLevelNumber();

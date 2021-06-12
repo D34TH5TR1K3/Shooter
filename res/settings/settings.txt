@@ -2,11 +2,11 @@ Scale,1.2
 Friendly Fire,1.0
 SFX,1.0
 Music,1.0
-Music Volume,51.0
-SFX Volume,43.0
+Music Volume,50.0
+SFX Volume,50.0
 Player Movement Speed,50.0
 Player Bullet Speed,50.0
 Enemy Movement Speed,50.0
-Enemy Bullet Speed,32.0
+Enemy Bullet Speed,21.0
 Enemy Reload Speed,32.0
 Enemy Line Of Sight,80.0

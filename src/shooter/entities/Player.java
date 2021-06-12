@@ -77,6 +77,8 @@ public class Player extends Entity{
     @Override
     public void tick() {
         if(item != null) {
+            if(activeAnimation == attackAnimations[7] && activeAnimation.getCurrentFrameIndex() == 7 && !item.isParticleCreated())
+                item.generateParticle();
             if(handler.getMouseManager().isLeftPressed()&&item.getAmmo()!=0) {
                 item.activate(this);
                 level.alertEnemies((int)posX, (int)posY, item.getLoudness());
@@ -195,9 +197,12 @@ public class Player extends Entity{
     }
     //lets the player die and resets the Level
     public void die() {
-        if (item == null &&Math.random()>0.5) return;
-        else if (getItem().getType() == 1&&Math.random()>0.2) return;
-        else if (getItem().getType() == 2&&Math.random()>0.1) return;
+        if(item != null) {
+            if (getItem().getType() == 1 && Math.random() > 0.2) return;
+            else if (getItem().getType() == 2 && Math.random() > 0.1) return;
+        }else{
+            if (Math.random() > 0.5) return;
+        }
         alive = false;
         deathImage = (int)(Math.random() * 4);
         LoadingImage.renderDeathScreen();

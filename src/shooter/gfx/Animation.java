@@ -74,6 +74,7 @@ public class Animation {
     //getters
     public boolean lastFrame() { return index == frames.length - 1; }
     public BufferedImage getCurrentFrame() { return (active) ? frames[index] : frames[0]; }
+    public short getCurrentFrameIndex() { return index; }
     public int getxOffset() {
         return xOffset;
     }

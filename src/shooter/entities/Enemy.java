@@ -79,7 +79,7 @@ public class Enemy extends Entity{
         deathAnimation_knife = new Animation(Assets.enemy_die_knife, 100, 30 ,20);
 
         activeAnimation = walkAnimations[1];
-
+        activeAnimation.stop();
         this.alive = alive;
         if(this.alive==0) die(3);
 
@@ -279,6 +279,8 @@ public class Enemy extends Entity{
     }
     @Override
     public void tick() {
+        if(activeAnimation == attackAnimations[7] && activeAnimation.getCurrentFrameIndex() == 7 && !item.isParticleCreated())
+            item.generateParticle();
         if(pathfindingDelay<1) {
             findpath(level.getTiles(((int) ((posX) / 30)), ((int) ((posY) / 30))), level.getTiles(lastCoords[0], lastCoords[1]));
             playerSpotted = false;
