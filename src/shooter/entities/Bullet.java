@@ -63,16 +63,17 @@ public class Bullet extends Entity {
             }
 
             moveAbs(posX, posY);
-            if (level.collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10)) || level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10), type)) {
-                if (type == 0) {
-                    Sound.play("RocketExplode");
-                    level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, level));
-                } else if (type > 0)
-                    level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, level));
-                level.getEntityManager().removeEntity(this);
-            }
-            if (type == 2) {
-                if(level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10)))
+            if(type != 2) {
+                if (level.collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10)) || level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10), type)) {
+                    if (type == 0) {
+                        Sound.play("RocketExplode");
+                        level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 80, 80, 12, Assets.explosion, handler, level));
+                    } else if (type > 0)
+                        level.getEntityManager().addEntity(new Particle(((int) posX), ((int) posY), 20, Assets.particles1, handler, level));
+                    level.getEntityManager().removeEntity(this);
+                }
+            }else {
+                if(level.collisionCheck(new Rectangle(((int) posX), ((int) posY), 10, 10)) || level.checkPlayerCollision(new Rectangle(((int) posX), ((int) posY), 10, 10)))
                   level.getEntityManager().removeEntity(this);
                 if (friendlyFire)
                     level.checkEnemyCollision(new Rectangle(((int) posX), ((int) posY), 10, 10), type);

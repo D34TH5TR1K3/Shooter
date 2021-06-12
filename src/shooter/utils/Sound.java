@@ -13,6 +13,7 @@ public class Sound {
     private static float BgVolMax = -15f, BgVolMin = -35f, BgVol = -40f;
     //indicates the Max, Min and actual Volume of SFX
     private static float SFXVolMax = -15f, SFXVolMin = -35f, SFXVol = -20f;
+    private static boolean SFXActive;
     //indicates whether Background music is active
     private static boolean BgActive = false;
     //sounds distributes the Files with SFX
@@ -48,6 +49,10 @@ public class Sound {
     //initializes the Settings
     public static void init() {
         Writer writer = new Writer();
+        if(writer.getSettingValue("SFX") > 0)
+            SFXActive = true;
+        else
+            SFXActive = false;
         if(writer.getSettingValue("Music") == 1)
             Sound.playBackgroundMusic();
         float volume = writer.getSettingValue("Music Volume");
@@ -66,7 +71,7 @@ public class Sound {
     //static method to play SFX
     public static void play(String Name){
         try {
-            if(SFXVol==-0.0f)
+            if(!SFXActive)
                 return;
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(sounds.get(Name)));
@@ -81,7 +86,7 @@ public class Sound {
     }
     //method to toggle SFX
     public static void toggleSFX(boolean value) {
-        SFXVol = (value)?SFXVol:-0.0f;
+        SFXActive = value;
     }
     //method to play Background music
     public static void playBackgroundMusic(){
