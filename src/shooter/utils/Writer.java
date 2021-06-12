@@ -74,7 +74,7 @@ public class Writer {
             scanner.close();
             if(print) {
                 for(Setting setting : settings){ //print out each setting
-                    //System.out.println(setting.getName() + "   " + setting.getValue());
+                    System.out.println(setting.getName() + "   " + setting.getValue());
                 }
             }
         } catch (FileNotFoundException e) {
@@ -124,6 +124,8 @@ public class Writer {
     }
     //method to load a level from res
     public static Level loadLevel(int number,Handler handler){
+        if(number > 8)
+            number = 8;
         try{
             String path = "/levels/Level_"+number+"/";
             Scanner scanner = new Scanner(new File("res" + path + "LevelData.txt"));

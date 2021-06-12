@@ -36,6 +36,8 @@ public class MenuState extends State {
     @Override
     public void tick() {
         activeMenu.tick();
+        if(game.getKeyManager().p)
+            State.setState(game.gameState);
         if(activeMenu.funcActive("New Game")) {
             Writer.wipeGame();
             world.reloadLevel(1);
